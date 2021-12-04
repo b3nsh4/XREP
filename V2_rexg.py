@@ -35,9 +35,11 @@ def stratg():
 
    escape = ['.', '[', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
 
-   possible_alnum = ['[a-z]','[a-z]+','[A-Z]','[A-Z]+','[[:digit:]]','[[:digit:]]+',"\\w","\\w+"]
+   possible_alnum = ['[a-z]','[a-z]+','[A-Z]','[A-Z]+','[0-9]','[0-9]+',"\\w","\\w+"]
 
    #global variables for this function#
+   global number_of_repeats #used to know whether we have (1(2)) while substituting
+   number_of_repeats = 0 
    global cooked_string_copy
    cooked_string_copy=""
    prefetch = "sed -E "+'"'+str(line_num)+"s/("
@@ -61,7 +63,7 @@ def stratg():
         di.append("[A-Z]") #replaced [A-Z] with w
         i+=1
       elif string[i] in nums:
-        di.append("[[:digit:]]")
+        di.append("[0-9]")
         i+=1
       elif string[i] in space:
         di.append("\\s+")
@@ -103,6 +105,7 @@ def stratg():
       t=[] #stores result of N number repeats [('foo','bar')N]
       temp = []
       global cooked_string_copy
+      global number_of_repeats
       for k in zip(list_to_filter[::2],list_to_filter[1::2]):
          t.append(k)
       if len(list_to_filter)%2!=0:
@@ -116,6 +119,7 @@ def stratg():
       for m in temp:
          t = ''.join(m[0])
          if m[1]>1:
+            number_of_repeats+=1
             cooked_string+="("+t+")"+"{"+str(m[1])+"}"
          elif m[1]==1:
             for n in m[0]:
@@ -143,9 +147,12 @@ def stratg():
          final = prefetch+res+')/XXX/"'
          return final
       else:
-         res = repeating_stuff(di_3)
-         final = prefetch+res+')/XXX/"'
-         return final
+         if len(di_3)!=0:
+            res = repeating_stuff(di_3)
+            final = prefetch+res+')/XXX/"'
+            return final
+         else:
+            return "𝘞𝘰𝘳𝘬𝘴 𝘣𝘦𝘵𝘵𝘦𝘳 𝘸𝘪𝘵𝘩 𝘮𝘰𝘳𝘦 𝘤𝘮𝘱𝘭𝘹 𝘰𝘯𝘦𝘴!"
 
    def filter_the_escape(filterthis): #filtering escape chars
       some_escapes = ["<",">"]
@@ -187,13 +194,20 @@ def stratg():
    def complex_substitution(): #using boundaries in specific_filtering for
       prefetch_complex_subsitit = "sed -E -n "+'"'+str(line_num)+"s/("
       if len(txt_before_target)==0 and len(txt_after_target)==0:
-         return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})$(.*)/XXX\\2/'")
+         return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})$(.*)/XXX/'")
       elif len(txt_before_target)==0: #preboundary missing
-         return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\2 \\3/'")
+         if number_of_repeats==0:
+            return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\3 \\4/'")
+         else:
+            return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\4 \\5/'")
       elif len(txt_after_target)==0: #postboundry missing
          return (f"sed -E '{line_num}s/(.+)?({cooked_pre_boundary})\\s*?({cooked_string_copy})$/\\1 \\2 XXX/'")
       else:
-         return (f"sed -E '{line_num}s/(.+)?({cooked_pre_boundary})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\4 \\5/'")
+         if number_of_repeats ==0:
+            return (f"sed -E '{line_num}s/(.+)?({cooked_pre_boundary})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\4 \\5/'")
+         else:
+            return (f"sed -E '{line_num}s/(.+)?({cooked_pre_boundary})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\5 \\6/'")
+
 
       
    def count_this_repeats(list_to_filter): #can be used in di_1 if needed
@@ -258,15 +272,15 @@ def stratg():
             final_cooked_string+=stuff
       return sub_it+final_cooked_string+").*/\\1/p'"
 
-
    sub_with_spec_nums = sub_with_specific_numbering(di)
    extract_with_spec_nums = extract_with_specific_numbering(di)
    temp_spec = specific_filtering()
    if len(di_3) > 15:
       strict_sub = complex_substitution()
+      print("\number_of_repeats: ",number_of_repeats)
       strict_extract = easy_wrd_boundary()
       final_return = {
-      "sub_with_spec_nums":sub_with_spec_nums,
+      # "sub_with_spec_nums":sub_with_spec_nums,
       "extract_with_spec_nums":extract_with_spec_nums,
       "strict_sub":strict_sub, 
       "strict_extrct":strict_extract,
@@ -277,9 +291,10 @@ def stratg():
    else:
 
       strict_sub = complex_substitution()
+      print("\n number_of_repeats: ",number_of_repeats)
       strict_extract = easy_wrd_boundary()
       final_return = {
-      "sub_with_spec_nums":sub_with_spec_nums,
+      # "sub_with_spec_nums":sub_with_spec_nums,
       "extract_with_spec_nums":extract_with_spec_nums,
       "strict_sub":strict_sub,
       "strict_extrct":strict_extract,
