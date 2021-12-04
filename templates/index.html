@@ -1,28 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+
+   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='textbox.css') }}">
+
+
+
+  <ul class="nav justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Disabled</a>
+    </li>
+  </ul>
+    <div class="container mt-5 border">
   <title>P-REX BETA</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<style> 
+</style> 
 </head>
 <body>
-<div class="container-md">
-  <h2>P-REX BETA-0.2</h2>
-  <p>Please post non-wrap text (enlarge the textfield for full view)</p>
-  <form>
-    <div class="form-group">
-      <textarea class="form-control" type="color" value="#563d7c" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
+<center>𝙋𝙍𝙀𝙓 𝘽𝙀𝙏𝘼 𝙑.04</center>
+<textarea class="txtarea"  wrap="off" rows="15" placeholder="Paste your text here 👇  
+          This TextArea is resizeable 👉" cols="10" id="area"></textarea>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <h5>PATTERN -1</h5>
+      <p id="patt1" style="font-size: 15px;"></p>
     </div>
-  </form>
-
+    <div class="col-sm-4">
+      <h5>PATTERN -2</h5>
+      <p id="patt2" style="font-size: 15px;"></p>
+    </div>
+    <div class="col-sm-4">
+      <h5>PATTERN -3</h5>  
+      <p id="patt3" style="font-size: 15px;"></p>      
+    </div>
+       <div class="col-sm-4">
+      <h5>PATTERN -4</h5>  
+      <p id="patt4" style="font-size: 15px;"></p>      
+    </div>
+       <div class="col-sm-4">
+      <h5>PATTERN -5</h5>  
+      <p id="patt5" style="font-size: 15px;"></p>      
+    </div>
+    <div class="col-sm-4">
+      <h5>PATTERN -6</h5>  
+      <p id="patt6" style="font-size: 15px;"></p>      
+    </div>
+  </div>
 </div>
-
-<h4 id="lineNo"></h4>
 <script>
     document.querySelector('textarea').addEventListener('mouseup', (evt) => {
+
   const el = evt.target;
   const entire_line = area.value.split("\n");
   const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
@@ -30,7 +74,7 @@
   const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1
   const from_index = area.selectionStart - lineStart;
   const upto_index = area.selectionEnd - lineStart;
-
+  // string.split("\n").map(elem => elem.trim()).join("\n")
   console.log(lineNo, selText);
     var entry = {
       LINENUMBER: lineNo,
@@ -41,32 +85,28 @@
     };
   //now use fetch
 
-    fetch(`${window.origin}/entry`, {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify(entry),
-      cache: "no-cache",
-      headers: new Headers({
-        "content-type": "application/json"
-      })
-    })
-      .then(function (response) {
-        if (response.status !== 200) {
-          console.log(`Looks like there was a problem. Status code: ${response.status}`);
-          return;
-        }
-        response.json().then(function (data) {
-          if (data  == "empty string") {
-            console.log("empty");
-          }
-          else{
-            console.log(data);
-          };
-        });
-      })
-      .catch(function (error) {
-        console.log("Fetch error: " + error);
-      });
+void async function(){
+    const response = await fetch(`${window.origin}/entry`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(entry),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    });
+    const data = await response.json();
+    console.log(data.strict_extrct);
+    document.querySelector("#patt1").innerText = data.strict_extrct;
+    document.querySelector("#patt2").innerText = data.specific_filtering;
+    document.querySelector("#patt3").innerText = data.strict_sub;
+    document.querySelector("#patt4").innerText = data.sub_with_spec_nums;
+    document.querySelector("#patt5").innerText = data.extract_with_spec_nums
+    document.querySelector("#patt6").innerText = data.not_specific_filtering
+    
+    // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
+}();
+
 
 });
 

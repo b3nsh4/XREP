@@ -1,0 +1,20 @@
+.txtarea {
+  width: 95%;
+  margin-top: 40px;
+  margin-left:30px;
+  margin-bottom: 60px;
+  margin-right:30px;
+  min-height: 100px;
+  background: url(http://i.imgur.com/2cOaJ.png) top -12px left / auto no-repeat, 
+              linear-gradient(#ffff 50%,    #ffff  50%) top left / 100% 32px;
+  border: 1px solid  #8d8a8a ;
+  box-sizing: border-box;
+  padding: 0 0 0 30px;
+  border-radius: 4px;
+  resize: both;
+  font-family:revert;
+  line-height: 16px;
+  font-size: 13px;
+   outline: none;
+   overflow: auto;
+}
