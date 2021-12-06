@@ -1,7 +1,11 @@
 from flask import Flask,render_template,request,jsonify,make_response
 from itertools import groupby
 import json
+import uuid
+from github import Github
 app = Flask(__name__)
+g = Github('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')
+repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
 
 @app.route('/')
 def hello_name():
@@ -10,7 +14,9 @@ def hello_name():
 @app.route("/entry", methods=["POST"])
 def stratg():
    req = request.get_json() #getting text and line from frontend
+   global string
    string=req['TEXTSELECTED']
+   global whole
    whole=req['WHOLE_STUFF']
    line_num = req['LINENUMBER']
    this_full_text = whole[line_num-1] #gets the entire text in selected line for strcit_mode
@@ -43,6 +49,8 @@ def stratg():
    global cooked_string_copy
    cooked_string_copy=""
    prefetch = "sed -E "+'"'+str(line_num)+"s/("
+
+   prefetch_for_pat5 = "sed -E -n "+'"'+str(line_num)+"s/.*\\ ("
    i=0
 
    di = [] #used to loop through string and saves here eg: in abc or ABC or nums ..etc
@@ -144,12 +152,12 @@ def stratg():
       if len(di_3) > 15:
          alnum_algo(di_3,di_4)
          res = repeating_stuff(di_4)
-         final = prefetch+res+')/XXX/"'
+         final = prefetch_for_pat5+res+').*/\\1/p"'
          return final
       else:
          if len(di_3)!=0:
             res = repeating_stuff(di_3)
-            final = prefetch+res+')/XXX/"'
+            final = prefetch_for_pat5+res+').*/\\1/p"'
             return final
          else:
             return "𝘞𝘰𝘳𝘬𝘴 𝘣𝘦𝘵𝘵𝘦𝘳 𝘸𝘪𝘵𝘩 𝘮𝘰𝘳𝘦 𝘤𝘮𝘱𝘭𝘹 𝘰𝘯𝘦𝘴!"
@@ -271,11 +279,20 @@ def stratg():
             stuff=str(i[0])
             final_cooked_string+=stuff
       return sub_it+final_cooked_string+").*/\\1/p'"
+   #some global vars
+   global sub_with_spec_nums
+   global extract_with_spec_nums
+   global temp_spec #speicif filter
+   global strict_sub
+   global strict_extract
+   global not_specific #not_specific_filtering
 
+   #global var ends
    sub_with_spec_nums = sub_with_specific_numbering(di)
    extract_with_spec_nums = extract_with_specific_numbering(di)
    temp_spec = specific_filtering()
    if len(di_3) > 15:
+      not_specific = not_specific_filtering()
       strict_sub = complex_substitution()
       print("\number_of_repeats: ",number_of_repeats)
       strict_extract = easy_wrd_boundary()
@@ -284,7 +301,7 @@ def stratg():
       "extract_with_spec_nums":extract_with_spec_nums,
       "strict_sub":strict_sub, 
       "strict_extrct":strict_extract,
-      "not_specific_filtering":not_specific_filtering()
+      "not_specific_filtering":not_specific
       }
       return final_return
 
@@ -293,16 +310,56 @@ def stratg():
       strict_sub = complex_substitution()
       print("\n number_of_repeats: ",number_of_repeats)
       strict_extract = easy_wrd_boundary()
+      not_specific = not_specific_filtering()
       final_return = {
       # "sub_with_spec_nums":sub_with_spec_nums,
       "extract_with_spec_nums":extract_with_spec_nums,
       "strict_sub":strict_sub,
       "strict_extrct":strict_extract,
       "specific_filtering":temp_spec,
-      "not_specific_filtering":not_specific_filtering()
+      "not_specific_filtering":not_specific
       }
       return final_return
 
+@app.route('/bug')
+def bug_report():
+   global whole
+   global string
+   global sub_with_spec_nums
+   global extract_with_spec_nums
+   global temp_spec #speicif filter
+   global strict_sub
+   global strict_extract
+   global not_specific #not_specific_filtering
+   try:
+
+      collect = {
+      "entire_line":whole,
+      "selected_text":string,
+      "extract_with_spec_nums":extract_with_spec_nums,
+      "strict_sub":strict_sub,
+      "strict_extrct":strict_extract,
+      "specific_filtering":temp_spec,
+      "not_specific_filtering":not_specific
+      }
+   except NameError:
+      return {"status":"You have'nt started yet!","notes":"Start by selecting what you need!"}
+   if string!="":
+      #creating bug_report at gh
+
+      x=uuid.uuid1()
+      rand_uuid = x.hex
+      pre_beautify = json.dumps(collect, indent=2)
+      #creating new report file
+      report_status = "Report Sent"
+      notes = "Thank you very much for submitting this report, this will help to improve EXrep! RefID for this report is:  {}".format(rand_uuid)
+      repo.create_file(rand_uuid, "NEW REPORT",pre_beautify, branch="main") #file creates
+      return { "status":report_status,"notes":notes,"Ref:ID":rand_uuid}
+   else:
+      report_status = "Report NOT sent"
+      notes = "You have not choose anything!"
+      print("report NOT sent")
+      return { "status":report_status,"notes":notes}
    # pewerful_wrd_boundary(cooked_string)
    # return not_specific_filtering() #CANNOT be used for simple stuff (1000)  
    #not speicif only works with NON-simple stuff. with 1000 input, it gives nothing
