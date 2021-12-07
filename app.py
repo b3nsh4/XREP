@@ -263,7 +263,7 @@ def stratg():
 
    def extract_with_specific_numbering(basic_duplicate_list): #make numbers of repats (smtg){N}
       final_cooked_string = ""
-      sub_it = "sed -E -n '{}s/.*(".format(line_num)
+      sub_it = "sed -E -n '{}s/[^ ]*\\ (".format(line_num)
       temp = []
       l = []
 
