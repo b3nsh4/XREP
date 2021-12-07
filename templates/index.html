@@ -133,7 +133,7 @@
     document.body.removeChild(elem);
 }
 
-  document.querySelector('textarea').addEventListener('mouseup', (evt) => {
+  document.querySelector('textarea').addEventListener('selectionchange', (evt) => {
   const el = evt.currentTarget;
   const entire_line = area.value.split("\n");
   const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
