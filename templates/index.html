@@ -34,13 +34,14 @@
 </style> 
 </head>
 <body>
+  <br>
 <center>𝙓𝙍𝙀𝙋 𝘽𝙀𝙏𝘼 𝙑.05</center>
 <!-- <textarea class="txtarea"  wrap="off" rows="17" placeholder="Paste your text here 👇  
           This TextArea is resizeable 👉" cols="10" id="area"></textarea> -->
      <textarea class="form-control" placeholder="Paste your text here 👇  
           This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(http://i.imgur.com/2cOaJ.png) top -12px left / auto no-repeat, 
     linear-gradient(#ffff 50%, #ffff  50%) top left / 100% 32px; padding: 0 0 0 30px;" type="color" value="#563d7c" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
-
+<br>
   <div class="row">
     <div class="col-sm-4">
       <h5>PATTERN -1 ⁽ˢᵉᵗ⁾
@@ -68,8 +69,8 @@
       <p id="patt5" style="font-size: 15px;"></p>      
     </div>
       <div class="col-sm-4">
-      <h6>𝚁𝚎𝚏𝚎𝚛𝚎𝚗𝚌𝚎𝚜</h6>
-      <p> ET- Extract this Text<br>
+      <h6 style="font-size: 13px;">𝚁𝚎𝚏𝚎𝚛𝚎𝚗𝚌𝚎𝚜</h6>
+      <p style="font-size:  11px;"> ET- Extract this Text<br>
           ST- Substitute this Text with something<br>
           SET- Strict Extract this text<br>
           SST- Strict Substitute this text</p>
@@ -132,8 +133,7 @@
     document.body.removeChild(elem);
 }
 
-    document.querySelector('textarea').addEventListener('mouseup', (evt) => {
-
+  document.querySelector('textarea').addEventListener('selectionchange', (evt) => {
   const el = evt.target;
   const entire_line = area.value.split("\n");
   const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
@@ -142,6 +142,9 @@
   const from_index = area.selectionStart - lineStart;
   const upto_index = area.selectionEnd - lineStart;
   // string.split("\n").map(elem => elem.trim()).join("\n")
+  // fot touch
+  
+
     var entry = {
       LINENUMBER: lineNo,
       TEXTSELECTED: selText,
