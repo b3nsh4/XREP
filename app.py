@@ -246,7 +246,6 @@ def stratg():
       sub_it = "sed -E '{}s/".format(line_num)
       temp = []
       l = []
-
       for j,k in groupby(basic_duplicate_list):
          l=list(k)
          temp.append((j,len(l)))
