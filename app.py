@@ -352,7 +352,7 @@ def bug_report():
       pre_beautify = json.dumps(collect, indent=2)
       #creating new report file
       report_status = "Report Sent"
-      notes = "Thank you very much for submitting this report, this will help to improve EXrep! RefID for this report is:  {}".format(rand_uuid)
+      notes = "Thank you very much for submitting this report, this will help to improve 𝙓𝙍𝙀𝙋 RefID for this report is:  {}".format(rand_uuid)
       repo.create_file(rand_uuid, "NEW REPORT",pre_beautify, branch="main") #file creates
       return { "status":report_status,"notes":notes,"Ref:ID":rand_uuid}
    else:
