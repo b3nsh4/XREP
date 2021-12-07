@@ -179,7 +179,7 @@ void async function(){
 });
 
   // STARTS THE MOBILE TOUCH FUNCTION
-  document.querySelector('textarea').addEventListener('touchend', (evt) => {
+  document.querySelector('textarea').addEventListener('touchstart', (evt) => {
   const el = evt.currentTarget;
   const entire_line = area.value.split("\n");
   const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
