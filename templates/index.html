@@ -133,7 +133,53 @@
     document.body.removeChild(elem);
 }
 
-  document.querySelector('textarea').addEventListener('selectionchange', (evt) => {
+  document.querySelector('textarea').addEventListener('mouseup', (evt) => {
+  const el = evt.currentTarget;
+  const entire_line = area.value.split("\n");
+  const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
+  const selText = el.value.substr(el.selectionStart, el.selectionEnd - el.selectionStart);
+  const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1
+  const from_index = area.selectionStart - lineStart;
+  const upto_index = area.selectionEnd - lineStart;
+  // string.split("\n").map(elem => elem.trim()).join("\n")
+  // fot touch
+  
+
+    var entry = {
+      LINENUMBER: lineNo,
+      TEXTSELECTED: selText,
+      WHOLE_STUFF: entire_line,
+      start_index: from_index,
+      end_index: upto_index
+    };
+
+  //now use fetch
+
+void async function(){
+    const response = await fetch(`${window.origin}/entry`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(entry),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    });
+    const data = await response.json();
+    document.querySelector("#patt1").innerText = data.strict_extrct;
+    document.querySelector("#patt2").innerText = data.specific_filtering;
+    document.querySelector("#patt3").innerText = data.strict_sub;
+    document.querySelector("#patt4").innerText = data.extract_with_spec_nums
+    document.querySelector("#patt5").innerText = data.not_specific_filtering
+    
+    // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
+}();
+
+
+});
+
+  // STARTS THE MOBILE TOUCH FUNCTION
+  document.querySelector('textarea').addEventListener('touchstart', (evt) => {
   const el = evt.currentTarget;
   const entire_line = area.value.split("\n");
   const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
