@@ -69,7 +69,7 @@
       <p id="patt5" style="font-size: 15px;"></p>      
     </div>
       <div class="col-sm-4">
-      <h6 style="font-size: 13px;">𝚁𝚎𝚏𝚎𝚛𝚎𝚗𝚌𝚎𝚜</h6>
+<!--       <h6 style="font-size: 13px;">𝚁𝚎𝚏𝚎𝚛𝚎𝚗𝚌𝚎𝚜</h6> -->
       <p style="font-size:  11px;"> ET- Extract this Text<br>
           ST- Substitute this Text with something<br>
           SET- Strict Extract this text<br>
@@ -81,7 +81,7 @@
 </div>
 <br>
 <center><a href="#" id="bug"><button type="button" data-bs-toggle="modal" data-bs-target="#myModal" class="btn btn-secondary btn-sm">One-click Report this wrong result!</button><br></center></a>
-<center><p>if you think the line number varies, remove LineNumber before the pattern</p></center>
+<center><p>Line number varies? Remove LineNumber before the s/n - pattern</p></center>
 <br>
 <!-- The Modal -->
 <div class="modal" id="myModal">
@@ -135,6 +135,55 @@
 }
 
   document.querySelector('textarea').addEventListener('mouseup', (evt) => {
+  const el = evt.currentTarget;
+  const entire_line = area.value.split("\n");
+  const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
+  const selText = el.value.substr(el.selectionStart, el.selectionEnd - el.selectionStart);
+  const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1
+  const from_index = area.selectionStart - lineStart;
+  const upto_index = area.selectionEnd - lineStart;
+  // string.split("\n").map(elem => elem.trim()).join("\n")
+  // fot touch
+  
+
+    var entry = {
+      LINENUMBER: lineNo,
+      TEXTSELECTED: selText,
+      WHOLE_STUFF: entire_line,
+      start_index: from_index,
+      end_index: upto_index
+    };
+
+  //now use fetch
+$(document).ready(function() {
+      $('.spinner-border').hide();
+void async function(){
+    const response = await fetch(`${window.origin}/entry`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(entry),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    });
+    const data = await response.json();
+    document.querySelector("#patt1").innerText = data.strict_extrct;
+    document.querySelector("#patt2").innerText = data.specific_filtering;
+    document.querySelector("#patt3").innerText = data.strict_sub;
+    document.querySelector("#patt4").innerText = data.extract_with_spec_nums
+    document.querySelector("#patt5").innerText = data.not_specific_filtering
+    
+    // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
+}();
+
+});
+});
+
+  // TOUCH EVENT STARTS 
+
+  document.querySelector('textarea').addEventListener('touchend', (evt) => {
+    console.log("touch");
   const el = evt.currentTarget;
   const entire_line = area.value.split("\n");
   const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;

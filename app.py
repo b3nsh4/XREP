@@ -294,6 +294,15 @@ def stratg():
       strict_sub = complex_substitution()
       print("\number_of_repeats: ",number_of_repeats)
       strict_extract = easy_wrd_boundary()
+
+      #limiting long selection outputs..
+      if len(cooked_string_copy) > 130:
+         return  {
+         "extract_with_spec_nums":"Long, Non-useful pattern!",
+         "strict_sub":"Long, Non-useful pattern!", 
+         "strict_extrct":"Long, Non-useful pattern!",
+         "not_specific_filtering":"Long, Non-useful pattern!" }
+
       final_return = {
       # "sub_with_spec_nums":sub_with_spec_nums,
       "extract_with_spec_nums":extract_with_spec_nums,
