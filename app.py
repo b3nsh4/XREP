@@ -30,7 +30,7 @@ def stratg():
    line_num = req['LINENUMBER']
    j=len(string)
    len_str = len(string)
-   
+   len_for_pre_boundary = len(this_full_text[:start_index])
    abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
    ABC = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -50,7 +50,7 @@ def stratg():
    cooked_string_copy=""
    prefetch = "sed -E "+'"'+str(line_num)+"s/("
 
-   prefetch_for_pat5 = "sed -E -n "+'"'+str(line_num)+"s/.*\\ ("
+   prefetch_for_pat5 = "sed -E -n "+'"'+str(line_num)+"s/.{"+str(len_for_pre_boundary)+"}("
    i=0
 
    di = [] #used to loop through string and saves here eg: in abc or ABC or nums ..etc
@@ -174,7 +174,6 @@ def stratg():
 
 
    #some global variables#
-
    txt_before_target = this_full_text[:start_index].split( )
    txt_after_target = this_full_text[end_index:].split( )
 
@@ -376,7 +375,7 @@ def bug_report():
 
 
 if __name__ == '__main__':
-   app.run(debug=False)
+   app.run(debug=True)
 
 
       ## TODO - 27
