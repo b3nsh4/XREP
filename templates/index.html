@@ -183,7 +183,7 @@ void async function(){
   // TOUCH EVENT STARTS 
 
   document.querySelector('textarea').addEventListener('touchend', (evt) => {
-    console.log("touch");
+  evt.preventDefault();
   const el = evt.currentTarget;
   const entire_line = area.value.split("\n");
   const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
