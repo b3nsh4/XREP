@@ -261,6 +261,7 @@ def stratg():
 
    def extract_with_specific_numbering(basic_duplicate_list): #make numbers of repats (smtg){N}
       final_cooked_string = ""
+      short_cook = ".+"
       sub_it = "sed -E -n '{}s/.+(".format(line_num)
       temp = []
       l = []
@@ -276,6 +277,19 @@ def stratg():
          elif i[1]==1:
             stuff=str(i[0])
             final_cooked_string+=stuff
+      if len(final_cooked_string)>60:     #Limiting the output len for PATTERN-4
+         if 'cooked_pre_boundary' in vars() and 'cooked_post_boundary' in vars():
+            return "sed -E -n '{}s/.+{}({}){}.*/\\1/p'".format(line_num,cooked_pre_boundary,short_cook,cooked_post_boundary)
+         
+         elif 'cooked_pre_boundary' not in vars() and 'cooked_post_boundary' not in vars():
+            return "sed -E -n '{}s/\\s+({})/\\1/p'".format(line_num,short_cook)
+         
+         elif 'cooked_pre_boundary' not in vars():
+            return "sed -E -n '{}s/({}){}.*/\\1/p'".format(line_num,short_cook,cooked_post_boundary)
+         
+         elif 'cooked_post_boundary' not in vars():
+            return "sed -E -n '{}s/.+{}({}).*/\\1/p'".format(line_num,cooked_pre_boundary,short_cook)                 
+      
       return sub_it+final_cooked_string+").*/\\1/p'"
    #some global vars
    global sub_with_spec_nums
@@ -295,7 +309,7 @@ def stratg():
       print("\number_of_repeats: ",number_of_repeats)
       strict_extract = easy_wrd_boundary()
 
-      #limiting long selection outputs..
+      #limiting long selection outputs.. THIS DECIDES OVERALL OUTPUT!
       if len(cooked_string_copy) > 130:
          return  {
          "extract_with_spec_nums":"Long, Non-useful pattern!",
@@ -384,7 +398,7 @@ def bug_report():
 
 
 if __name__ == '__main__':
-   app.run(debug=False)
+   app.run(debug=True)
 
 
       ## TODO - 27
