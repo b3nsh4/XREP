@@ -5,7 +5,7 @@ import uuid
 from github import Github
 app = Flask(__name__)
 g = Github('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')
-repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
+#repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
 
 @app.route('/')
 def hello_name():
@@ -20,7 +20,6 @@ def stratg():
    whole=req['WHOLE_STUFF']
    line_num = req['LINENUMBER']
    this_full_text = whole[line_num-1] #gets the entire text in selected line for strcit_mode
-
    #getting index number of selected word
    start_index=req['start_index']
    end_index=req['end_index']
@@ -29,8 +28,63 @@ def stratg():
       return jsonify("empty string")
    line_num = req['LINENUMBER']
    j=len(string)
+
    len_str = len(string)
+
+   pre_boundary = this_full_text[:start_index]
+
+   post_boundary = this_full_text[end_index:] 
+
    len_for_pre_boundary = len(this_full_text[:start_index])
+
+   len_for_post_boundary = len(this_full_text[end_index:]) 
+
+   splitted_pre = pre_boundary.split()
+
+   splitted_post = post_boundary.split()
+
+   splitted_pre_len = len(splitted_pre) #len of splitted PRE array
+
+   splitted_post_len = len(splitted_post) #len of splitted POST array
+
+   if len_for_pre_boundary==0 and len_for_post_boundary==0:
+      cooked_pre_boundary=""
+      cooked_post_boundary=""
+      print("zero")
+
+   elif len_for_pre_boundary>6 and len_for_pre_boundary>6:
+      cooked_pre_boundary = pre_boundary[:3]
+      len_after_pre_boundary = len_for_pre_boundary-4
+
+      cooked_post_boundary = post_boundary[:3]
+      len_after_post_boundary = len_for_post_boundary-4
+
+   elif len_for_pre_boundary<6 and len_for_post_boundary<6:
+      cooked_pre_boundary = pre_boundary
+      cooked_post_boundary = post_boundary
+
+   elif len_for_pre_boundary<6:
+      cooked_pre_boundary = pre_boundary
+      cooked_post_boundary = post_boundary[:3]
+      len_after_post_boundary = len_for_post_boundary-4
+
+   elif len_for_post_boundary<6:
+      cooked_post_boundary = post_boundary
+
+      cooked_pre_boundary = pre_boundary[:3]
+      len_after_pre_boundary = len_for_pre_boundary-4
+
+   #limiting long selection outputs.. THIS DECIDES OVERALL OUTPUT!
+   if len(string) > 50:
+      return  {
+      "pattern_4_result":"Non-useful pattern!",
+      "pattern_3_result":"Non-useful pattern!", 
+      "pattern_1_result":"Non-useful pattern!",
+      "pattern_5_result":"Non-useful pattern!",
+      "pattern_2_result":"Non-useful pattern!"
+       }
+   
+
    abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
    ABC = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -50,7 +104,11 @@ def stratg():
    cooked_string_copy=""
    prefetch = "sed -E "+'"'+str(line_num)+"s/("
 
-   prefetch_for_pat5 = "sed -E -n "+'"'+str(line_num)+"s/.{"+str(len_for_pre_boundary)+"}("
+   if len_for_pre_boundary!=0:
+      prefetch_for_pat5 = "sed -E -n "+'"'+str(line_num)+"s/.{"+str(len_for_pre_boundary)+"}("
+   else:
+      prefetch_for_pat5 = "sed -E -n "+'"'+str(line_num)+"s/\\s*("
+
    i=0
 
    di = [] #used to loop through string and saves here eg: in abc or ABC or nums ..etc
@@ -92,6 +150,34 @@ def stratg():
          di_2.append(i)
 
 
+   def spacer_finder(pre_or_post,stuff):  #pre2\s?(target)\s?post
+      if pre_or_post=="pre":
+         splitted_stuff = stuff.lstrip().split(" ")
+
+         if splitted_stuff[-1] == "":
+            space_before = True
+         else:
+            space_before = False
+         return space_before
+      
+      elif pre_or_post=="post":
+         
+         splitted_stuff = stuff.rstrip().split(" ")
+         if splitted_stuff[0] == "":
+            space_after = True
+         else:
+            space_after = False
+         return space_after
+
+   def glolbal_len_decision(string):
+      if len(string)>4: #checking if string is gt4 if yes, take 4chars, rest as .{N}
+         gt4 = True
+         shorted_str = string[:3]
+         len_after_shorted = len(string[3:])
+         return {"gt4":gt4,"shorted_str":shorted_str,"len_after_shorted":str(len_after_shorted)}
+      else:
+         return {"gt4":False,"string":string}
+
    #fn for alnum (refer alnum.py)
    def alnum_algo(old,new): #old is the list for alnum filter, results to new ,both shoould be list
       for k in zip(old[::2],old[1::2]):
@@ -103,11 +189,10 @@ def stratg():
                new.append(i)
       if len(old)%2!=0:
          if len(new)>1:
-            if old[-1] in possible_alnum and new[-1] == "\\w" or new[-1] == "\\w+":
+            if old[-1] in possible_alnum and new[-1] == "\\w+":
                new[-1]="\\w+"
             else:
                new.append(old[-1])
-            
 
    def repeating_stuff(list_to_filter): #to fix repeat (refer rept.py in termux)
       t=[] #stores result of N number repeats [('foo','bar')N]
@@ -137,8 +222,13 @@ def stratg():
 
    
 
-   def specific_filtering(): #THIS SHOULD BE SIMPLE SUBSTITUTION
+   def pattern_2(): #THIS SHOULD BE SIMPLE SUBSTITUTION
+      nonlocal di_3
+      
       alnum_algo(di_2,di_3) #1st stage alnum filter
+      
+      di_3 = [i[0] for i in groupby(di_3)]
+      
       if len(di_2) < 4:  #changing value may affect filtering steps
          res = repeating_stuff(di_2)
          final = prefetch+res+')/XXX/"'
@@ -148,9 +238,13 @@ def stratg():
          final = prefetch+res+')/XXX/"'
          return final
 
-   def not_specific_filtering(): #mostly have \\w+ than [[:class:]]
+   def pattern_5(): #mostly have \\w+ than [[:class:]]
+      nonlocal di_4
       if len(di_3) > 15:
          alnum_algo(di_3,di_4)
+
+         di_4 = [i[0] for i in groupby(di_4)]
+
          res = repeating_stuff(di_4)
          final = prefetch_for_pat5+res+').*/\\1/p"'
          return final
@@ -172,42 +266,81 @@ def stratg():
             res+=i
       return res
 
+   #refer algos/patt6_boundaries.py for BELOW
 
-   #some global variables#
-   txt_before_target = this_full_text[:start_index].split( )
-   txt_after_target = this_full_text[end_index:].split( )
+   def cooked_pattern_1(splitted_stuff):
+      if len(splitted_stuff)>=2:
+         if len(splitted_stuff[0])>4:
+            global_res_1 = glolbal_len_decision(splitted_stuff[0])
+            bd1 = global_res_1["shorted_str"]+".{"+global_res_1["len_after_shorted"]+"}"
+         else:
+            bd1 = splitted_stuff[0]
 
-   if len(txt_before_target)!=0: #preboundary check
-      pre_boundary = filter_the_escape(txt_before_target[-1])
-      cooked_pre_boundary = pre_boundary
-   if len(txt_after_target)!=0: #postboundry check
-      post_boundary= filter_the_escape(txt_after_target[0])
-      cooked_post_boundary = post_boundary
-   #below fn is important since target structure may vary
-   #BLOCK ewb
-   def easy_wrd_boundary(): #a.k.a strict_extract
-   # the *? zero or more (greedy) also +? (greedy)
+         if len(splitted_stuff[-1])>4:
+            global_res_2 = glolbal_len_decision(splitted_stuff[-1])
+            bd2 = global_res_2["shorted_str"]+".{"+global_res_2["len_after_shorted"]+"}"
+         else:
+            bd2 = splitted_stuff[-1]
+       
+         return [bd1,bd2]
+     
+      elif len(splitted_stuff)==1:
+         if len(splitted_stuff[0])>4:
+            global_res_1 = glolbal_len_decision(splitted_stuff[0])
+            bd1 = global_res_1["shorted_str"]+".{"+global_res_1["len_after_shorted"]+"}"
+            return [bd1]
+         else:
+            bd1 = splitted_stuff[0]
+            return [bd1]
 
-      if len(txt_before_target)==0 and len(txt_after_target)==0:
-         return (f"sed -E -n '{line_num}s/\\s*?({cooked_string_copy})$/\\1/p'")
-      elif len(txt_before_target)==0: #preboundary missing
-         return (f"sed -E -n '{line_num}s/.*({cooked_string_copy})\\s*?{cooked_post_boundary}.*/\\1/p'")
-      elif len(txt_after_target)==0: #postboundry missing
-         return (f"sed -E -n '{line_num}s/.*{cooked_pre_boundary}\\s*?({cooked_string_copy})$/\\1/p'")
-      else:
-         pre = (f"sed -E -n '{line_num}s/.*{cooked_pre_boundary}\\s*?({cooked_string_copy})\\s*?{cooked_post_boundary}.*/\\1/p'")
-         return pre
+   def pattern_1():
+      pre = cooked_pattern_1(splitted_pre)
+      post = cooked_pattern_1(splitted_post)
 
-   def complex_substitution(): #using boundaries in specific_filtering for
+      print("pre",pre)
+      print("post",post)
+
+
+
+
+      # return (f"sed -E -n '{line_num}s/\\s*{bd1}({cooked_string_copy})\\s*{bd2}/\\1/p'")
+
+   
+
+
+
+
+
+
+
+
+   def pattern_1_v2(): #NEW pattern_1_result with pre and post bndry blah.{N} and .{N}blah
+      if len_for_pre_boundary>6:
+         shorted_pre_bndry_len = len_for_pre_boundary-4
+         first_4_chars = this_full_text[:4]
+         len_after_4_chars = shorted_pre_bndry_len
+
+         if len(txt_before_target)==0 and len(txt_after_target)==0:
+            return (f"sed -E -n '{line_num}s/\\s*?({cooked_string_copy})$/\\1/p'")
+
+      # else: #if pre ngt 6, we write pre as literal
+
+      if len_for_post_boundary>6:
+         shorted_post_bndry_len = len_for_post_boundary-4 #.{N}blah this var has N
+         before_last_4_chars = cooked_post_boundary[:-4]
+         final_4_chars = cooked_post_boundary[-4:]
+      # else: #if len is ngt 6, we write post bndry as literal
+
+   def pattern_3(): #using boundaries in pattern_2 for
       prefetch_complex_subsitit = "sed -E -n "+'"'+str(line_num)+"s/("
-      if len(txt_before_target)==0 and len(txt_after_target)==0:
+      if len_for_pre_boundary==0 and len_for_post_boundary==0:
          return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})$(.*)/XXX/'")
-      elif len(txt_before_target)==0: #preboundary missing
+      elif len_for_pre_boundary==0: #preboundary missing
          if number_of_repeats==0:
             return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\3 \\4/'")
          else:
             return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\4 \\5/'")
-      elif len(txt_after_target)==0: #postboundry missing
+      elif len_for_post_boundary==0: #postboundry missing
          return (f"sed -E '{line_num}s/(.+)?({cooked_pre_boundary})\\s*?({cooked_string_copy})$/\\1 \\2 XXX/'")
       else:
          if number_of_repeats ==0:
@@ -259,10 +392,12 @@ def stratg():
       return sub_it+final_cooked_string+"/XXX/'"
 
 
-   def extract_with_specific_numbering(basic_duplicate_list): #make numbers of repats (smtg){N}
+   def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
+      nonlocal cooked_pre_boundary
+
       final_cooked_string = ""
-      short_cook = ".+"
-      sub_it = "sed -E -n '{}s/.+(".format(line_num)
+      short_cook = ".*"
+      sub_it = "sed -E -n '{}s/.*(".format(line_num)
       temp = []
       l = []
 
@@ -277,91 +412,77 @@ def stratg():
          elif i[1]==1:
             stuff=str(i[0])
             final_cooked_string+=stuff
-      if len(final_cooked_string)>60:     #Limiting the output len for PATTERN-4
-         if 'cooked_pre_boundary' in vars() and 'cooked_post_boundary' in vars():
-            return "sed -E -n '{}s/.+{}({}){}.*/\\1/p'".format(line_num,cooked_pre_boundary,short_cook,cooked_post_boundary)
-         
-         elif 'cooked_pre_boundary' not in vars() and 'cooked_post_boundary' not in vars():
-            return "sed -E -n '{}s/\\s+({})/\\1/p'".format(line_num,short_cook)
-         
-         elif 'cooked_pre_boundary' not in vars():
-            return "sed -E -n '{}s/({}){}.*/\\1/p'".format(line_num,short_cook,cooked_post_boundary)
-         
-         elif 'cooked_post_boundary' not in vars():
-            return "sed -E -n '{}s/.+{}({}).*/\\1/p'".format(line_num,cooked_pre_boundary,short_cook)                 
-      
-      return sub_it+final_cooked_string+").*/\\1/p'"
+
+      if cooked_pre_boundary=="": 
+         print("yes")
+         closest_pre_boundary=pre_boundary[-1:-4]
+         return  "sed -E -n '{}s/.*{}\\s*({})\\s*{}.*/\\1/p'".format(line_num,closest_pre_boundary,final_cooked_string,cooked_post_boundary) 
+      else:
+         return  "sed -E -n '{}s/.*{}\\s*({})\\s*{}.*/\\1/p'".format(line_num,cooked_pre_boundary,final_cooked_string,cooked_post_boundary)             
+
    #some global vars
    global sub_with_spec_nums
-   global extract_with_spec_nums
-   global temp_spec #speicif filter
-   global strict_sub
-   global strict_extract
-   global not_specific #not_specific_filtering
+   global pattern_4_result
+   global pattern_2_result #speicif filter
+   global pattern_3_result
+   global pattern_1_result
+   global pattern_5_result #not_pattern_2
 
    #global var ends
+   # pattern_1_v2()
    sub_with_spec_nums = sub_with_specific_numbering(di)
-   extract_with_spec_nums = extract_with_specific_numbering(di)
-   temp_spec = specific_filtering()
+   pattern_4_result = pattern_4(di)
+   pattern_2_result = pattern_2()
    if len(di_3) > 15:
-      not_specific = not_specific_filtering()
-      strict_sub = complex_substitution()
-      print("\number_of_repeats: ",number_of_repeats)
-      strict_extract = easy_wrd_boundary()
-
-      #limiting long selection outputs.. THIS DECIDES OVERALL OUTPUT!
-      if len(cooked_string_copy) > 130:
-         return  {
-         "extract_with_spec_nums":"Long, Non-useful pattern!",
-         "strict_sub":"Long, Non-useful pattern!", 
-         "strict_extrct":"Long, Non-useful pattern!",
-         "not_specific_filtering":"Long, Non-useful pattern!" }
+      pattern_5_result = pattern_5()
+      pattern_3_result = pattern_3()
+      pattern_1_result = pattern_1()
 
       final_return = {
       # "sub_with_spec_nums":sub_with_spec_nums,
-      "extract_with_spec_nums":extract_with_spec_nums,
-      "strict_sub":strict_sub, 
-      "strict_extrct":strict_extract,
-      "not_specific_filtering":not_specific
+      "pattern_1_result":pattern_1_result,
+      "pattern_4_result":pattern_4_result,
+      "pattern_3_result":pattern_3_result, 
+      "pattern_5_result":pattern_5_result
       }
       return final_return
 
    else:
 
-      strict_sub = complex_substitution()
-      print("\n number_of_repeats: ",number_of_repeats)
-      strict_extract = easy_wrd_boundary()
-      not_specific = not_specific_filtering()
+      pattern_3_result = pattern_3()
+      pattern_1_result = pattern_1()
+      pattern_5_result = pattern_5()
       final_return = {
       # "sub_with_spec_nums":sub_with_spec_nums,
-      "extract_with_spec_nums":extract_with_spec_nums,
-      "strict_sub":strict_sub,
-      "strict_extrct":strict_extract,
-      "specific_filtering":temp_spec,
-      "not_specific_filtering":not_specific
+      "pattern_1_result":pattern_1_result,
+      "pattern_2_result":pattern_2_result,
+      "pattern_3_result":pattern_3_result,
+      "pattern_4_result":pattern_4_result,
+      "pattern_5_result":pattern_5_result
       }
       return final_return
+
 
 @app.route('/bug')
 def bug_report():
    global whole
    global string
    global sub_with_spec_nums
-   global extract_with_spec_nums
-   global temp_spec #speicif filter
-   global strict_sub
-   global strict_extract
-   global not_specific #not_specific_filtering
+   global pattern_4_result
+   global pattern_2_result #speicif filter
+   global pattern_3_result
+   global pattern_1_result
+   global pattern_5_result #pattern_5
    try:
 
       collect = {
       "entire_line":whole,
       "selected_text":string,
-      "extract_with_spec_nums":extract_with_spec_nums,
-      "strict_sub":strict_sub,
-      "strict_extrct":strict_extract,
-      "specific_filtering":temp_spec,
-      "not_specific_filtering":not_specific
+      "pattern_1_result":pattern_1_result,
+      "pattern_2_result":pattern_2_result,
+      "pattern_3_result":pattern_3_result,
+      "pattern_4_result":pattern_4_result,
+      "pattern_5_result":pattern_5_result
       }
    except NameError:
       return {"status":"You have'nt started yet!","notes":"Start by selecting what you need!"}
@@ -381,198 +502,9 @@ def bug_report():
       notes = "You have not choose anything!"
       print("report NOT sent")
       return { "status":report_status,"notes":notes}
-   # pewerful_wrd_boundary(cooked_string)
-   # return not_specific_filtering() #CANNOT be used for simple stuff (1000)  
-   #not speicif only works with NON-simple stuff. with 1000 input, it gives nothing
-   # print(sub_with_specific_numbering(di))
-   # print(extract_with_specific_numbering(di))
-   # temp_spec = specific_filtering()
-   # if len(di_3) > 15:
-   #    print("\nsubstit",complex_substitution())
-   #    print("\nextract",easy_wrd_boundary())
-   #    print not_specific_filtering()
-   # else:
-   #    print("\nsubstit",complex_substitution())
-   #    print("\nextract",easy_wrd_boundary())
-   #    print temp_spec
 
 
 if __name__ == '__main__':
    app.run(debug=True)
 
-
-      ## TODO - 27
-      ##TODO: long sub 
-      #TODO: long extraction
-      #simple substitution
-      #below is eg of complex substitution
-      #sed -E "11s/(\<permaddr\s*)(\w+:[a-z][[:digit:]]:\w+:[a-z][[:digit:]]:[a-z]+)(:fd)/\1xxx\3/"
-      #return cooked string only and add prefetch on diff fns on need
-      #
-
-
-
-
-      #FUTURE REFERENCE FOR FINAL RETURNS!
-      # print("\ndi3",di_3)
-      # if len(di_3) >1:
-      #    alnum_algo(di_3,di_4) #2nd stage alnum filter
-
-      #    if len(di_4) >1: #because if len is one, there is no more filtering needed
-      #       alnum_algo(di_4,di_5)
-      #       return(jsonify(repeating_stuff(di_5)))
-      #    else:
-      #       return(jsonify(repeating_stuff(di_4)))
-
-      # if len(di_3) ==1: #if di_3 has onely 1, [[:alnum:]] for eg: we no need di_4
-      #    sample = ""
-      #    for i in di_3:
-      #       sample+=i
-      #    return(jsonify(repeating_stuff(sample)))  #most general case - only one eg: [[:alnum:]]+
-      # return(jsonify(repeating_stuff(di_5)))
-
-
-      #other notes
-      #its better to always use \s* (zero or more) while playing with \s
-      #change len(di_3) and return may affect the output
-      #print(len(di2 or di3) then decide how to proceed)
-
-
-
-
-   #rexg THE STARTER
-
-   # #cool trick which replaces prev index if duplicate with +
-
-   # for i in di.values():
-   #     if(y!=i):
-   #         y=i
-   #         x.append(y)
-   #     elif (y==i):
-   #         x[-1]=i+"+"
-   # #FIX FOR ALNUM 1
-   # while (z<len(x)):
-   #   if (x[z] in possible) and (z+1<len(x)) and (x[z+1] in possible):
-   #     new_list.append("\\w+") #replaces alnum with w
-   #     z+=1
-   #   else:
-   #     new_list.append(x[z])
-   #   z+=1
-
-   # #FIX FOR ALNUM 2
-   # v=0
-   # escape_catch = 0
-   # while (v<len(new_list)):
-   #   if (new_list[v] in possible) and (v+1<len(new_list)) and (new_list[v+1] in possible):
-   #     new_list_2.append("\\w+") #replaces alnum with w
-   #     v+=1
-
-   #   else:
-   #    new_list_2.append(new_list[v])
-   #   v+=1
-
-   # #fix3 for previous while loop stops without going to last index; so, add another cond
-   # try:
-   #    if new_list_2[-1] and new_list_2[-2] in possible:
-   #       del new_list_2[-2:]
-   #       new_list_2.append("\\w+") #replaces alnum with w
-   # except IndexError:
-   #    print("fk")
-   # #char escapes with \
-   # v=0
-   # for escaper in new_list_2:
-   #    try:
-   #       if escaper in escape:
-   #          del(new_list_2[v])
-   #          new_list_2.insert(v,"\\"+escaper)
-   #       v+=1
-   #    except IndexError:
-   #       print("escaperloop missin")
-   #       continue
-   # #print("\n",new_list_2)
-
-   # #from 01-01-2021
-
-
-   # trace_1=0
-   # new=[]
-   # while trace_1<len(new_list_2):
-   #   new.append(new_list_2[trace_1:trace_1+2])
-   #   trace_1+=2
-   # optimized_arra_1=[]
-   # trace_2=0
-   # k=None
-   # #print(new)
-   # trace_4=0
-   # trace_3=0
-   # prev=None
-   # optimized_arra_2=[]
-   # while(trace_2<len(new)):
-   #    if (k!=new[trace_2]):
-   #       k=new[trace_2]
-   #       optimized_arra_1.append(new[trace_2])
-   #       print("d1",optimized_arra_1)
-   #       trace_3=0
-   #    else:
-   #       trace_3+=1
-   #       optimized_arra_1.insert(trace_4,trace_3)
-   #       print("d2",optimized_arra_1)
-   #    trace_4+=1
-   #    trace_2+=1
-
-   # #optimization part-2 where optimized_arra_1 1,2 is added into 3
-   # wait=[]
-   # trace_5=0
-   # #ISSUE ON THIS LOOP //TODO
-   # print("flag",optimized_arra_1)
-   # while(trace_5<len(optimized_arra_1)):
-   #    if (isinstance(optimized_arra_1[trace_5],int) and isinstance(optimized_arra_1[trace_5+1],int)):
-   #       print("tr 5 5+1",optimized_arra_1[trace_5],optimized_arra_1[trace_5+1])
-   #       pre_1_test_lis=(optimized_arra_1[trace_5]+optimized_arra_1[trace_5+1])
-   #       wait.append(optimized_arra_1[trace_5])
-   #       wait.append(optimized_arra_1[trace_5+1])
-   #       pre_1_test_lis_str=str(wait[-1]+1)
-   #       #ABOVE line is adding 1 more to {} because, it works now! (lil hack!)
-   #       optimized_arra_2.append("{"+pre_1_test_lis_str+"}")
-
-
-   #       #algorithm for (paraths) (bla){n}
-   #       #1 take x = optimized_arra_2[trace_5-1]
-   #       #2 create empty str 
-   #       #3 for loop on x and append to empty str
-   #       #4 use str concat to add paraths
-   #       #5 del(optimized_arra_2[trace_5-1])
-   #       #6 insert(trace_5-1,final_string)
-
-   #       paranths_do_str = ""
-   #       for i in optimized_arra_2[trace_5-1]:
-   #          paranths_do_str=paranths_do_str+i
-   #       paranths_do_str="("+paranths_do_str+")"
-   #       del(optimized_arra_2[trace_5-1])
-   #       optimized_arra_2.insert(trace_5-1,paranths_do_str)
-
-         
-
-   #       trace_5+=2
-   #    elif (optimized_arra_1[trace_5]) ==1:
-   #       optimized_arra_2.append("{"+str(1)+"}")
-   #       paranths_do_str = ""
-   #       for i in optimized_arra_2[trace_5-1]:
-   #          paranths_do_str=paranths_do_str+i
-   #       paranths_do_str="("+paranths_do_str+")"
-   #       del(optimized_arra_2[trace_5-1])
-   #       optimized_arra_2.insert(trace_5-1,paranths_do_str)
-   #       trace_5+=1
-
-   #    else:
-   #       optimized_arra_2.append(optimized_arra_1[trace_5])
-   #       trace_5+=1
-   # print("\n",optimized_arra_2)
-   # #making it a nice readable string
-   # optimized_string=""
-   # for i in range(len(optimized_arra_2)):
-   #    for j in range(len(optimized_arra_2[i])):
-   #       optimized_string = optimized_string+optimized_arra_2[i][j]
-
-   # print(optimized_string)
-   # return jsonify(prefetch+optimized_string+")/XXX/'")
+#BEFORE DEPLOY, BEBUG, GIT_REPO UNCOMMENT (LINE-8)

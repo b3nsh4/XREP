@@ -155,8 +155,7 @@
     };
 
   //now use fetch
-$(document).ready(function() {
-      $('.spinner-border').hide();
+
 void async function(){
     const response = await fetch(`${window.origin}/entry`, {
         method: "POST",
@@ -168,16 +167,15 @@ void async function(){
         })
     });
     const data = await response.json();
-    document.querySelector("#patt1").innerText = data.strict_extrct;
-    document.querySelector("#patt2").innerText = data.specific_filtering;
-    document.querySelector("#patt3").innerText = data.strict_sub;
-    document.querySelector("#patt4").innerText = data.extract_with_spec_nums
-    document.querySelector("#patt5").innerText = data.not_specific_filtering
+    document.querySelector("#patt1").innerText = data.pattern_1_result;
+    document.querySelector("#patt2").innerText = data.pattern_2_result;
+    document.querySelector("#patt3").innerText = data.pattern_3_result;
+    document.querySelector("#patt4").innerText = data.pattern_4_result
+    document.querySelector("#patt5").innerText = data.pattern_5_result
     
     // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
 }();
 
-});
 });
 
   // TOUCH EVENT STARTS 
@@ -216,11 +214,11 @@ void async function(){
         })
     });
     const data = await response.json();
-    document.querySelector("#patt1").innerText = data.strict_extrct;
-    document.querySelector("#patt2").innerText = data.specific_filtering;
-    document.querySelector("#patt3").innerText = data.strict_sub;
-    document.querySelector("#patt4").innerText = data.extract_with_spec_nums
-    document.querySelector("#patt5").innerText = data.not_specific_filtering
+    document.querySelector("#patt1").innerText = data.pattern_1_result;
+    document.querySelector("#patt2").innerText = data.pattern_2_result;
+    document.querySelector("#patt3").innerText = data.pattern_3_result;
+    document.querySelector("#patt4").innerText = data.pattern_4_result
+    document.querySelector("#patt5").innerText = data.pattern_5_result
     
     // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
 }();
