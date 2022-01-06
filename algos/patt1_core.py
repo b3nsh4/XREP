@@ -1,13 +1,25 @@
 
-#### pre1.*pre2(target)post1.*post2
+#### pre1.*pre2(target)post1.*post2 #A.K.A PATTERN-01
 #READY FOR BETA TEST !!!! CHECKOUT FOR SPACES IF OUTPUTS ARENOT WORKING
 
-string_1 = ""
-string_2 = ""
-splitted_pre = string_1.split()
-splitted_post = string_2.split()
+# string_1 = "ADYdd FOR BETA TES"
+# string_2 = "ADY FOR BETA TES"
+# splitted_pre = string_1.split()
+# splitted_post = string_2.split()
 #checking if pre1 pre2 and post1 post2 exist
 #if both exist, we use patt1_bndry_gt2 else eq1
+
+escape = ['.', '[', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
+
+def escape_me(string):
+  res = ""
+  for i in string:
+    if i in escape:
+      res+="\\"+i
+    else:
+      res+=i
+  return res
+
 def spacer_finder(pre_or_post,stuff):  #pre2\s?(target)\s?post
   if pre_or_post=="pre":
     splitted_stuff = stuff.lstrip().split(" ")
@@ -58,32 +70,33 @@ def foo(what,splitted_stuff):
       bd1 = global_res_1["shorted_str"]+".{"+global_res_1["len_after_shorted"]+"}"
     else:
       bd1 = splitted_stuff[0]
-    return [bd1]
+    return bd1
   elif len(splitted_stuff)==0: #string is empty
     if what=="pre": #if pre strng is empty, retrun something relevant. so i return ^ and $ for the post
       return ""
     elif what=="post":
       return ""
 
-bd1 = foo("pre",splitted_pre)
-bd2 = foo("post",splitted_post)
 
-#checking for spaces
-pre_has_space = spacer_finder("pre",string_1)
-post_has_space = spacer_finder("post",string_2)
+def pat_1_ready(splitted_pre,splitted_post,prebd,postbd,cooked_string_copy):
+  bd1 = foo("pre",splitted_pre)
+  bd2 = foo("post",splitted_post) #put escape_me(fo....) here
 
-if pre_has_space ==True and post_has_space==True:
-  print (f"sed -E -n '1s/{bd1}\\s*(cooked_string_copy)\\s*{bd2}/\\1/p'")
+  #checking for spaces
+  pre_has_space = spacer_finder("pre",prebd)
+  post_has_space = spacer_finder("post",postbd)
 
-elif pre_has_space ==False and post_has_space==False:
-  print (f"sed -E -n '1s/{bd1}(cooked_string_copy){bd2}/\\1/p'")
+  if pre_has_space ==True and post_has_space==True:
+    return (f"sed -E -n 's/{bd1}\\s*({cooked_string_copy})\\s*{bd2}/\\1/p'")
 
-elif pre_has_space == True and post_has_space== False:
-  print (f"sed -E -n '1s/{bd1}\\s*(cooked_string_copy){bd2}/\\1/p'")
+  elif pre_has_space ==False and post_has_space==False:
+    return (f"sed -E -n 's/{bd1}({cooked_string_copy}){bd2}/\\1/p'")
 
-elif pre_has_space == False and post_has_space ==True:
-  print (f"sed -E -n '1s/{bd1}(cooked_string_copy)\\s*{bd2}/\\1/p'")
+  elif pre_has_space == True and post_has_space== False:
+    return (f"sed -E -n 's/{bd1}\\s*({cooked_string_copy}){bd2}/\\1/p'")
 
+  elif pre_has_space == False and post_has_space ==True:
+    return (f"sed -E -n 's/{bd1}({cooked_string_copy})\\s*{bd2}/\\1/p'")
 
 # this worked becasue both strings were >4
 # so we can achieve below output for pattern1

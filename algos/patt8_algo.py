@@ -1,42 +1,40 @@
+
+#READY FOR BETA TEST !!!! CHECKOUT FOR SPACES IF OUTPUTS ARENOT WORKING
+
 # pattern-3 or name whatever
 #      .*pre-2\s*([^ ]+.+)\s*post-1.*
 
 # if pre-2 doesnot exist, use pre-1 
 
-pre = ""
+pre = "lets oyt this way"
 post = "perfect movie is feelgood"
 pre_len = len(pre.split())
 post_len = len(post.split())
 
 def glolbal_len_decision(string):
-	if len(string)>4: #checking if string is gt4
+	if len(string)>4: 
 		gt4 = True
 		shorted_str = string[:3]
 		len_after_shorted = len(string[3:])
-		return {"gt4":gt4,"shorted_str":shorted_str,"len_after_shorted":len_after_shorted}
+		return shorted_str+".{"+str(len_after_shorted)+"}"
 	else:
-		return {"gt4":False,"string":string}
+		return string
 
 
-def patt3():
-	if pre_len!=0 and post_len!=0:
-		if pre_len>=2:
-			pre_2 = glolbal_len_decision(pre.split()[-1])
+def func(pre_or_post,whatever):
+	if pre_or_post=="pre":
+		if pre_len>=1:
+			res = glolbal_len_decision(whatever.split()[-1])
+			return ".*"+res
 		else:
-			pre_2 = pre.split()[0]
-		post_1 = glolbal_len_decision(post.split()[0])
-
-	elif pre_len==0 and post_len==0:
-		print("no pre post")
-
-	elif pre_len==0 and post_len!=0:
-		print("no pre but post")
-
-	elif pre_len!=0 and post_len==0:
-		if pre_len>=2:
-			pre_2 = glolbal_len_decision(pre.split()[1])
+			return "no pre"
+	elif pre_or_post=="post":
+		if post_len>=1:
+			res = glolbal_len_decision(whatever.split()[0])
+			return res+".*"
 		else:
-			pre_2= glolbal_len_decision(pre.split()[0])
-		print("no post")
+			return "no post"
 
-patt3()
+result1 = func("pre",pre)
+result2 = func("post",post)
+print(result1,"\n",result2)

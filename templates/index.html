@@ -58,25 +58,29 @@
      <button onclick="copyElementText('patt3')" style="font-size:10px" class="fa btn bg-transparent">&#xf0c5; </button></h5>
       <p id="patt3" style="font-size: 15px;"></p>      
     </div>
+      
+
        <div class="col-sm-4">
+     
       <h5>PATTERN -4 ⁽ᵉᵗ⁻¹⁾
       <button onclick="copyElementText('patt4')" style="font-size:10px" class="fa btn bg-transparent">&#xf0c5; </button></h5>
       <p id="patt4" style="font-size: 14px;"></p>      
     </div>
+       
        <div class="col-sm-4">
+      
       <h5>PATTERN -5 ⁽ᵉᵗ⁻²⁾
-     <button onclick="copyElementText('patt5')" style="font-size:11px" class="fa btn bg-transparent">&#xf0c5; </button></h5>
+     <button onclick="copyElementText('patt5')" style="font-size:11px" class="fa btn bg-transparent">&#xf0c5; </button></h5> 
       <p id="patt5" style="font-size: 15px;"></p>      
     </div>
-      <div class="col-sm-4">
-<!--       <h6 style="font-size: 13px;">𝚁𝚎𝚏𝚎𝚛𝚎𝚗𝚌𝚎𝚜</h6> -->
-      <p style="font-size:  11px;"> ET- Extract this Text<br>
-          ST- Substitute this Text with something<br>
-          SET- Strict Extract this text<br>
-          SST- Strict Substitute this text</p>
-      <p style="font-size: 15px;">      
-      </p>      
+    
+       <div class="col-sm-4">
+     
+      <h5>PATTERN -6 
+      <button onclick="copyElementText('patt6')" style="font-size:10px" class="fa btn bg-transparent">&#xf0c5; </button>  </h5>    
+      <p id="patt6" style="font-size: 14px;"></p>   
     </div>
+
   </div>
 </div>
 <br>
@@ -170,8 +174,9 @@ void async function(){
     document.querySelector("#patt1").innerText = data.pattern_1_result;
     document.querySelector("#patt2").innerText = data.pattern_2_result;
     document.querySelector("#patt3").innerText = data.pattern_3_result;
-    document.querySelector("#patt4").innerText = data.pattern_4_result
-    document.querySelector("#patt5").innerText = data.pattern_5_result
+    document.querySelector("#patt4").innerText = data.pattern_4_result;
+    document.querySelector("#patt5").innerText = data.pattern_5_result;
+    document.querySelector("#patt6").innerText = data.pattern_6_result;
     
     // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
 }();
@@ -217,8 +222,10 @@ void async function(){
     document.querySelector("#patt1").innerText = data.pattern_1_result;
     document.querySelector("#patt2").innerText = data.pattern_2_result;
     document.querySelector("#patt3").innerText = data.pattern_3_result;
-    document.querySelector("#patt4").innerText = data.pattern_4_result
-    document.querySelector("#patt5").innerText = data.pattern_5_result
+    document.querySelector("#patt4").innerText = data.pattern_4_result;
+    document.querySelector("#patt5").innerText = data.pattern_5_result;
+    document.querySelector("#patt6").innerText = data.pattern_6_result;
+
     
     // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
 }();

@@ -2,13 +2,16 @@
 
 # pattern-2: pre1.{N}(cookedsrsring)post1.{N}
 
-pre = "sds sdkds sduj"
-post = "dddddd konf stroy"
-pre_len = len(pre.split())
-post_len = len(post.split())
+escape = ['.', '[', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
 
-pre_split_on = pre.lstrip().split(" ")
-post_split_on = post.lstrip().split(" ")
+def escape_me(string):
+  res = ""
+  for i in string:
+    if i in escape:
+      res+="\\"+i
+    else:
+      res+=i
+  return res
 
 def does_pre_post_exist(whatever):
 	splitted = whatever.split()
@@ -26,24 +29,24 @@ def glolbal_len_decision(string):
 		len_after_shorted = str(len(string[3:]))
 		return shorted_str+".{"+len_after_shorted+"}"
 	elif len(string)==0:
-		return "empty"
+		return "" #if whatever is empty
 	else:
 		return string
 
-def foo(whatever):
+def pat_2_ready(whatever):
 	if len(whatever)>=2:
 		res = glolbal_len_decision(whatever[0])
 		len_after_that = str(len(" ".join(whatever[1:]))+1)
-		return res+".{"+len_after_that+"}"
+		return res+".{"+len_after_that+"}" #put escape_me(res) if needed
 	elif len(whatever)==1:
 		res = glolbal_len_decision(whatever[0])
-		return res
+		return res #put escape_me(res) if needed
 	else:
-		return "empty"
-one = foo(pre_split_on)
-two = foo(post_split_on)
-print(one)
-print(two)
+		return "" #if whatever is empty
+# one = pat_2_ready(pre_split_on)
+# two = pat_2_ready(post_split_on)
+# print(one)
+# print(two)
 
 # REF:01 
 # we take ['this', 'movie', 'is', 'feelgood'] 

@@ -2,9 +2,15 @@ from flask import Flask,render_template,request,jsonify,make_response
 from itertools import groupby
 import json
 import uuid
-from github import Github
+# from github import Github
+import sys
+sys.path.append('algos')
+from patt1_core import pat_1_ready
+from patt2_core import pat_2_ready
+from pattern_6_beta import pattern_6_beta
+
 app = Flask(__name__)
-g = Github('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')
+# g = Github('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')
 #repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
 
 @app.route('/')
@@ -228,15 +234,14 @@ def stratg():
       alnum_algo(di_2,di_3) #1st stage alnum filter
       
       di_3 = [i[0] for i in groupby(di_3)]
-      
+      preb = pat_2_ready(pre_boundary.lstrip().split(" "))
+      postb = pat_2_ready(post_boundary.lstrip().split(" "))
       if len(di_2) < 4:  #changing value may affect filtering steps
          res = repeating_stuff(di_2)
-         final = prefetch+res+')/XXX/"'
-         return final
+         return "sed -E -n 's/{}\\s*({})\\s*{}.*/\\1/p'".format(preb,res,postb)
       else:
          res = repeating_stuff(di_3)
-         final = prefetch+res+')/XXX/"'
-         return final
+         return "sed -E -n 's/{}\\s*({})\\s*{}.*/\\1/p'".format(preb,res,postb)
 
    def pattern_5(): #mostly have \\w+ than [[:class:]]
       nonlocal di_4
@@ -294,42 +299,9 @@ def stratg():
             return [bd1]
 
    def pattern_1():
-      pre = cooked_pattern_1(splitted_pre)
-      post = cooked_pattern_1(splitted_post)
+      patt1_res = pat_1_ready(splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy)
+      return patt1_res
 
-      print("pre",pre)
-      print("post",post)
-
-
-
-
-      # return (f"sed -E -n '{line_num}s/\\s*{bd1}({cooked_string_copy})\\s*{bd2}/\\1/p'")
-
-   
-
-
-
-
-
-
-
-
-   def pattern_1_v2(): #NEW pattern_1_result with pre and post bndry blah.{N} and .{N}blah
-      if len_for_pre_boundary>6:
-         shorted_pre_bndry_len = len_for_pre_boundary-4
-         first_4_chars = this_full_text[:4]
-         len_after_4_chars = shorted_pre_bndry_len
-
-         if len(txt_before_target)==0 and len(txt_after_target)==0:
-            return (f"sed -E -n '{line_num}s/\\s*?({cooked_string_copy})$/\\1/p'")
-
-      # else: #if pre ngt 6, we write pre as literal
-
-      if len_for_post_boundary>6:
-         shorted_post_bndry_len = len_for_post_boundary-4 #.{N}blah this var has N
-         before_last_4_chars = cooked_post_boundary[:-4]
-         final_4_chars = cooked_post_boundary[-4:]
-      # else: #if len is ngt 6, we write post bndry as literal
 
    def pattern_3(): #using boundaries in pattern_2 for
       prefetch_complex_subsitit = "sed -E -n "+'"'+str(line_num)+"s/("
@@ -420,6 +392,10 @@ def stratg():
       else:
          return  "sed -E -n '{}s/.*{}\\s*({})\\s*{}.*/\\1/p'".format(line_num,cooked_pre_boundary,final_cooked_string,cooked_post_boundary)             
 
+   def pattern_6():
+      res = pattern_6_beta(pre_boundary)
+      return res
+
    #some global vars
    global sub_with_spec_nums
    global pattern_4_result
@@ -443,7 +419,8 @@ def stratg():
       "pattern_1_result":pattern_1_result,
       "pattern_4_result":pattern_4_result,
       "pattern_3_result":pattern_3_result, 
-      "pattern_5_result":pattern_5_result
+      "pattern_5_result":pattern_5_result,
+      "pattern_6_result":pattern_6()
       }
       return final_return
 
@@ -458,7 +435,8 @@ def stratg():
       "pattern_2_result":pattern_2_result,
       "pattern_3_result":pattern_3_result,
       "pattern_4_result":pattern_4_result,
-      "pattern_5_result":pattern_5_result
+      "pattern_5_result":pattern_5_result,
+      "pattern_6_result":pattern_6()
       }
       return final_return
 
@@ -482,7 +460,8 @@ def bug_report():
       "pattern_2_result":pattern_2_result,
       "pattern_3_result":pattern_3_result,
       "pattern_4_result":pattern_4_result,
-      "pattern_5_result":pattern_5_result
+      "pattern_5_result":pattern_5_result,
+      "pattern_6_result":pattern_6()
       }
    except NameError:
       return {"status":"You have'nt started yet!","notes":"Start by selecting what you need!"}
