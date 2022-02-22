@@ -5,7 +5,7 @@ import uuid
 # from github import Github
 import sys
 sys.path.append('algos')
-from patt1_core import pat_1_ready
+from patt1_core import pat_1_ready,escape_brakt
 from patt2_core import pat_2_ready
 from pattern_6_beta import pattern_6_beta
 
@@ -62,20 +62,20 @@ def stratg():
       cooked_pre_boundary = pre_boundary[:3]
       len_after_pre_boundary = len_for_pre_boundary-4
 
-      cooked_post_boundary = post_boundary[:3]
+      cooked_post_boundary = escape_brakt(post_boundary[:3])
       len_after_post_boundary = len_for_post_boundary-4
 
    elif len_for_pre_boundary<6 and len_for_post_boundary<6:
       cooked_pre_boundary = pre_boundary
-      cooked_post_boundary = post_boundary
+      cooked_post_boundary = escape_brakt(post_boundary)
 
    elif len_for_pre_boundary<6:
       cooked_pre_boundary = pre_boundary
-      cooked_post_boundary = post_boundary[:3]
+      cooked_post_boundary = escape_brakt(post_boundary[:3])
       len_after_post_boundary = len_for_post_boundary-4
 
    elif len_for_post_boundary<6:
-      cooked_post_boundary = post_boundary
+      cooked_post_boundary = escape_brakt(post_boundary)
 
       cooked_pre_boundary = pre_boundary[:3]
       len_after_pre_boundary = len_for_pre_boundary-4
@@ -99,7 +99,7 @@ def stratg():
 
    space = [' ']
 
-   escape = ['.', '[', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
+   escape = ['.', '[', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"',']']
 
    possible_alnum = ['[a-z]','[a-z]+','[A-Z]','[A-Z]+','[0-9]','[0-9]+',"\\w","\\w+"]
 
@@ -174,6 +174,17 @@ def stratg():
          else:
             space_after = False
          return space_after
+
+   def glolbal_decision_for_pattern3(string):
+      if len(string)>4: #checking if string is gt4
+         gt4 = True
+         shorted_str = string[:3]
+         len_after_shorted = str(len(string[3:]))
+         return shorted_str+".{"+len_after_shorted+"}"
+      elif len(string)==0:
+         return "" #if whatever is empty
+      else:
+         return string
 
    def glolbal_len_decision(string):
       if len(string)>4: #checking if string is gt4 if yes, take 4chars, rest as .{N}
@@ -298,12 +309,28 @@ def stratg():
             bd1 = splitted_stuff[0]
             return [bd1]
 
+   def escape_from_list(list):
+      temp = []
+      for i in list:
+         temp.append(escape_brakt(i))
+      return temp
+
    def pattern_1():
       patt1_res = pat_1_ready(splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy)
       return patt1_res
 
 
    def pattern_3(): #using boundaries in pattern_2 for
+      #settlement for pre_boundary
+      splitting_pre_on_space = pre_boundary.split(" ")
+      if len(pre_boundary.split())==0:
+         pre_bndry_patt3="\\s*^"
+      else:
+         splitting_for_global_fn = pre_boundary.split()[-1]
+         pre_bndry_patt3 = glolbal_decision_for_pattern3(escape_brakt(splitting_for_global_fn))
+      print("cooked_string_copy",cooked_string_copy)
+      #settlement for pre_boundary
+      
       prefetch_complex_subsitit = "sed -E -n "+'"'+str(line_num)+"s/("
       if len_for_pre_boundary==0 and len_for_post_boundary==0:
          return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})$(.*)/XXX/'")
@@ -313,12 +340,12 @@ def stratg():
          else:
             return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\4 \\5/'")
       elif len_for_post_boundary==0: #postboundry missing
-         return (f"sed -E '{line_num}s/(.+)?({cooked_pre_boundary})\\s*?({cooked_string_copy})$/\\1 \\2 XXX/'")
+         return (f"sed -E '{line_num}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})$/\\1 \\2 XXX/'")
       else:
          if number_of_repeats ==0:
-            return (f"sed -E '{line_num}s/(.+)?({cooked_pre_boundary})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\4 \\5/'")
+            return (f"sed -E '{line_num}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\4 \\5/'")
          else:
-            return (f"sed -E '{line_num}s/(.+)?({cooked_pre_boundary})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\5 \\6/'")
+            return (f"sed -E '{line_num}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\5 \\6/'")
 
 
       
@@ -366,7 +393,7 @@ def stratg():
 
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
       nonlocal cooked_pre_boundary
-
+      escaped_pre_boundary = escape_brakt(cooked_pre_boundary)
       final_cooked_string = ""
       short_cook = ".*"
       sub_it = "sed -E -n '{}s/.*(".format(line_num)
@@ -385,17 +412,15 @@ def stratg():
             stuff=str(i[0])
             final_cooked_string+=stuff
 
-      if cooked_pre_boundary=="": 
-         print("yes")
+      if escaped_pre_boundary=="": 
          closest_pre_boundary=pre_boundary[-1:-4]
-         return  "sed -E -n '{}s/.*{}\\s*({})\\s*{}.*/\\1/p'".format(line_num,closest_pre_boundary,final_cooked_string,cooked_post_boundary) 
+         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(line_num,closest_pre_boundary,final_cooked_string,cooked_post_boundary)
       else:
-         return  "sed -E -n '{}s/.*{}\\s*({})\\s*{}.*/\\1/p'".format(line_num,cooked_pre_boundary,final_cooked_string,cooked_post_boundary)             
+         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(line_num,escaped_pre_boundary,final_cooked_string,cooked_post_boundary)             
 
    def pattern_6():
-      res = pattern_6_beta(pre_boundary)
+      res = pattern_6_beta(pre_boundary,post_boundary)
       return res
-
    #some global vars
    global sub_with_spec_nums
    global pattern_4_result

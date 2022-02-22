@@ -2,6 +2,7 @@
 #### pre1.*pre2(target)post1.*post2 #A.K.A PATTERN-01
 #READY FOR BETA TEST !!!! CHECKOUT FOR SPACES IF OUTPUTS ARENOT WORKING
 
+#pre1,2 are bd1,2
 # string_1 = "ADYdd FOR BETA TES"
 # string_2 = "ADY FOR BETA TES"
 # splitted_pre = string_1.split()
@@ -9,13 +10,14 @@
 #checking if pre1 pre2 and post1 post2 exist
 #if both exist, we use patt1_bndry_gt2 else eq1
 
-escape = ['.', '[', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
+escape = ['.', '[',']', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
 
 def escape_me(string):
   res = ""
   for i in string:
     if i in escape:
       res+="\\"+i
+
     else:
       res+=i
   return res
@@ -29,9 +31,8 @@ def spacer_finder(pre_or_post,stuff):  #pre2\s?(target)\s?post
     else:
       space_before = False
     return space_before
-  
+
   elif pre_or_post=="post":
-    
     splitted_stuff = stuff.rstrip().split(" ")
     if splitted_stuff[0] == "":
       space_after = True
@@ -40,22 +41,23 @@ def spacer_finder(pre_or_post,stuff):  #pre2\s?(target)\s?post
     return space_after
 
 def glolbal_len_decision(string):
-	if len(string)>4: #checking if string is gt4
-		gt4 = True
-		shorted_str = string[:3]
-		len_after_shorted = len(string[3:])
-		return {"gt4":gt4,"shorted_str":shorted_str,"len_after_shorted":str(len_after_shorted)}
-	else:
-		return {"gt4":False,"string":string}
+  if len(string)>4: #checking if string is gt4
+    gt4 = True
+    shorted_str = escape_brakt(string[:3])
+    len_after_shorted = len(string[3:])
+    return {"gt4":gt4,"shorted_str":shorted_str,"len_after_shorted":str(len_after_shorted)}
+  else:
+    return {"gt4":False,"string":string}
 
 def foo(what,splitted_stuff):
+  print("splitted_stuff",splitted_stuff)
   if len(splitted_stuff)>=2:
     if len(splitted_stuff[0])>4:
       global_res_1 = glolbal_len_decision(splitted_stuff[0])
       bd1 = global_res_1["shorted_str"]+".{"+global_res_1["len_after_shorted"]+"}"
     else:
-      bd1 = splitted_stuff[0]
-
+      bd1 = escape_me(splitted_stuff[0])
+      # print("haha",escape_me(bd1)) #escaping 
     if len(splitted_stuff[-1])>4:
       global_res_2 = glolbal_len_decision(splitted_stuff[-1])
       bd2 = global_res_2["shorted_str"]+".{"+global_res_2["len_after_shorted"]+"}"
@@ -63,7 +65,7 @@ def foo(what,splitted_stuff):
       bd2 = splitted_stuff[-1]
     final_res = bd1+".*"+bd2 #returns bd1.*bd2
     return final_res
-  
+
   elif len(splitted_stuff)==1:
     if len(splitted_stuff[0])>4:
       global_res_1 = glolbal_len_decision(splitted_stuff[0])
@@ -77,11 +79,19 @@ def foo(what,splitted_stuff):
     elif what=="post":
       return ""
 
+def escape_brakt(this):
+  bkts = ['.', '[',']', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
+  res = ""
+  for i in this:
+    if i in bkts:
+      res+="\\"+i
+    else:
+      res+=i
+  return res
 
 def pat_1_ready(splitted_pre,splitted_post,prebd,postbd,cooked_string_copy):
-  bd1 = foo("pre",splitted_pre)
-  bd2 = foo("post",splitted_post) #put escape_me(fo....) here
-
+  bd1 =  foo("pre",splitted_pre)
+  bd2 = foo("post",splitted_post)#put escape_me(fo....) here
   #checking for spaces
   pre_has_space = spacer_finder("pre",prebd)
   post_has_space = spacer_finder("post",postbd)

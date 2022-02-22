@@ -5,21 +5,40 @@
 
 
 #TODO -- ESCAPE /
-
-pre = "manife"
-post = "this movie is feelgood"
-pre_len = len(pre.split())
-post_len = len(post)
-
-def pattern_6_beta(whatever):
-	res = whatever.split()
-	if len(res)>=1:
-		pre_res = res[-1]
-		if post_len!=0:
-			return "sed -E -n 's/.*"+pre_res+"(.+).{"+str(post_len)+"}/\\1/p'"
+def escape_brakt(this):
+	bkts = ['[',']', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
+	res = ""
+	for i in this:
+		if i in bkts:
+			res+="\\"+i
 		else:
-			return "sed -E -n 's/.*"+pre_res+"(.+)$/\\1/p'".format(cooked_string)
+			res+=i
+	return res
+
+def glolbal_decision_6(string):
+	if len(string)>4: #checking if string is gt4
+		 gt4 = True
+		 shorted_str = escape_brakt(string[:3])
+		 len_after_shorted = str(len(string[3:]))
+		 return shorted_str+".{"+len_after_shorted+"}"
+	elif len(string)==0:
+		 return "" #if whatever is empty
 	else:
-		return "sed -E -n 's/.*^(.+).{"+str(post_len)+"}/\\1/p'".format(cooked_string)
+		 return escape_brakt(string)
+
+def pattern_6_beta(preb,postb):
+	res = preb.split()
+	# print("postb",postb.split())
+	if len(res)>=1:
+		pre_res = escape_brakt(res[-1])
+		try:
+			final_post = glolbal_decision_6(postb.split()[0])
+		except IndexError:
+			return "sed -E -n 's/.*"+pre_res+"(.+)$/\\1/p'"
+
+		if len(final_post)!=0:
+			return "sed -E -n 's/.*"+pre_res+"(.+)\\s*"+str(final_post)+".*/\\1/p'"
+	else:
+		return "sed -E -n 's/.*^(.+).*{"+str(final_post)+"}.*/\\1/p'"
 # foo(pre)
 
