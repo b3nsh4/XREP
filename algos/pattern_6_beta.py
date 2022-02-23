@@ -39,6 +39,7 @@ def pattern_6_beta(preb,postb):
 		if len(final_post)!=0:
 			return "sed -E -n 's/.*"+pre_res+"(.+)\\s*"+str(final_post)+".*/\\1/p'"
 	else:
-		return "sed -E -n 's/.*^(.+).*{"+str(final_post)+"}.*/\\1/p'"
+		final_post = glolbal_decision_6(postb.split()[0])
+		return "sed -E -n 's/.*^(.+).*"+str(final_post)+".*/\\1/p'"
 # foo(pre)
 
