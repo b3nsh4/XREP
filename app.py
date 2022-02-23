@@ -10,7 +10,7 @@ from patt2_core import pat_2_ready
 from pattern_6_beta import pattern_6_beta
 
 app = Flask(__name__)
-g = Github('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')
+g = Github('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')
 repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
 
 @app.route('/')
