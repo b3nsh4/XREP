@@ -1,6 +1,7 @@
 #READY FOR BETA TEST !!!! CHECKOUT FOR SPACES IF OUTPUTS ARENOT WORKING
 
 # pattern-2: pre1.{N}(cookedsrsring)post1.{N}
+from simple_cooker import final_cooker
 
 escape = ['.', '[',']', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
 
@@ -27,6 +28,7 @@ def glolbal_len_decision(string):
 		escaped_string = escape_me(string) 
 		gt4 = True
 		shorted_str = escaped_string[:3] #uses escaped string
+		print("shorted_str",shorted_str)
 		len_after_shorted = str(len(string[3:])) #uses non escaped string for count
 		return shorted_str+".{"+len_after_shorted+"}"
 	elif len(string)==0:

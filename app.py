@@ -8,10 +8,10 @@ sys.path.append('algos')
 from patt1_core import pat_1_ready,escape_brakt
 from patt2_core import pat_2_ready
 from pattern_6_beta import pattern_6_beta
-
+from simple_cooker import simple_chef,final_cooker
 app = Flask(__name__)
-# g = Github('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')
-# repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
+g = Github('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')
+repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
 
 @app.route('/')
 def getstarted():
@@ -20,8 +20,8 @@ def getstarted():
 @app.route("/entry", methods=["POST"])
 def stratg():
    req = request.get_json() #getting text and line from frontend
-   global string
-   string=req['TEXTSELECTED']
+   global string_selected
+   string_selected=req['TEXTSELECTED']
    global whole
    whole=req['WHOLE_STUFF']
    line_num = req['LINENUMBER']
@@ -30,12 +30,12 @@ def stratg():
    start_index=req['start_index']
    end_index=req['end_index']
 
-   if string == '':
+   if string_selected == '':
       return jsonify("empty string")
    line_num = req['LINENUMBER']
-   j=len(string)
+   j=len(string_selected)
 
-   len_str = len(string)
+   len_str = len(string_selected)
 
    pre_boundary = this_full_text[:start_index]
 
@@ -81,7 +81,7 @@ def stratg():
       len_after_pre_boundary = len_for_pre_boundary-4
 
    #limiting long selection outputs.. THIS DECIDES OVERALL OUTPUT!
-   if len(string) > 50:
+   if len(string_selected) > 50:
       return  {
       "pattern_4_result":"Non-useful pattern!",
       "pattern_3_result":"Non-useful pattern!", 
@@ -127,24 +127,24 @@ def stratg():
 
    di_5 = [] #3rd stage(in some case, NOt using NOW)
 
-   while (i<len(string)):
-      if string[i] in abc:
+   while (i<len(string_selected)):
+      if string_selected[i] in abc:
         di.append("[a-z]") #replaced [a-z] with w
         i+=1
-      elif string[i] in ABC:
+      elif string_selected[i] in ABC:
         di.append("[A-Z]") #replaced [A-Z] with w
         i+=1
-      elif string[i] in nums:
+      elif string_selected[i] in nums:
         di.append("[0-9]")
         i+=1
-      elif string[i] in space:
+      elif string_selected[i] in space:
         di.append("\\s+")
         i+=1
-      elif string[i] in escape:
-         di.append("\\"+string[i])
+      elif string_selected[i] in escape:
+         di.append("\\"+string_selected[i])
          i+=1
       else:
-        di.append(string[i])
+        di.append(string_selected[i])
         i+=1
 
    #below is implementation of groupby (refer groupby.py)
@@ -249,6 +249,7 @@ def stratg():
       postb = pat_2_ready(post_boundary.lstrip().split(" "))
       if len(di_2) < 4:  #changing value may affect filtering steps
          res = repeating_stuff(di_2)
+         # print("kondeee",preb)
          return "sed -E -n 's/{}\\s*({})\\s*{}.*/\\1/p'".format(preb,res,postb)
       else:
          res = repeating_stuff(di_3)
@@ -428,12 +429,14 @@ def stratg():
    global pattern_3_result
    global pattern_1_result
    global pattern_5_result #not_pattern_2
+   global patt6_result #NEW CHANGE !! FEB 23-22
 
    #global var ends
    # pattern_1_v2()
    sub_with_spec_nums = sub_with_specific_numbering(di)
    pattern_4_result = pattern_4(di)
    pattern_2_result = pattern_2()
+   patt6_result = pattern_6()
    if len(di_3) > 15:
       pattern_5_result = pattern_5()
       pattern_3_result = pattern_3()
@@ -445,7 +448,7 @@ def stratg():
       "pattern_4_result":pattern_4_result,
       "pattern_3_result":pattern_3_result, 
       "pattern_5_result":pattern_5_result,
-      "pattern_6_result":pattern_6()
+      "pattern_6_result":patt6_result
       }
       return final_return
 
@@ -461,7 +464,7 @@ def stratg():
       "pattern_3_result":pattern_3_result,
       "pattern_4_result":pattern_4_result,
       "pattern_5_result":pattern_5_result,
-      "pattern_6_result":pattern_6()
+      "pattern_6_result":patt6_result
       }
       return final_return
 
@@ -469,28 +472,30 @@ def stratg():
 @app.route('/bug')
 def bug_report():
    global whole
-   global string
+   global string_selected
    global sub_with_spec_nums
    global pattern_4_result
    global pattern_2_result #speicif filter
    global pattern_3_result
    global pattern_1_result
    global pattern_5_result #pattern_5
+   global patt6_result
    try:
 
       collect = {
       "entire_line":whole,
-      "selected_text":string,
+      "selected_text":string_selected,
       "pattern_1_result":pattern_1_result,
       "pattern_2_result":pattern_2_result,
       "pattern_3_result":pattern_3_result,
       "pattern_4_result":pattern_4_result,
       "pattern_5_result":pattern_5_result,
-      "pattern_6_result":pattern_6()
+      "pattern_6_result":patt6_result
       }
-   except NameError:
+   except Exception as e:
+      print("EXCEPR->",e)
       return {"status":"You have'nt started yet!","notes":"Start by selecting what you need!"}
-   if string!="":
+   if string_selected!="":
       #creating bug_report at gh
 
       x=uuid.uuid1()
