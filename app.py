@@ -2,7 +2,7 @@ from flask import Flask,render_template,request,jsonify,make_response
 from itertools import groupby
 import json
 import uuid
-# from github import Github
+from github import Github
 import sys
 sys.path.append('algos')
 from patt1_core import pat_1_ready,escape_brakt
@@ -10,8 +10,8 @@ from patt2_core import pat_2_ready
 from pattern_6_beta import pattern_6_beta
 
 app = Flask(__name__)
-# g = Github('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')
-#repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
+g = Github('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')
+repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
 
 @app.route('/')
 def getstarted():
