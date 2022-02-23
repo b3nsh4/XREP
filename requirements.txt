@@ -1,3 +1,4 @@
+PyGithub==1.55
 certifi==2021.10.8
 cffi==1.15.0
 charset-normalizer==2.0.9
