@@ -14,7 +14,7 @@ app = Flask(__name__)
 #repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
 
 @app.route('/')
-def hello_name():
+def getstarted():
    return render_template('index.html')
 
 @app.route("/entry", methods=["POST"])
