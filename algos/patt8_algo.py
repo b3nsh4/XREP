@@ -6,8 +6,8 @@
 
 # if pre-2 doesnot exist, use pre-1 
 
-pre = "lets oyt this way"
-post = "perfect movie is feelgood"
+pre = "2 packets transmitted, 1 received,"
+post = "packet loss, time 1001ms"
 pre_len = len(pre.split())
 post_len = len(post.split())
 

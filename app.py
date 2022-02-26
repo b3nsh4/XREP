@@ -2,7 +2,7 @@ from flask import Flask,render_template,request,jsonify,make_response
 from itertools import groupby
 import json
 import uuid
-from github import Github
+# from github import Github
 import sys
 sys.path.append('algos')
 from patt1_core import pat_1_ready,escape_brakt
@@ -10,8 +10,8 @@ from patt2_core import pat_2_ready
 from pattern_6_beta import pattern_6_beta
 from simple_cooker import simple_chef,final_cooker
 app = Flask(__name__)
-g = Github('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')
-repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
+# g = Github('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')
+# repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
 
 @app.route('/')
 def getstarted():
@@ -109,11 +109,11 @@ def stratg():
    global cooked_string_copy
    cooked_string_copy=""
    prefetch = "sed -E "+'"'+str(line_num)+"s/("
-
+   # not using +str(line_num)+ AS OF NOW!!
    if len_for_pre_boundary!=0:
-      prefetch_for_pat5 = "sed -E -n "+'"'+str(line_num)+"s/.{"+str(len_for_pre_boundary)+"}("
+      prefetch_for_pat5 = "sed -E -n "+'"'+"s/.{"+str(len_for_pre_boundary)+"}("
    else:
-      prefetch_for_pat5 = "sed -E -n "+'"'+str(line_num)+"s/\\s*("
+      prefetch_for_pat5 = "sed -E -n "+'"'+"s/\\s*("
 
    i=0
 
@@ -415,9 +415,10 @@ def stratg():
 
       if escaped_pre_boundary=="": 
          closest_pre_boundary=pre_boundary[-1:-4]
-         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(line_num,closest_pre_boundary,final_cooked_string,cooked_post_boundary)
+         # line_num varibale is not using AS OF NOW!!
+         return  "sed -E -n 's/.*{}.*({})\\s*{}.*/\\1/p'".format(closest_pre_boundary,final_cooked_string,cooked_post_boundary)
       else:
-         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(line_num,escaped_pre_boundary,final_cooked_string,cooked_post_boundary)             
+         return  "sed -E -n 's/.*{}.*({})\\s*{}.*/\\1/p'".format(escaped_pre_boundary,final_cooked_string,cooked_post_boundary)             
 
    def pattern_6():
       res = pattern_6_beta(pre_boundary,post_boundary)

@@ -50,7 +50,7 @@ def glolbal_len_decision(string):
     return {"gt4":False,"string":string}
 
 def foo(what,splitted_stuff):
-  print("splitted_stuff",splitted_stuff)
+  print("splitted_stufff",splitted_stuff)
   if len(splitted_stuff)>=2:
     if len(splitted_stuff[0])>4:
       global_res_1 = glolbal_len_decision(splitted_stuff[0])
@@ -61,8 +61,8 @@ def foo(what,splitted_stuff):
     if len(splitted_stuff[-1])>4:
       global_res_2 = glolbal_len_decision(splitted_stuff[-1])
       bd2 = global_res_2["shorted_str"]+".{"+global_res_2["len_after_shorted"]+"}"
-    else:
-      bd2 = splitted_stuff[-1]
+    else: #len is lt 4 
+      bd2 = escape_brakt(splitted_stuff[-1])
     final_res = bd1+".*"+bd2 #returns bd1.*bd2
     return final_res
 
@@ -70,8 +70,8 @@ def foo(what,splitted_stuff):
     if len(splitted_stuff[0])>4:
       global_res_1 = glolbal_len_decision(splitted_stuff[0])
       bd1 = global_res_1["shorted_str"]+".{"+global_res_1["len_after_shorted"]+"}"
-    else:
-      bd1 = splitted_stuff[0]
+    else: #if len is lt 4
+      bd1 = escape_brakt(splitted_stuff[0])
     return bd1
   elif len(splitted_stuff)==0: #string is empty
     if what=="pre": #if pre strng is empty, retrun something relevant. so i return ^ and $ for the post
