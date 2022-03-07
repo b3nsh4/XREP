@@ -2,7 +2,7 @@ from flask import Flask,render_template,request,jsonify,make_response
 from itertools import groupby
 import json
 import uuid
-# from github import Github
+from github import Github
 import sys
 sys.path.append('algos')
 from patt1_core import pat_1_ready,escape_brakt
@@ -10,8 +10,8 @@ from patt2_core import pat_2_ready
 from pattern_6_beta import pattern_6_beta
 from simple_cooker import simple_chef,final_cooker
 app = Flask(__name__)
-# g = Github('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')
-# repo = g.get_repo("b3nsh4/EXrep_BUG_REPORT")
+g = Github('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')
+repo = g.get_repo("b3nsh4/XREP_BUG_REPORTS")
 
 @app.route('/')
 def getstarted():
@@ -25,6 +25,14 @@ def stratg():
    global whole
    whole=req['WHOLE_STUFF']
    line_num = req['LINENUMBER']
+
+   #LINE NUMBER TOGGLE STARTS HERE!!  
+
+   global LinenumSTATUS
+   LinenumSTATUS = req['LineNumStatus']
+
+   #LINE NUMBER TOGGLE STOPS HERE!!  
+
    this_full_text = whole[line_num-1] #gets the entire text in selected line for strcit_mode
    #getting index number of selected word
    start_index=req['start_index']
@@ -32,7 +40,6 @@ def stratg():
 
    if string_selected == '':
       return jsonify("empty string")
-   line_num = req['LINENUMBER']
    j=len(string_selected)
 
    len_str = len(string_selected)

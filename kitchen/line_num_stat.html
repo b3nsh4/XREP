@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">  
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    </head>
+    
+    <input type="checkbox" class='toggle' checked data-toggle="toggle">
+    <div class='status'>Toggled</div>
+  </body>
+  <script>
+  $(document).ready(function() {
+   $('.toggle').click(function() {
+      var current_status = $('.status').text();
+      if (current_status === 'Untoggled'){
+         $('.status').html('Toggled');
+         lin_num_status = "OFF";
+      }
+      else{
+        $('.status').html('Untoggled');
+        lin_num_status = "ON";
+      
+      }
+   console.log(lin_num_status);
+    });
+
+   });
+
+ </script>
+</html>
