@@ -353,7 +353,7 @@ def stratg():
       return temp
 
    def pattern_1():
-      patt1_res = pat_1_ready(is_lhs_enabled,is_rhs_enabled,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy)
+      patt1_res = pat_1_ready(lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy)
       return patt1_res
 
 

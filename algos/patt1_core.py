@@ -2,13 +2,8 @@
 #### pre1.*pre2(target)post1.*post2 #A.K.A PATTERN-01
 #READY FOR BETA TEST !!!! CHECKOUT FOR SPACES IF OUTPUTS ARENOT WORKING
 
-#pre1,2 are bd1,2
-# string_1 = "ADYdd FOR BETA TES"
-# string_2 = "ADY FOR BETA TES"
-# splitted_pre = string_1.split()
-# splitted_post = string_2.split()
-#checking if pre1 pre2 and post1 post2 exist
-#if both exist, we use patt1_bndry_gt2 else eq1
+#For pattern-1, there is 2 pre1s and 2 pre2s - reason is above. therefore, if one select for
+#LHS , it should be [pre-1]?.*pre2(cooked_string)[post-1]?.*post2
 
 escape = ['.', '[',']', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
 
@@ -65,14 +60,13 @@ def foo(lhs,rhs,what,splitted_stuff):
   else:
     rhs_1 = ""
     rhs_2 = "" 
-
   if len(splitted_stuff)>=2:
     if len(splitted_stuff[0])>4:
       global_res_1 = glolbal_len_decision(splitted_stuff[0])
       bd1 = lhs_1+global_res_1["shorted_str"]+".{"+global_res_1["len_after_shorted"]+"}"+lhs_2
     else:
       bd1 = lhs_1+escape_me(splitted_stuff[0])+lhs_2
-      # print("haha",escape_me(bd1)) #escaping 
+
     if len(splitted_stuff[-1])>4:
       global_res_2 = glolbal_len_decision(splitted_stuff[-1])
       bd2 = rhs_1+global_res_2["shorted_str"]+".{"+global_res_2["len_after_shorted"]+"}"+rhs_2
@@ -104,10 +98,10 @@ def escape_brakt(this):
       res+=i
   return res
 
-def pat_1_ready(lhs,rhs,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy):
+def pat_1_ready(lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy):
 
-  bd1 =  foo(lhs,rhs,"pre",splitted_pre)
-  bd2 = foo(lhs,rhs,"post",splitted_post)#put escape_me(fo....) here
+  bd1 =  foo(lhss,rhss,"pre",splitted_pre)
+  bd2 = foo(lhss,rhss,"post",splitted_post)#put escape_me(fo....) here
   #checking for spaces
   pre_has_space = spacer_finder("pre",prebd)
   post_has_space = spacer_finder("post",postbd)
