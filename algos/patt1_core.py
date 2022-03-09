@@ -49,29 +49,44 @@ def glolbal_len_decision(string):
   else:
     return {"gt4":False,"string":string}
 
-def foo(what,splitted_stuff):
-  print("splitted_stufff",splitted_stuff)
+#lhs and rhs is the status of the checkbox, if checked we change it with []? else nothing
+
+def foo(lhs,rhs,what,splitted_stuff):
+  if lhs==True:
+    lhs_1 = "["
+    lhs_2 = "]?"
+  else:
+    lhs_1 = ""
+    lhs_2 = ""
+
+  if rhs==True:
+    rhs_1 = "["
+    rhs_2 = "]?"
+  else:
+    rhs_1 = ""
+    rhs_2 = "" 
+
   if len(splitted_stuff)>=2:
     if len(splitted_stuff[0])>4:
       global_res_1 = glolbal_len_decision(splitted_stuff[0])
-      bd1 = global_res_1["shorted_str"]+".{"+global_res_1["len_after_shorted"]+"}"
+      bd1 = lhs_1+global_res_1["shorted_str"]+".{"+global_res_1["len_after_shorted"]+"}"+lhs_2
     else:
-      bd1 = escape_me(splitted_stuff[0])
+      bd1 = lhs_1+escape_me(splitted_stuff[0])+lhs_2
       # print("haha",escape_me(bd1)) #escaping 
     if len(splitted_stuff[-1])>4:
       global_res_2 = glolbal_len_decision(splitted_stuff[-1])
-      bd2 = global_res_2["shorted_str"]+".{"+global_res_2["len_after_shorted"]+"}"
+      bd2 = rhs_1+global_res_2["shorted_str"]+".{"+global_res_2["len_after_shorted"]+"}"+rhs_2
     else: #len is lt 4 
-      bd2 = escape_brakt(splitted_stuff[-1])
+      bd2 = rhs_1+escape_brakt(splitted_stuff[-1])+rhs_2
     final_res = bd1+".*"+bd2 #returns bd1.*bd2
     return final_res
 
   elif len(splitted_stuff)==1:
     if len(splitted_stuff[0])>4:
       global_res_1 = glolbal_len_decision(splitted_stuff[0])
-      bd1 = global_res_1["shorted_str"]+".{"+global_res_1["len_after_shorted"]+"}"
+      bd1 = lhs_1+global_res_1["shorted_str"]+".{"+global_res_1["len_after_shorted"]+"}"+lhs_2
     else: #if len is lt 4
-      bd1 = escape_brakt(splitted_stuff[0])
+      bd1 = lhs_1+escape_brakt(splitted_stuff[0])+lhs_2
     return bd1
   elif len(splitted_stuff)==0: #string is empty
     if what=="pre": #if pre strng is empty, retrun something relevant. so i return ^ and $ for the post
@@ -89,9 +104,10 @@ def escape_brakt(this):
       res+=i
   return res
 
-def pat_1_ready(LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy):
-  bd1 =  foo("pre",splitted_pre)
-  bd2 = foo("post",splitted_post)#put escape_me(fo....) here
+def pat_1_ready(lhs,rhs,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy):
+
+  bd1 =  foo(lhs,rhs,"pre",splitted_pre)
+  bd2 = foo(lhs,rhs,"post",splitted_post)#put escape_me(fo....) here
   #checking for spaces
   pre_has_space = spacer_finder("pre",prebd)
   post_has_space = spacer_finder("post",postbd)

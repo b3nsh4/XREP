@@ -29,21 +29,37 @@ def stratg():
    #introductory to [LR]HS can be found at docs.xrep.in/boundaries
    # CHECKING IF LHS AND RHS HAS CHECKED
 
+   # below global vars keeps output of checkboxes!
+   global LINE_NUM
+   global is_lhs_enabled
+   global is_rhs_enabled
+   # above global vars keeps output of checkboxes!
+   
+
    is_lhs_enabled = req['TheLHSNumStat']
    is_rhs_enabled = req['TheRHSNumStat']
 
-   #LINE NUMBER TOGGLE STARTS HERE!!  
-   # There is a fukn annoying bug with the bs check box where it says untoggled while toggled and viceversa
-   # below is a dirty fix. remove bs if possible
-   global LINE_NUM
+   lhs = is_lhs_enabled
+   rhs = is_rhs_enabled
+   if lhs==True:
+      lhs_1 = "["
+      lhs_2 = "]?"
+   else:
+      lhs_1 = ""
+      lhs_2 = ""
+
+   if rhs==True:
+      rhs_1 = "["
+      rhs_2 = "]?"
+   else:
+      rhs_1 = ""
+      rhs_2 = ""
+
    LSTATUS = req['TheLineNumStat']
    if LSTATUS == True:
       LINE_NUM = line_num
    elif LSTATUS == False:
       LINE_NUM = ""
-
-   print("TEST LINE LHS & RHS",is_lhs_enabled,is_rhs_enabled)
-   #LINE NUMBER TOGGLE STOPS HERE!!  
 
    this_full_text = whole[line_num-1] #gets the entire text in selected line for strcit_mode
    #getting index number of selected word
@@ -258,9 +274,10 @@ def stratg():
 
    
 
-   def pattern_2(): #THIS SHOULD BE SIMPLE SUBSTITUTION
-      nonlocal di_3
+   def pattern_2():
+      ##lhs and rhs is the status of the checkbox, if checked we change it with []? else nothing 
       
+      nonlocal di_3
       alnum_algo(di_2,di_3) #1st stage alnum filter
       
       di_3 = [i[0] for i in groupby(di_3)]
@@ -269,10 +286,10 @@ def stratg():
       if len(di_2) < 4:  #changing value may affect filtering steps
          res = repeating_stuff(di_2)
          # print("kondeee",preb)
-         return "sed -E -n '{}s/{}\\s*({})\\s*{}.*/\\1/p'".format(LINE_NUM,preb,res,postb)
+         return "sed -E -n '{}s/{}\\s*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,res,rhs_1+postb+rhs_2)
       else:
          res = repeating_stuff(di_3)
-         return "sed -E -n '{}s/{}\\s*({})\\s*{}.*/\\1/p'".format(LINE_NUM,preb,res,postb)
+         return "sed -E -n '{}s/{}\\s*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,res,rhs_1+postb+rhs_2)
 
    def pattern_5(): #mostly have \\w+ than [[:class:]]
       nonlocal di_4
@@ -336,7 +353,7 @@ def stratg():
       return temp
 
    def pattern_1():
-      patt1_res = pat_1_ready(LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy)
+      patt1_res = pat_1_ready(is_lhs_enabled,is_rhs_enabled,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy)
       return patt1_res
 
 
@@ -348,7 +365,6 @@ def stratg():
       else:
          splitting_for_global_fn = pre_boundary.split()[-1]
          pre_bndry_patt3 = glolbal_decision_for_pattern3(escape_brakt(splitting_for_global_fn))
-      print("cooked_string_copy",cooked_string_copy)
       #settlement for pre_boundary
       
       prefetch_complex_subsitit = "sed -E -n "+'"'+str(LINE_NUM)+"s/("
@@ -435,9 +451,9 @@ def stratg():
       if escaped_pre_boundary=="": 
          closest_pre_boundary=pre_boundary[-1:-4]
          # line_num varibale is not using AS OF NOW!!
-         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,closest_pre_boundary,final_cooked_string,cooked_post_boundary)
+         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+closest_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)
       else:
-         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,escaped_pre_boundary,final_cooked_string,cooked_post_boundary)             
+         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+escaped_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)             
 
    def pattern_6():
       res = pattern_6_beta(LINE_NUM,pre_boundary,post_boundary)
