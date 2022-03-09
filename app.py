@@ -17,7 +17,7 @@ repo = g.get_repo("b3nsh4/XREP_BUG_REPORTS")
 def getstarted():
    return render_template('index.html')
 
-@app.route("/entry", methods=["POST"])
+@app.route("/entry", methods=["POST","GET"])
 def stratg():
    req = request.get_json() #getting text and line from frontend
    global string_selected
@@ -26,11 +26,23 @@ def stratg():
    whole=req['WHOLE_STUFF']
    line_num = req['LINENUMBER']
 
+   #introductory to [LR]HS can be found at docs.xrep.in/boundaries
+   # CHECKING IF LHS AND RHS HAS CHECKED
+
+   is_lhs_enabled = req['TheLHSNumStat']
+   is_rhs_enabled = req['TheRHSNumStat']
+
    #LINE NUMBER TOGGLE STARTS HERE!!  
+   # There is a fukn annoying bug with the bs check box where it says untoggled while toggled and viceversa
+   # below is a dirty fix. remove bs if possible
+   global LINE_NUM
+   LSTATUS = req['TheLineNumStat']
+   if LSTATUS == True:
+      LINE_NUM = line_num
+   elif LSTATUS == False:
+      LINE_NUM = ""
 
-   global LinenumSTATUS
-   LinenumSTATUS = req['LineNumStatus']
-
+   print("TEST LINE LHS & RHS",is_lhs_enabled,is_rhs_enabled)
    #LINE NUMBER TOGGLE STOPS HERE!!  
 
    this_full_text = whole[line_num-1] #gets the entire text in selected line for strcit_mode
@@ -115,12 +127,12 @@ def stratg():
    number_of_repeats = 0 
    global cooked_string_copy
    cooked_string_copy=""
-   prefetch = "sed -E "+'"'+str(line_num)+"s/("
+   prefetch = "sed -E "+'"'+str(LINE_NUM)+"{}s/(".format(LINE_NUM)
    # not using +str(line_num)+ AS OF NOW!!
    if len_for_pre_boundary!=0:
-      prefetch_for_pat5 = "sed -E -n "+'"'+"s/.{"+str(len_for_pre_boundary)+"}("
+      prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/.{"+str(len_for_pre_boundary)+"}("
    else:
-      prefetch_for_pat5 = "sed -E -n "+'"'+"s/\\s*("
+      prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/\\s*("
 
    i=0
 
@@ -257,10 +269,10 @@ def stratg():
       if len(di_2) < 4:  #changing value may affect filtering steps
          res = repeating_stuff(di_2)
          # print("kondeee",preb)
-         return "sed -E -n 's/{}\\s*({})\\s*{}.*/\\1/p'".format(preb,res,postb)
+         return "sed -E -n '{}s/{}\\s*({})\\s*{}.*/\\1/p'".format(LINE_NUM,preb,res,postb)
       else:
          res = repeating_stuff(di_3)
-         return "sed -E -n 's/{}\\s*({})\\s*{}.*/\\1/p'".format(preb,res,postb)
+         return "sed -E -n '{}s/{}\\s*({})\\s*{}.*/\\1/p'".format(LINE_NUM,preb,res,postb)
 
    def pattern_5(): #mostly have \\w+ than [[:class:]]
       nonlocal di_4
@@ -324,7 +336,7 @@ def stratg():
       return temp
 
    def pattern_1():
-      patt1_res = pat_1_ready(splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy)
+      patt1_res = pat_1_ready(LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy)
       return patt1_res
 
 
@@ -339,21 +351,21 @@ def stratg():
       print("cooked_string_copy",cooked_string_copy)
       #settlement for pre_boundary
       
-      prefetch_complex_subsitit = "sed -E -n "+'"'+str(line_num)+"s/("
+      prefetch_complex_subsitit = "sed -E -n "+'"'+str(LINE_NUM)+"s/("
       if len_for_pre_boundary==0 and len_for_post_boundary==0:
-         return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})$(.*)/XXX/'")
+         return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy})$(.*)/XXX/'")
       elif len_for_pre_boundary==0: #preboundary missing
          if number_of_repeats==0:
-            return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\3 \\4/'")
+            return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\3 \\4/'")
          else:
-            return (f"sed -E '{line_num}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\4 \\5/'")
+            return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\4 \\5/'")
       elif len_for_post_boundary==0: #postboundry missing
-         return (f"sed -E '{line_num}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})$/\\1 \\2 XXX/'")
+         return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})$/\\1 \\2 XXX/'")
       else:
          if number_of_repeats ==0:
-            return (f"sed -E '{line_num}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\4 \\5/'")
+            return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\4 \\5/'")
          else:
-            return (f"sed -E '{line_num}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\5 \\6/'")
+            return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\5 \\6/'")
 
 
       
@@ -382,7 +394,7 @@ def stratg():
 
    def sub_with_specific_numbering(basic_duplicate_list): #make numbers of repats (smtg){N}
       final_cooked_string = ""
-      sub_it = "sed -E '{}s/".format(line_num)
+      sub_it = "sed -E '{}s/".format(LINE_NUM)
       temp = []
       l = []
       for j,k in groupby(basic_duplicate_list):
@@ -404,7 +416,7 @@ def stratg():
       escaped_pre_boundary = escape_brakt(cooked_pre_boundary)
       final_cooked_string = ""
       short_cook = ".*"
-      sub_it = "sed -E -n '{}s/.*(".format(line_num)
+      sub_it = "sed -E -n '{}s/.*(".format(LINE_NUM)
       temp = []
       l = []
 
@@ -423,12 +435,12 @@ def stratg():
       if escaped_pre_boundary=="": 
          closest_pre_boundary=pre_boundary[-1:-4]
          # line_num varibale is not using AS OF NOW!!
-         return  "sed -E -n 's/.*{}.*({})\\s*{}.*/\\1/p'".format(closest_pre_boundary,final_cooked_string,cooked_post_boundary)
+         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,closest_pre_boundary,final_cooked_string,cooked_post_boundary)
       else:
-         return  "sed -E -n 's/.*{}.*({})\\s*{}.*/\\1/p'".format(escaped_pre_boundary,final_cooked_string,cooked_post_boundary)             
+         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,escaped_pre_boundary,final_cooked_string,cooked_post_boundary)             
 
    def pattern_6():
-      res = pattern_6_beta(pre_boundary,post_boundary)
+      res = pattern_6_beta(LINE_NUM,pre_boundary,post_boundary)
       return res
    #some global vars
    global sub_with_spec_nums

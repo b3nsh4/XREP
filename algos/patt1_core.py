@@ -89,7 +89,7 @@ def escape_brakt(this):
       res+=i
   return res
 
-def pat_1_ready(splitted_pre,splitted_post,prebd,postbd,cooked_string_copy):
+def pat_1_ready(LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy):
   bd1 =  foo("pre",splitted_pre)
   bd2 = foo("post",splitted_post)#put escape_me(fo....) here
   #checking for spaces
@@ -97,16 +97,16 @@ def pat_1_ready(splitted_pre,splitted_post,prebd,postbd,cooked_string_copy):
   post_has_space = spacer_finder("post",postbd)
 
   if pre_has_space ==True and post_has_space==True:
-    return (f"sed -E -n 's/{bd1}\\s*({cooked_string_copy})\\s*{bd2}/\\1/p'")
+    return (f"sed -E -n '{LINE_NUM}s/{bd1}\\s*({cooked_string_copy})\\s*{bd2}/\\1/p'")
 
   elif pre_has_space ==False and post_has_space==False:
-    return (f"sed -E -n 's/{bd1}({cooked_string_copy}){bd2}/\\1/p'")
+    return (f"sed -E -n '{LINE_NUM}s/{bd1}({cooked_string_copy}){bd2}/\\1/p'")
 
   elif pre_has_space == True and post_has_space== False:
-    return (f"sed -E -n 's/{bd1}\\s*({cooked_string_copy}){bd2}/\\1/p'")
+    return (f"sed -E -n '{LINE_NUM}s/{bd1}\\s*({cooked_string_copy}){bd2}/\\1/p'")
 
   elif pre_has_space == False and post_has_space ==True:
-    return (f"sed -E -n 's/{bd1}({cooked_string_copy})\\s*{bd2}/\\1/p'")
+    return (f"sed -E -n '{LINE_NUM}s/{bd1}({cooked_string_copy})\\s*{bd2}/\\1/p'")
 
 # this worked becasue both strings were >4
 # so we can achieve below output for pattern1

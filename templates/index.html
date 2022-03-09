@@ -8,11 +8,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- TOGGLE STARTS -->
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
-
    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='textbox.css') }}">
 
@@ -39,8 +34,9 @@
 </style> 
 </head>
 <body>
-    LineNumber:<input type="checkbox" class='toggle' checked data-toggle="toggle"><div class='status'>Toggled</div>
-  <br>
+<!-- ADD LINE NUMBER CHECK BOX HEREW -->
+<pre>
+LineNumber: [<input type="checkbox" id="LineChecker" onchange="LineChkFn()">]   LHS Vary: [<input type="checkbox" id="LHSChecker" onchange="LHSChkFn()" >]   RHS Vary: [<input type="checkbox" id="RHSChecker" onchange=" RHSChkFn()">]</pre>
 <center>𝙓𝙍𝙀𝙋 𝘽𝙀𝙏𝘼 𝙑.03</center>
 <!-- <textarea class="txtarea"  wrap="off" rows="17" placeholder="Paste your text here 👇  
           This TextArea is resizeable 👉" cols="10" id="area"></textarea> -->
@@ -133,29 +129,26 @@
           });
         });
 </script>
-<!-- TOGGLE STARTS -->
-  <script>
-  $(document).ready(function() {
-   $('.toggle').click(function() {
-      var current_status = $('.status').text();
-      if (current_status === 'Untoggled'){
-         $('.status').html('Toggled');
-         lin_num_status = "OFF";
-      }
-      else{
-        $('.status').html('Untoggled');
-        lin_num_status = "ON";
-      
-      }
-   console.log(lin_num_status);
-    });
 
-   });
-
- </script>
- <!-- TOGGLE ENDS -->
 <script>
-      function copyElementText(id) {
+    let islinechecked=false;
+    let isRHSchecked=false;
+    let isLHSchecked=false;
+    // add more vars if needed to above
+    function LineChkFn() {
+      islinechecked = document.getElementById("LineChecker").checked;
+
+    }
+  function RHSChkFn() {
+      isRHSchecked = document.getElementById("RHSChecker").checked;
+
+    }
+      function LHSChkFn() {
+      isLHSchecked = document.getElementById("LHSChecker").checked;
+
+    }
+
+    function copyElementText(id) {
     var text = document.getElementById(id).innerText;
     var elem = document.createElement("textarea");
     document.body.appendChild(elem);
@@ -163,26 +156,11 @@
     elem.select();
     document.execCommand("copy");
     document.body.removeChild(elem);
-// checkbox line number starts
-  $(document).ready(function() {
-   $('.toggle').click(function() {
-      var current_status = $('.status').text();
-      if (current_status === 'Untoggled'){
-         $('.status').html('Toggled');
-         lin_num_status = "OFF";
-      }
-      else{
-        $('.status').html('Untoggled');
-        lin_num_status = "ON";
-      
-      }
-   console.log(lin_num_status);
-    });
 
-   });
 }
 
   document.querySelector('textarea').addEventListener('mouseup', (evt) => {
+  console.log(islinechecked);
   const el = evt.currentTarget;
   const entire_line = area.value.split("\n");
   const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
@@ -200,7 +178,9 @@
       WHOLE_STUFF: entire_line,
       start_index: from_index,
       end_index: upto_index,
-      LineNumStatus: lin_num_status
+      TheLineNumStat: islinechecked,
+      TheLHSNumStat: isLHSchecked,
+      TheRHSNumStat: isRHSchecked
     };
 
   //now use fetch
@@ -248,8 +228,7 @@ void async function(){
       TEXTSELECTED: selText,
       WHOLE_STUFF: entire_line,
       start_index: from_index,
-      end_index: upto_index,
-      LineNumStatus: lin_num_status
+      end_index: upto_index
     };
 
   //now use fetch
