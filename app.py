@@ -34,7 +34,6 @@ def stratg():
    global is_lhs_enabled
    global is_rhs_enabled
    # above global vars keeps output of checkboxes!
-   
 
    is_lhs_enabled = req['TheLHSNumStat']
    is_rhs_enabled = req['TheRHSNumStat']
@@ -456,7 +455,7 @@ def stratg():
          return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+escaped_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)             
 
    def pattern_6():
-      res = pattern_6_beta(LINE_NUM,pre_boundary,post_boundary)
+      res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary)
       return res
    #some global vars
    global sub_with_spec_nums
