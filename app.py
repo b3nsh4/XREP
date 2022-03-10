@@ -145,7 +145,7 @@ def stratg():
    prefetch = "sed -E "+'"'+str(LINE_NUM)+"{}s/(".format(LINE_NUM)
    # not using +str(line_num)+ AS OF NOW!!
    if len_for_pre_boundary!=0:
-      prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/.{"+str(len_for_pre_boundary)+"}("
+      prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+"("
    else:
       prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/\\s*("
 
