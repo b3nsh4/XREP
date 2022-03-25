@@ -44,8 +44,14 @@
           This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/ints.png) top -12px left / auto no-repeat, 
     linear-gradient(#ffff 50%, #ffff  50%) top left / 100% 32px; padding: 0 0 0 30px;" type="color" value="#563d7c" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
 <br> <center>
-  <p class="text-primary">LineNumber: <input class="form-check-input" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; LHS Vary: <input class="form-check-input" type="checkbox" id="LHSChecker" onchange="LHSChkFn()" >&nbsp;&nbsp;&nbsp;&nbsp;   RHS Vary: <input type="checkbox" class="form-check-input" id="RHSChecker" onchange=" RHSChkFn()"></p>
+  <p class="text-primary">LineNumber: <input class="form-check-input" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; LHS Vary: <input class="form-check-input" type="checkbox" id="LHSChecker" onchange="LHSChkFn()" >&nbsp;&nbsp;&nbsp;&nbsp;   RHS Vary: <input type="checkbox" class="form-check-input" id="RHSChecker" onchange=" RHSChkFn()">&nbsp;&nbsp;&nbsp;&nbsp; StaticBrd: <input type="checkbox" class="form-check-input" id="brdcheck" onclick="custombrd()"></p>
+<p class="text-success" id="gere" ></p>
+
+    <button type="button" class="btn btn-primary">Add</button>
+      <button type="button" onclick="generator()" class="btn btn-success">Generate</button>
       </center><br><br>
+  
+
   <div class="row">
     <div class="col-sm-4">
       <h5>PATTERN -1 ⁽ˢᵉᵗ⁾
@@ -148,6 +154,9 @@
       isLHSchecked = document.getElementById("LHSChecker").checked;
 
     }
+    function custombrd() {
+
+    }
 
     function copyElementText(id) {
     var text = document.getElementById(id).innerText;
@@ -160,15 +169,22 @@
 
 }
 
-  document.querySelector('textarea').addEventListener('mouseup', (evt) => {
-  console.log(islinechecked);
-  const el = evt.currentTarget;
+
+  function generator(){
+      var checkBox = document.getElementById("brdcheck");
+  if (checkBox.checked == false){
+  // console.log(islinechecked);
+  const el = document.getElementById("area");
   const entire_line = area.value.split("\n");
   const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
   const selText = el.value.substr(el.selectionStart, el.selectionEnd - el.selectionStart);
   const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1
   const from_index = area.selectionStart - lineStart;
   const upto_index = area.selectionEnd - lineStart;
+  // console.log(entire_line[lineNo])
+  const word_index = [from_index,upto_index]; // returns the word index from:upto
+  const full_line = entire_line[lineNo-1]; //line no starts with 1 and we minus-1 therefore
+  // console.log(full_line);
   // string.split("\n").map(elem => elem.trim()).join("\n")
   // fot touch
   
@@ -181,12 +197,16 @@
       end_index: upto_index,
       TheLineNumStat: islinechecked,
       TheLHSNumStat: isLHSchecked,
-      TheRHSNumStat: isRHSchecked
-    };
-
+      TheRHSNumStat: isRHSchecked,
+      full_line: full_line,
+      word_index:word_index
+    }
+}
   //using fetch function to send data to /entry endpoint
 
 void async function(){
+  var checkBox = document.getElementById("brdcheck");
+  if (checkBox.checked == false){
     const response = await fetch(`${window.origin}/entry`, {
         method: "POST",
         credentials: "include",
@@ -204,63 +224,11 @@ void async function(){
     document.querySelector("#patt5").innerText = data.pattern_5_result;
     document.querySelector("#patt6").innerText = data.pattern_6_result;
     
-    // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
+    }// document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
 }();
 
-});
+};
 
-  // TOUCH EVENT STARTS 
-
-  document.querySelector('textarea').addEventListener('touchend', (evt) => {
-  evt.preventDefault();
-  const el = evt.currentTarget;
-  const entire_line = area.value.split("\n");
-  const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
-  const selText = el.value.substr(el.selectionStart, el.selectionEnd - el.selectionStart);
-  const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1
-  const from_index = area.selectionStart - lineStart;
-  const upto_index = area.selectionEnd - lineStart;
-  // string.split("\n").map(elem => elem.trim()).join("\n")
-  // fot touch
-  
-
-    var entry = {
-      LINENUMBER: lineNo,
-      TEXTSELECTED: selText,
-      WHOLE_STUFF: entire_line,
-      start_index: from_index,
-      end_index: upto_index,
-      TheLineNumStat: islinechecked,
-      TheLHSNumStat: isLHSchecked,
-      TheRHSNumStat: isRHSchecked
-    };
-
-  //using fetch function to send data to /entry endpoint
-
-void async function(){
-    const response = await fetch(`${window.origin}/entry`, {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify(entry),
-        cache: "no-cache",
-        headers: new Headers({
-            "content-type": "application/json"
-        })
-    });
-    const data = await response.json();
-    document.querySelector("#patt1").innerText = data.pattern_1_result;
-    document.querySelector("#patt2").innerText = data.pattern_2_result;
-    document.querySelector("#patt3").innerText = data.pattern_3_result;
-    document.querySelector("#patt4").innerText = data.pattern_4_result;
-    document.querySelector("#patt5").innerText = data.pattern_5_result;
-    document.querySelector("#patt6").innerText = data.pattern_6_result;
-
-    
-    // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
-}();
-
-
-});
 </script>
 
 </html>

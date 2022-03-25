@@ -25,6 +25,10 @@ def stratg():
    global whole
    whole=req['WHOLE_STUFF']
    line_num = req['LINENUMBER']
+   word_index = req['word_index']
+   full_line = req['full_line']
+   
+   print(full_line[word_index[0]:word_index[1]])
 
    #introductory to [LR]HS can be found at docs.xrep.in/boundaries
    # CHECKING IF LHS AND RHS HAS CHECKED
@@ -43,9 +47,13 @@ def stratg():
    if lhs==True:
       lhs_1 = "["
       lhs_2 = "]?"
+      prd = "."  #for pattern-5
+      wild = ".*" #for pattern-5
    else:
       lhs_1 = ""
       lhs_2 = ""
+      prd=""  #for pattern-5
+      wild="" #for pattern-5
 
    if rhs==True:
       rhs_1 = "["
@@ -145,7 +153,7 @@ def stratg():
    prefetch = "sed -E "+'"'+str(LINE_NUM)+"{}s/(".format(LINE_NUM)
    # not using +str(line_num)+ AS OF NOW!!
    if len_for_pre_boundary!=0:
-      prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+"("
+      prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
    else:
       prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/\\s*("
 
