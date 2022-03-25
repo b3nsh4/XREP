@@ -22,7 +22,7 @@ def stratg():
    req = request.get_json() #getting text and line from frontend
    global string_selected
    string_selected=req['TEXTSELECTED']
-   global whole
+   global full_line
    whole=req['WHOLE_STUFF']
    line_num = req['LINENUMBER']
    word_index = req['word_index']
@@ -514,7 +514,7 @@ def stratg():
 
 @app.route('/bug')
 def bug_report():
-   global whole
+   global full_line
    global string_selected
    global sub_with_spec_nums
    global pattern_4_result
@@ -526,7 +526,7 @@ def bug_report():
    try:
 
       collect = {
-      "entire_line":whole,
+      "entire_line":full_line,
       "selected_text":string_selected,
       "pattern_1_result":pattern_1_result,
       "pattern_2_result":pattern_2_result,
