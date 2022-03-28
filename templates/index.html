@@ -43,12 +43,17 @@
      <textarea class="form-control" placeholder="Paste your text here 👇  
           This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/ints.png) top -12px left / auto no-repeat, 
     linear-gradient(#ffff 50%, #ffff  50%) top left / 100% 32px; padding: 0 0 0 30px;" type="color" value="#563d7c" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
-<br> <center>
-  <p class="text-primary">LineNumber: <input class="form-check-input" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; LHS Vary: <input class="form-check-input" type="checkbox" id="LHSChecker" onchange="LHSChkFn()" >&nbsp;&nbsp;&nbsp;&nbsp;   RHS Vary: <input type="checkbox" class="form-check-input" id="RHSChecker" onchange=" RHSChkFn()">&nbsp;&nbsp;&nbsp;&nbsp; StaticBrd: <input type="checkbox" class="form-check-input" id="brdcheck" onclick="custombrd()"></p>
-<p class="text-success" id="gere" ></p>
+ <center>
+        <button type="submit" onclick="generator()" class="btn btn-success btn-sm">Generate</button>
+        <br> 
+  <p class="text-primary">LineNumber: <input class="form-check-input" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; LHS Vary: <input class="form-check-input" type="checkbox" id="LHSChecker" onchange="LHSChkFn()" >&nbsp;&nbsp;&nbsp;&nbsp;   RHS Vary: <input type="checkbox" class="form-check-input" id="RHSChecker" onchange=" RHSChkFn()">&nbsp;&nbsp;&nbsp;&nbsp; StaticBrd: <input type="checkbox" class="form-check-input" id="brdcheck" onclick="show_brd_options()"> 
+  </p> 
 
-    <button type="button" class="btn btn-primary btn-sm">Add</button>
-      <button type="button" onclick="generator()" class="btn btn-success btn-sm">Generate</button>
+  <p id="display_static_brd"></p>
+  
+    <button type="button" style="display:none;" class="btn btn-warning btn-sm" id="makeclear" onclick="clear_static_brd()">Clear</button>
+    <button type="button" style="display:none;" onclick="display_custombrd()" class="btn btn-primary btn-sm" id="add_static">Add</button>
+    <button type="button" style="display:none;" class="btn btn-success btn-sm" id="done_static">Done</button>
       </center><br>
   
 
@@ -153,8 +158,36 @@
       isLHSchecked = document.getElementById("LHSChecker").checked;
 
     }
-    function custombrd() {
+    // when hit "add" selText will be displayed whereever mentioned
+    function display_custombrd() {
+        const el = document.getElementById("area");
+      const selText = el.value.substr(el.selectionStart, el.selectionEnd - el.selectionStart);
+            document.getElementById("display_static_brd").innerText+=selText;
+            // alert(selText);
 
+    }
+
+
+    function clear_static_brd(){
+       document.getElementById("display_static_brd").innerText="";
+    }
+
+// if staticbrd is checked, show options, else show nothing
+    function show_brd_options(){
+     var CheckBox_StaticBrd = document.getElementById("brdcheck").checked;
+      if (CheckBox_StaticBrd==true) {
+        document.getElementById('makeclear').style.display = "inline";
+        document.getElementById('add_static').style.display = "inline";
+        document.getElementById('done_static').style.display = "inline";
+   
+        }
+        else {
+          document.getElementById('makeclear').style.display = "none";
+           document.getElementById('add_static').style.display = "none";
+           document.getElementById('done_static').style.display = "none";
+           document.getElementById("display_static_brd").innerText="";
+
+        }
     }
 
     function copyElementText(id) {
@@ -170,14 +203,11 @@
 
 
   function generator(){
-      var checkBox = document.getElementById("brdcheck");
-  if (checkBox.checked == false){
-  // console.log(islinechecked);
   const el = document.getElementById("area");
   const entire_line = area.value.split("\n");
   const lineNo = el.value.substr(0, el.selectionStart).split("\n").length;
   const selText = el.value.substr(el.selectionStart, el.selectionEnd - el.selectionStart);
-  const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1
+  const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
   const from_index = area.selectionStart - lineStart;
   const upto_index = area.selectionEnd - lineStart;
   // console.log(entire_line[lineNo])
@@ -200,12 +230,11 @@
       full_line: full_line,
       word_index:word_index
     }
-}
   //using fetch function to send data to /entry endpoint
 
+
 void async function(){
-  var checkBox = document.getElementById("brdcheck");
-  if (checkBox.checked == false){
+
     const response = await fetch(`${window.origin}/entry`, {
         method: "POST",
         credentials: "include",
@@ -223,10 +252,11 @@ void async function(){
     document.querySelector("#patt5").innerText = data.pattern_5_result;
     document.querySelector("#patt6").innerText = data.pattern_6_result;
     
-    }// document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
+    // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
 }();
 
 };
+
 
 </script>
 
