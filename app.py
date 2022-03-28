@@ -10,7 +10,7 @@ from patt2_core import pat_2_ready
 from pattern_6_beta import pattern_6_beta
 from simple_cooker import simple_chef,final_cooker
 app = Flask(__name__)
-g = Github('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')
+g = Github('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')
 repo = g.get_repo("b3nsh4/XREP_BUG_REPORTS")
 
 @app.route('/')
