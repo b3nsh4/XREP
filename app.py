@@ -24,11 +24,12 @@ def stratg():
    string_selected=req['TEXTSELECTED']
    global full_line
    whole=req['WHOLE_STUFF']
+   print(req['static_array'])
    line_num = req['LINENUMBER']
    word_index = req['word_index']
    full_line = req['full_line']
    
-   print(full_line[word_index[0]:word_index[1]])
+   # print(full_line[word_index[0]:word_index[1]])
 
    #introductory to [LR]HS can be found at docs.xrep.in/boundaries
    # CHECKING IF LHS AND RHS HAS CHECKED
