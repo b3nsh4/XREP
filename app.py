@@ -5,6 +5,7 @@ import uuid
 from github import Github
 import sys
 sys.path.append('algos')
+from lookup import *
 from patt1_core import pat_1_ready,escape_brakt
 from patt2_core import pat_2_ready
 from pattern_6_beta import pattern_6_beta
@@ -132,19 +133,6 @@ def stratg():
       "pattern_5_result":"Non-useful pattern!",
       "pattern_2_result":"Non-useful pattern!"
        }
-   
-
-   abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-   ABC = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-
-   nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-
-   space = [' ']
-
-   escape = ['.', '[', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"',']']
-
-   possible_alnum = ['[a-z]','[a-z]+','[A-Z]','[A-Z]+','[0-9]','[0-9]+',"\\w","\\w+"]
 
    #global variables for this function#
    global number_of_repeats #used to know whether we have (1(2)) while substituting
@@ -197,7 +185,6 @@ def stratg():
          di_2.append(i+"+")
       else:
          di_2.append(i)
-
 
    def spacer_finder(pre_or_post,stuff):  #pre2\s?(target)\s?post
       if pre_or_post=="pre":
@@ -279,8 +266,6 @@ def stratg():
                cooked_string+=n
       cooked_string_copy+=cooked_string
       return cooked_string
-
-   
 
    def pattern_2():
       ##lhs and rhs is the status of the checkbox, if checked we change it with []? else nothing 
@@ -391,8 +376,7 @@ def stratg():
          else:
             return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\5 \\6/'")
 
-
-      
+     
    def count_this_repeats(list_to_filter): #can be used in di_1 if needed
       t=[] #stores result of N number repeats [('foo','bar')N]
       temp = []
@@ -414,7 +398,6 @@ def stratg():
             for n in m[0]:
                fixed_repeats+=n
       return fixed_repeats
-
 
    def sub_with_specific_numbering(basic_duplicate_list): #make numbers of repats (smtg){N}
       final_cooked_string = ""
@@ -474,7 +457,6 @@ def stratg():
    global pattern_1_result
    global pattern_5_result #not_pattern_2
    global patt6_result #NEW CHANGE !! FEB 23-22
-
    #global var ends
    # pattern_1_v2()
    sub_with_spec_nums = sub_with_specific_numbering(di)
@@ -540,23 +522,30 @@ def bug_report():
       print("EXCEPR->",e)
       return {"status":"You have'nt started yet!","notes":"Start by selecting what you need!"}
    if string_selected!="":
-      #creating bug_report at gh
 
+      #creating new hash for the report
       x=uuid.uuid1()
       rand_uuid = x.hex
-      pre_beautify = json.dumps(collect, indent=2)
-      #creating new report file
+      #rand_uuid has file name
+      with open('logs/'+rand_uuid,'a+') as new:
+         new.write(full_line+"\t <--entire_line\n")
+         new.write(string_selected+"\t  <--selected_text\n")
+         new.write(pattern_1_result+"\t <--pattern_1\n")
+         new.write(pattern_2_result+"\t <--pattern_2\n")
+         new.write(pattern_3_result+"\t <--pattern_3\n")
+         new.write(pattern_4_result+"\t <--pattern_4\n")
+         new.write(pattern_5_result+"\t <--pattern_5\n")
+         new.write(patt6_result+"\t :pattern_6\n")
+         new.seek(0)
+         repo.create_file(rand_uuid, "NEW REPORT",new.read(), branch="main") #file creates 
       report_status = "Report Sent"
       notes = "Thank you very much for submitting this report, this will help to improve 𝙓𝙍𝙀𝙋 RefID for this report is:  {}".format(rand_uuid)
-      repo.create_file(rand_uuid, "NEW REPORT",pre_beautify, branch="main") #file creates
       return { "status":report_status,"notes":notes,"Ref:ID":rand_uuid}
    else:
       report_status = "Report NOT sent"
       notes = "You have not choose anything!"
       print("report NOT sent")
       return { "status":report_status,"notes":notes}
-
-
 
 @app.route('/donate')
 def donate_xrep():

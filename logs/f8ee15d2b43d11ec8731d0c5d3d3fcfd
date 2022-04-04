@@ -1,0 +1,8 @@
+         repo.create_file(rand_uuid, "NEW REPORT",nt.read(), branch="main") #file creates: entire_line:
+branch	  <--selected_text
+sed -E -n 's/rep.{24}.*REP.{15}\s*([a-z]+)=\"m.{5}.*cre.{4}/\1/p'	 <--pattern_1
+sed -E -n 's/rep.{24}.{25}\s*([a-z]+)\s*=\".{5}.{14}.*/\1/p'	 <--pattern_2
+sed -E 's/(.+)?(REP.{19})\s*?([a-z]+)\s*?(=\"m)(.*)/\1 \2 XXX \4 \5/'	 <--pattern_3
+sed -E -n 's/.*   .*(([a-z]){6})\s*=\"m.*/\1/p'	 <--pattern_4
+𝘞𝘰𝘳𝘬𝘴 𝘣𝘦𝘵𝘵𝘦𝘳 𝘸𝘪𝘵𝘩 𝘮𝘰𝘳𝘦 𝘤𝘮𝘱𝘭𝘹 𝘰𝘯𝘦𝘴!	 <--pattern_5
+sed -E -n 's/.*REPORT\",nt.read\(\),(.+)\s*=\"m.{5}.*/\1/p'	 :pattern_6

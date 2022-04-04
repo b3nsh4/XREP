@@ -1,0 +1,8 @@
+         repo.create_file(rand_uuid, "NEW REPORT",nt.read(), branch="main") #file creates:	 entire_line:
+nt.read	  <--selected_text
+sed -E -n 's/rep.{24}.*REP.{5}([a-z]+\.[a-z]+)\(\),.*cre.{4}/\1/p'	 <--pattern_1
+sed -E -n 's/rep.{24}.{14}\s*([a-z]+\.[a-z]+)\s*\(\),.{29}.*/\1/p'	 <--pattern_2
+sed -E 's/(.+)?(REP.{6})\s*?([a-z]+\.[a-z]+)\s*?(\(\),)(.*)/\1 \2 XXX \4 \5/'	 <--pattern_3
+sed -E -n 's/.*   .*(([a-z]){2}\.([a-z]){4})\s*\(\),.*/\1/p'	 <--pattern_4
+sed -E -n "s/.{50}([a-z]+\.[a-z]+).*/\1/p"	 <--pattern_5
+sed -E -n 's/.*REPORT\",(.+)\s*\(\),.*/\1/p'	 :pattern_6

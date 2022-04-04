@@ -1,0 +1,8 @@
+ * Debugger PIN: 614-293-536	 <--entire_line
+614-293-536	  <--selected_text
+sed -E -n 's/\*.*PIN:\s*(([0-9]+-){2}[0-9]+)\s*/\1/p'	 <--pattern_1
+sed -E -n 's/\*.{15}\s*(([0-9]+-){2}[0-9]+)\s*.*/\1/p'	 <--pattern_2
+sed -E 's/(.+)?(PIN:)\s*?(([0-9]+-){2}[0-9]+)$/\1 \2 XXX/'	 <--pattern_3
+sed -E -n 's/.* \* .*(([0-9]){3}-([0-9]){3}-([0-9]){3})\s*.*/\1/p'	 <--pattern_4
+sed -E -n "s/.{17}(([0-9]+-){2}[0-9]+).*/\1/p"	 <--pattern_5
+sed -E -n 's/.*PIN:(.+)$/\1/p'	 :pattern_6

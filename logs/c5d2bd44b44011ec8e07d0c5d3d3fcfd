@@ -1,0 +1,8 @@
+ * Detected change in '/home/ben/workshop/XREP/app.py', reloading	 <--entire_line
+app.py	  <--selected_text
+sed -E -n 's/\*.*'\/h.{22}([a-z]+\.[a-z]+)',.*rel.{6}/\1/p'	 <--pattern_1
+sed -E -n 's/\*.{45}\s*([a-z]+\.[a-z]+)\s*',.{10}.*/\1/p'	 <--pattern_2
+sed -E 's/(.+)?('\/.{27})\s*?([a-z]+\.[a-z]+)\s*?(', )(.*)/\1 \2 XXX \4 \5/'	 <--pattern_3
+sed -E -n 's/.* \* .*(([a-z]){3}\.([a-z]){2})\s*', .*/\1/p'	 <--pattern_4
+sed -E -n "s/.{47}([a-z]+\.[a-z]+).*/\1/p"	 <--pattern_5
+sed -E -n 's/.*'\/home\/ben\/workshop\/XREP\/(.+)\s*',.*/\1/p'	 :pattern_6

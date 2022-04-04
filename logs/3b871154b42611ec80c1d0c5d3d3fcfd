@@ -1,0 +1,8 @@
+rand_uuid = x.hex:	 entire_line:
+x.hex	 :selected_text
+sed -E -n 's/ran.{6}.*=\s*([a-z]\.[a-z]+)\s*/\1/p'	 :pattern_1
+sed -E -n 's/ran.{6}.{3}\s*([a-z]\.[a-z]+)\s*.*/\1/p'	 :pattern_2
+sed -E 's/(.+)?(=)\s*?([a-z]\.[a-z]+)$/\1 \2 XXX/'	 :pattern_3
+sed -E -n 's/.*ran.*([a-z]\.([a-z]){3})\s*.*/\1/p'	 :pattern_4
+sed -E -n "s/.{12}([a-z]\.[a-z]+).*/\1/p"	 :pattern_5
+sed -E -n 's/.*=(.+)$/\1/p'	 :pattern_6
