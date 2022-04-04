@@ -524,19 +524,8 @@ def bug_report():
    global pattern_1_result
    global pattern_5_result #pattern_5
    global patt6_result
-
    try:
-      # with open(".logs/"+str(rand_uuid),'a') as log:
-      #    log.write(full_line+"\n")
-      #    log.write(string_selected+"\n")
-      #    log.write(pattern_1_result+"\n")
-      #    log.write(pattern_2_result+"\n")
-      #    log.write(pattern_3_result+"\n")
-      #    log.write(pattern_4_result+"\n")
-      #    log.write(pattern_5_result+"\n")
-      #    log.write(patt6_result+"\n")
 
-      
       collect = {
       "entire_line":full_line,
       "selected_text":string_selected,
@@ -551,12 +540,10 @@ def bug_report():
       print("EXCEPR->",e)
       return {"status":"You have'nt started yet!","notes":"Start by selecting what you need!"}
    if string_selected!="":
-      x=uuid.uuid1()
-      rand_uuid = x.hex
       #creating bug_report at gh
 
-      # x=uuid.uuid1()
-      # rand_uuid = x.hex
+      x=uuid.uuid1()
+      rand_uuid = x.hex
       pre_beautify = json.dumps(collect, indent=2)
       #creating new report file
       report_status = "Report Sent"
