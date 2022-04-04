@@ -1,8 +1,0 @@
-         return { "status":report_status,"notes":notes,"Ref:ID":rand_uuid}	 <--entire_line
-status	  <--selected_text
-sed -E -n 's/ret.{3}.*\"([a-z]+)\":r.{46}/\1/p'	 <--pattern_1
-sed -E -n 's/ret.{3}.{4}\s*([a-z]+)\s*\":.{46}.*/\1/p'	 <--pattern_2
-sed -E 's/(.+)?(\")\s*?([a-z]+)\s*?(\":r)(.*)/\1 \2 XXX \4 \5/'	 <--pattern_3
-sed -E -n 's/.*   .*(([a-z]){6})\s*\":r.*/\1/p'	 <--pattern_4
-𝘞𝘰𝘳𝘬𝘴 𝘣𝘦𝘵𝘵𝘦𝘳 𝘸𝘪𝘵𝘩 𝘮𝘰𝘳𝘦 𝘤𝘮𝘱𝘭𝘹 𝘰𝘯𝘦𝘴!	 <--pattern_5
-sed -E -n 's/.*\"(.+)\s*\":r.{46}.*/\1/p'	 :pattern_6

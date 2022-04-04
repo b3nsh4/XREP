@@ -1,8 +1,0 @@
-         report_status = "Report Sent":	 entire_line:
-Report Sen	  <--selected_text
-sed -E -n 's/rep.{10}.*\"(\w+\s+[A-Z][a-z]+)t\"/\1/p'	 <--pattern_1
-sed -E -n 's/rep.{10}.{4}\s*(\w+\s+[A-Z][a-z]+)\s*t\".*/\1/p'	 <--pattern_2
-sed -E 's/(.+)?(\")\s*?(\w+\s+[A-Z][a-z]+)\s*?(t\")(.*)/\1 \2 XXX \4 \5/'	 <--pattern_3
-sed -E -n 's/.*   .*([A-Z]([a-z]){5}\s+[A-Z]([a-z]){2})\s*t\".*/\1/p'	 <--pattern_4
-sed -E -n "s/.{26}(\w+\s+[A-Z][a-z]+).*/\1/p"	 <--pattern_5
-sed -E -n 's/.*\"(.+)\s*t\".*/\1/p'	 :pattern_6

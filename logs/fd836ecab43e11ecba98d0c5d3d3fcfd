@@ -1,8 +1,0 @@
-         return { "status":report_status,"notes":notes,"Ref:ID":rand_uuid}	 <--entire_line
-Ref:ID	  <--selected_text
-sed -E -n 's/ret.{3}.*\"st.{35}(\w+:[A-Z]+)\":r.{9}/\1/p'	 <--pattern_1
-sed -E -n 's/ret.{3}.{41}\s*(\w+:[A-Z]+)\s*\":.{9}.*/\1/p'	 <--pattern_2
-sed -E 's/(.+)?(\"s.{40})\s*?(\w+:[A-Z]+)\s*?(\":r)(.*)/\1 \2 XXX \4 \5/'	 <--pattern_3
-sed -E -n 's/.*   .*([A-Z]([a-z]){2}:([A-Z]){2})\s*\":r.*/\1/p'	 <--pattern_4
-sed -E -n "s/.{56}(\w+:[A-Z]+).*/\1/p"	 <--pattern_5
-sed -E -n 's/.*\"status\":report_status,\"notes\":notes,\"(.+)\s*\":r.{9}.*/\1/p'	 :pattern_6

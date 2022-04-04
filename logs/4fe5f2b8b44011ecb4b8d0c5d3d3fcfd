@@ -1,8 +1,0 @@
-         notes = "Thank you very much for submitting this report, this will help to improve 𝙓𝙍𝙀𝙋 RefID for this report is:  {}".format(rand_uuid)	 <--entire_line
-.format	  <--selected_text
-sed -E -n 's/not.{2}.*\{}\".{4}(\.[a-z]+)d_u.{4}/\1/p'	 <--pattern_1
-sed -E -n 's/not.{2}.{117}\s*(\.[a-z]+)\s*d_u.{4}.*/\1/p'	 <--pattern_2
-sed -E 's/(.+)?(\{}.{7})\s*?(\.[a-z]+)\s*?(d_u)(.*)/\1 \2 XXX \4 \5/'	 <--pattern_3
-sed -E -n 's/.*   .*(\.([a-z]){6})\s*d_u.*/\1/p'	 <--pattern_4
-sed -E -n "s/.{131}(\.[a-z]+).*/\1/p"	 <--pattern_5
-sed -E -n 's/.*\{}\".for(.+)\s*d_u.{4}.*/\1/p'	 :pattern_6

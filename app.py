@@ -3,7 +3,7 @@ from itertools import groupby
 import json
 import uuid
 from github import Github
-import sys
+import sys,os
 sys.path.append('algos')
 from lookup import *
 from patt1_core import pat_1_ready,escape_brakt
@@ -527,7 +527,7 @@ def bug_report():
       x=uuid.uuid1()
       rand_uuid = x.hex
       #rand_uuid has file name
-      with open('logs/'+rand_uuid,'a+') as new:
+      with open('.logs/'+rand_uuid,'a+') as new:
          new.write(full_line+"\t <--entire_line\n")
          new.write(string_selected+"\t  <--selected_text\n")
          new.write(pattern_1_result+"\t <--pattern_1\n")
@@ -536,10 +536,11 @@ def bug_report():
          new.write(pattern_4_result+"\t <--pattern_4\n")
          new.write(pattern_5_result+"\t <--pattern_5\n")
          new.write(patt6_result+"\t :pattern_6\n")
-         new.seek(0)
+         new.seek(0) #pointer to start of line to read
          repo.create_file(rand_uuid, "NEW REPORT",new.read(), branch="main") #file creates 
       report_status = "Report Sent"
       notes = "Thank you very much for submitting this report, this will help to improve 𝙓𝙍𝙀𝙋 RefID for this report is:  {}".format(rand_uuid)
+      os.remove('.logs/'+rand_uuid) #removing file after use
       return { "status":report_status,"notes":notes,"Ref:ID":rand_uuid}
    else:
       report_status = "Report NOT sent"
