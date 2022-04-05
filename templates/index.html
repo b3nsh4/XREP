@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bs.min.css') }}">
@@ -62,21 +62,21 @@
     <button type="button" style="display:none;" onclick="display_custombrd()" class="btn btn-primary btn-sm" id="add_static">Add</button>
       </center><br>
   
-
+        <!-- &#xf0c5; replace this instead of 'copy' to get icon affter enabling fontawesome cdn -->
   <div class="row">
     <div class="col-sm-4">
-      <h5>PATTERN -1 ⁽ˢᵉᵗ⁾
-     <button onclick="copyElementText('patt1')" style="font-size:10px" class="fa btn bg-transparent">&#xf0c5; </button></h5>
+      <h5>PATTERN -1 ⁽ˢᵉᵗ⁾ 
+     <button onclick="copyElementText('patt1')" style="font-size:10px" class="btn btn-link">copy </button></h5>
       <p id="patt1" style="font-size: 15px;"></p>
     </div>
     <div class="col-sm-4">
       <h5>PATTERN -2 ⁽ˢᵗ⁾
-  <button onclick="copyElementText('patt2')" style="font-size:10px" class="fa btn bg-transparent">&#xf0c5; </button></h5>
+  <button onclick="copyElementText('patt2')" style="font-size:10px" class="btn btn-link">copy </button></h5>
       <p id="patt2" style="font-size: 15px;"></p>
     </div>
     <div class="col-sm-4">
       <h5>PATTERN -3 ⁽ˢˢᵗ⁾ 
-     <button onclick="copyElementText('patt3')" style="font-size:10px" class="fa btn bg-transparent">&#xf0c5; </button></h5>
+     <button onclick="copyElementText('patt3')" style="font-size:10px" class="btn btn-link">copy </button></h5>
       <p id="patt3" style="font-size: 15px;"></p>      
     </div>
       
@@ -84,21 +84,22 @@
        <div class="col-sm-4">
      
       <h5>PATTERN -4 ⁽ᵉᵗ⁻¹⁾
-      <button onclick="copyElementText('patt4')" style="font-size:10px" class="fa btn bg-transparent">&#xf0c5; </button></h5>
+      <button onclick="copyElementText('patt4')" style="font-size:10px" class="btn btn-link">copy </button></h5>
       <p id="patt4" style="font-size: 14px;"></p>      
     </div>
        
        <div class="col-sm-4">
       
       <h5>PATTERN -5 ⁽ᵉᵗ⁻²⁾
-     <button onclick="copyElementText('patt5')" style="font-size:11px" class="fa btn bg-transparent">&#xf0c5; </button></h5> 
+     <button onclick="copyElementText('patt5')" style="font-size:11px" class="btn btn-link">copy </button></h5> 
       <p id="patt5" style="font-size: 15px;"></p>      
     </div>
     
        <div class="col-sm-4">
      
       <h5>PATTERN -6 
-      <button onclick="copyElementText('patt6')" style="font-size:10px" class="fa btn bg-transparent">&#xf0c5; </button>  </h5>    
+
+      <button onclick="copyElementText('patt6')" style="font-size:10px" class="btn btn-link">copy</button>  </h5>    
       <p id="patt6" style="font-size: 14px;"></p>   
     </div>
 
@@ -156,8 +157,13 @@
  
   function handle_select(){ // this fn is to display the current selected text onselect event 
   const uff = textarea_data.value.substr(textarea_data.selectionStart, textarea_data.selectionEnd - textarea_data.selectionStart);
-  document.getElementById("target_text").innerText=uff;
-      }
+  if (uff.length>50){    // this is the limit of 50 chars, backend behaves the same.
+    document.getElementById("target_text").innerText="_𝘯𝘰𝘯-𝘶𝘴𝘦𝘧𝘶𝘭 𝘱𝘢𝘵𝘵𝘦𝘳𝘯_";
+                    }
+  else {
+    document.getElementById("target_text").innerText=uff;
+       }
+                } 
 
     let islinechecked=false;
     let isRHSchecked=false;
@@ -193,6 +199,9 @@
 
     function clear_static_brd(){
        document.getElementById("display_static_brd").innerText="";
+       for (const key in custom_brd_list) {
+            delete custom_brd_list[key];
+              }
     }
 
 // if staticbrd is checked, show options, else show nothing
