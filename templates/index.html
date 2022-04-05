@@ -45,7 +45,7 @@
     linear-gradient(#ffff 50%, #ffff  50%) top left / 100% 32px; padding: 0 0 0 30px;" type="color" value="#563d7c" onselect="handle_select()" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
  <center>
 <pre class="text-success" id="target_text"></pre>
-        <button type="submit" onclick="generator()" class="btn btn-success btn-sm">Generate</button>
+        <button type="submit" onclick="generator()" id="gen_button" class="btn btn-success btn-sm">Generate</button>
         <br> 
   <p class="text-primary">LineNumber: <input class="form-check-input" autocomplete="off" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; 
 
@@ -192,7 +192,6 @@
           word:selText 
         };
         brd_num+=1;
-        console.log(custom_brd_list);
             // alert(selText);
 }
 
@@ -236,6 +235,9 @@
   const entire_line = area.value.split("\n");
   const lineNo = textarea_data.value.substr(0, textarea_data.selectionStart).split("\n").length;
   const selText = textarea_data.value.substr(textarea_data.selectionStart, textarea_data.selectionEnd - textarea_data.selectionStart);
+  if (selText.length==0) {
+    return ""
+  } // to avoid undefined when no selection and hit generate
   const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
   const from_index = area.selectionStart - lineStart;
   const upto_index = area.selectionEnd - lineStart;

@@ -1,9 +1,7 @@
 from flask import Flask,render_template,request,jsonify,make_response
 from itertools import groupby
-import json
-import uuid
+import json,sys,os,uuid
 from github import Github
-import sys,os
 sys.path.append('algos')
 from lookup import *
 from patt1_core import pat_1_ready,escape_brakt
@@ -12,7 +10,7 @@ from pattern_6_beta import pattern_6_beta
 from simple_cooker import simple_chef,final_cooker
 app = Flask(__name__)
 g = Github('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')
-repo = g.get_repo("b3nsh4/XREP_BUG_REPORTS")
+# repo = g.get_repo("b3nsh4/XREP_BUG_REPORTS")
 
 @app.route('/')
 def getstarted():
@@ -29,7 +27,9 @@ def stratg():
    line_num = req['LINENUMBER']
    word_index = req['word_index']
    full_line = req['full_line']
-   
+   #below index range of start and end of the line
+   start_index=req['start_index']
+   end_index=req['end_index']
    # print(full_line[word_index[0]:word_index[1]])
 
    #introductory to [LR]HS can be found at docs.xrep.in/boundaries
@@ -72,8 +72,6 @@ def stratg():
 
    this_full_text = whole[line_num-1] #gets the entire text in selected line for strcit_mode
    #getting index number of selected word
-   start_index=req['start_index']
-   end_index=req['end_index']
 
    if string_selected == '':
       return jsonify("empty string")
@@ -535,7 +533,7 @@ def bug_report():
          new.write(pattern_3_result+"\t <--pattern_3\n")
          new.write(pattern_4_result+"\t <--pattern_4\n")
          new.write(pattern_5_result+"\t <--pattern_5\n")
-         new.write(patt6_result+"\t :pattern_6\n")
+         new.write(patt6_result+"\t <--pattern_6\n")
          new.seek(0) #pointer to start of line to read
          repo.create_file(rand_uuid, "NEW REPORT",new.read(), branch="main") #file creates 
       report_status = "Report Sent"
