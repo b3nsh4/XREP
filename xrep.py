@@ -1,16 +1,14 @@
 from flask import Flask,render_template,request,jsonify,make_response
 from itertools import groupby
 import json,sys,os,uuid
-from github import Github
 sys.path.append('algos')
 from lookup import *
 from patt1_core import pat_1_ready,escape_brakt
 from patt2_core import pat_2_ready
 from pattern_6_beta import pattern_6_beta
 from simple_cooker import simple_chef,final_cooker
+from reports import init_report
 app = Flask(__name__)
-g = Github('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')
-# repo = g.get_repo("b3nsh4/XREP_BUG_REPORTS")
 
 @app.route('/')
 def getstarted():
@@ -81,11 +79,11 @@ def stratg():
 
    pre_boundary = this_full_text[:start_index]
 
-   post_boundary = this_full_text[end_index:] 
+   post_boundary = this_full_text[end_index:]
 
    len_for_pre_boundary = len(this_full_text[:start_index])
 
-   len_for_post_boundary = len(this_full_text[end_index:]) 
+   len_for_post_boundary = len(this_full_text[end_index:])
 
    splitted_pre = pre_boundary.split()
 
@@ -126,7 +124,7 @@ def stratg():
    if len(string_selected) > 50:
       return  {
       "pattern_4_result":"Non-useful pattern!",
-      "pattern_3_result":"Non-useful pattern!", 
+      "pattern_3_result":"Non-useful pattern!",
       "pattern_1_result":"Non-useful pattern!",
       "pattern_5_result":"Non-useful pattern!",
       "pattern_2_result":"Non-useful pattern!"
@@ -134,7 +132,7 @@ def stratg():
 
    #global variables for this function#
    global number_of_repeats #used to know whether we have (1(2)) while substituting
-   number_of_repeats = 0 
+   number_of_repeats = 0
    global cooked_string_copy
    cooked_string_copy=""
    prefetch = "sed -E "+'"'+str(LINE_NUM)+"{}s/(".format(LINE_NUM)
@@ -150,7 +148,7 @@ def stratg():
 
    di_2 = [] #simplified di with + for repetative values
 
-   di_3 = [] #alnum 
+   di_3 = [] #alnum
 
    di_4 = [] #2nd stage alnum filtering
 
@@ -193,9 +191,9 @@ def stratg():
          else:
             space_before = False
          return space_before
-      
+
       elif pre_or_post=="post":
-         
+
          splitted_stuff = stuff.rstrip().split(" ")
          if splitted_stuff[0] == "":
             space_after = True
@@ -247,7 +245,7 @@ def stratg():
       for k in zip(list_to_filter[::2],list_to_filter[1::2]):
          t.append(k)
       if len(list_to_filter)%2!=0:
-         t.append(list_to_filter[-1]) 
+         t.append(list_to_filter[-1])
 #grouping with numbering
       for i,k in groupby(t):
          l=list(k)
@@ -266,11 +264,11 @@ def stratg():
       return cooked_string
 
    def pattern_2():
-      ##lhs and rhs is the status of the checkbox, if checked we change it with []? else nothing 
-      
+      ##lhs and rhs is the status of the checkbox, if checked we change it with []? else nothing
+
       nonlocal di_3
       alnum_algo(di_2,di_3) #1st stage alnum filter
-      
+
       di_3 = [i[0] for i in groupby(di_3)]
       preb = pat_2_ready(pre_boundary.lstrip().split(" "))
       postb = pat_2_ready(post_boundary.lstrip().split(" "))
@@ -325,9 +323,9 @@ def stratg():
             bd2 = global_res_2["shorted_str"]+".{"+global_res_2["len_after_shorted"]+"}"
          else:
             bd2 = splitted_stuff[-1]
-       
+
          return [bd1,bd2]
-     
+
       elif len(splitted_stuff)==1:
          if len(splitted_stuff[0])>4:
             global_res_1 = glolbal_len_decision(splitted_stuff[0])
@@ -357,7 +355,7 @@ def stratg():
          splitting_for_global_fn = pre_boundary.split()[-1]
          pre_bndry_patt3 = glolbal_decision_for_pattern3(escape_brakt(splitting_for_global_fn))
       #settlement for pre_boundary
-      
+
       prefetch_complex_subsitit = "sed -E -n "+'"'+str(LINE_NUM)+"s/("
       if len_for_pre_boundary==0 and len_for_post_boundary==0:
          return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy})$(.*)/XXX/'")
@@ -374,14 +372,14 @@ def stratg():
          else:
             return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\5 \\6/'")
 
-     
+
    def count_this_repeats(list_to_filter): #can be used in di_1 if needed
       t=[] #stores result of N number repeats [('foo','bar')N]
       temp = []
       for k in zip(list_to_filter[::2],list_to_filter[1::2]):
          t.append(k)
       if len(list_to_filter)%2!=0:
-         t.append(list_to_filter[-1]) 
+         t.append(list_to_filter[-1])
 #grouping with numbering
       for i,k in groupby(t):
          l=list(k)
@@ -437,12 +435,12 @@ def stratg():
             stuff=str(i[0])
             final_cooked_string+=stuff
 
-      if escaped_pre_boundary=="": 
+      if escaped_pre_boundary=="":
          closest_pre_boundary=pre_boundary[-1:-4]
          # line_num varibale is not using AS OF NOW!!
          return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+closest_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)
       else:
-         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+escaped_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)             
+         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+escaped_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)
 
    def pattern_6():
       res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary)
@@ -470,7 +468,7 @@ def stratg():
       # "sub_with_spec_nums":sub_with_spec_nums,
       "pattern_1_result":pattern_1_result,
       "pattern_4_result":pattern_4_result,
-      "pattern_3_result":pattern_3_result, 
+      "pattern_3_result":pattern_3_result,
       "pattern_5_result":pattern_5_result,
       "pattern_6_result":patt6_result
       }
@@ -492,7 +490,6 @@ def stratg():
       }
       return final_return
 
-
 @app.route('/bug')
 def bug_report():
    global full_line
@@ -504,47 +501,17 @@ def bug_report():
    global pattern_1_result
    global pattern_5_result #pattern_5
    global patt6_result
+   
    try:
-
-      collect = {
-      "entire_line":full_line,
-      "selected_text":string_selected,
-      "pattern_1_result":pattern_1_result,
-      "pattern_2_result":pattern_2_result,
-      "pattern_3_result":pattern_3_result,
-      "pattern_4_result":pattern_4_result,
-      "pattern_5_result":pattern_5_result,
-      "pattern_6_result":patt6_result
-      }
-   except Exception as e:
-      print("EXCEPR->",e)
-      return {"status":"You have'nt started yet!","notes":"Start by selecting what you need!"}
-   if string_selected!="":
-
-      #creating new hash for the report
-      x=uuid.uuid1()
-      rand_uuid = x.hex
-      #rand_uuid has file name
-      with open('.logs/'+rand_uuid,'a+') as new:
-         new.write(full_line+"\t <--entire_line\n")
-         new.write(string_selected+"\t  <--selected_text\n")
-         new.write(pattern_1_result+"\t <--pattern_1\n")
-         new.write(pattern_2_result+"\t <--pattern_2\n")
-         new.write(pattern_3_result+"\t <--pattern_3\n")
-         new.write(pattern_4_result+"\t <--pattern_4\n")
-         new.write(pattern_5_result+"\t <--pattern_5\n")
-         new.write(patt6_result+"\t <--pattern_6\n")
-         new.seek(0) #pointer to start of line to read
-         repo.create_file(rand_uuid, "NEW REPORT",new.read(), branch="main") #file creates 
-      report_status = "Report Sent"
-      notes = "Thank you very much for submitting this report, this will help to improve 𝙓𝙍𝙀𝙋 RefID for this report is:  {}".format(rand_uuid)
-      os.remove('.logs/'+rand_uuid) #removing file after use
-      return { "status":report_status,"notes":notes,"Ref:ID":rand_uuid}
-   else:
-      report_status = "Report NOT sent"
-      notes = "You have not choose anything!"
-      print("report NOT sent")
-      return { "status":report_status,"notes":notes}
+      collect_report_vars= [
+      full_line, string_selected, pattern_1_result,
+      pattern_2_result, pattern_3_result, pattern_4_result,
+      pattern_5_result, patt6_result ]
+   except NameError:
+      return {"status":"You have'nt started yet!","notes":"Report NOT sent!"}
+   
+   report_status=init_report(collect_report_vars)
+   return report_status
 
 @app.route('/donate')
 def donate_xrep():
