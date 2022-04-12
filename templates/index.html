@@ -149,149 +149,153 @@
 </script>
 
 <script>
-  let lrhs="";
-  let custom_brd_list = []; // dict to store the index , selText
-  let brd_num = 0; //takes care of index numbering while adding custom bndry (add button)
-  let target=""; //current target
-  //below is index range of the target
-   let lineStart = 0;
-   let start_target_at = 0;
-   let end_target_at = 0;
-  //above is index range of the target
-       
-  const textarea_data = document.getElementById("area");
-  
-  function handle_select(){ // this fn is to display the current selected text onselect event 
-  
-  var CheckBox_StaticBrd = document.getElementById("brdcheck").checked;
-  // displaying target
-  lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
+ let lrhs = "";
+let custom_brd_list = []; // dict to store the index , selText
+let target = ""; //current target
+//below is index range of the target
+let lineStart = 0;
+let start_target_at = 0;
+let end_target_at = 0;
+//above is index range of the target
 
-  if (CheckBox_StaticBrd==false) { //if static is not checked, it should be target. else its boundary
-  
-  target = textarea_data.value.substr(textarea_data.selectionStart, textarea_data.selectionEnd - textarea_data.selectionStart);
-    start_target_at =  area.selectionStart - lineStart; // t0
-    end_target_at = area.selectionEnd - lineStart; // t1
-   } // if cond ends
-   
-   else if (CheckBox_StaticBrd==true) {
+const textarea_data = document.getElementById("area");
+
+function handle_select() { // this fn is to display the current selected text onselect event 
+
+    var CheckBox_StaticBrd = document.getElementById("brdcheck").checked;
+    // displaying target
+    lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
+
+    if (CheckBox_StaticBrd == false) { //if static is not checked, it should be target. else its boundary
+
+        target = textarea_data.value.substr(textarea_data.selectionStart, textarea_data.selectionEnd -textarea_data.selectionStart);
+        start_target_at = area.selectionStart - lineStart; // t0
+        end_target_at = area.selectionEnd - lineStart; // t1
+    } // if cond ends
+    else if (CheckBox_StaticBrd == true) {
         let start_bndry_at = area.selectionStart - lineStart; // b0
         let end_bndry_at = area.selectionEnd - lineStart; // b1
-        if (start_target_at>end_bndry_at){
-          console.log("lhs");
+        if (start_target_at > end_bndry_at) {
+            console.log("lhs");
+        } else if (start_bndry_at > end_target_at) {
+            console.log("rhs");
+        } else {
+            alert("Static strings cannot include target itself!");
+            return; // if boundary include target itself, yell!!
         }
-        else if (start_bndry_at>end_target_at){
-          console.log("rhs");
-        }
-        else {
-          alert("boundary cannot include target itself");
-          return; // if boundary include target itself, yell!!
-        }
-
-   }
-  
-  if (target.length>50){    // this is the limit of 50 chars, backend behaves the same.
-    document.getElementById("target_text").innerText="_𝘯𝘰𝘯-𝘶𝘴𝘦𝘧𝘶𝘭 𝘱𝘢𝘵𝘵𝘦𝘳𝘯_";
-                    }
-  else {
-    document.getElementById("target_text").innerText=target;
-       }
-                } 
-
-    let islinechecked=false;
-    let isRHSchecked=false;
-    let isLHSchecked=false;
-    // add more vars if needed to above
-   
-    function LineChkFn() {
-      islinechecked = document.getElementById("LineChecker").checked;
 
     }
-  function RHSChkFn() {
-      isRHSchecked = document.getElementById("RHSChecker").checked;
 
+    if (target.length > 50) { // this is the limit of 50 chars, backend behaves the same.
+        document.getElementById("target_text").innerText = "_𝘯𝘰𝘯-𝘶𝘴𝘦𝘧𝘶𝘭 𝘱𝘢𝘵𝘵𝘦𝘳𝘯_";
+    } else {
+        document.getElementById("target_text").innerText = target;
     }
-      function LHSChkFn() {
-      isLHSchecked = document.getElementById("LHSChecker").checked;
+}
 
+let islinechecked = false;
+let isRHSchecked = false;
+let isLHSchecked = false;
+// add more vars if needed to above
+
+function LineChkFn() {
+    islinechecked = document.getElementById("LineChecker").checked;
+
+}
+
+function RHSChkFn() {
+    isRHSchecked = document.getElementById("RHSChecker").checked;
+
+}
+
+function LHSChkFn() {
+    isLHSchecked = document.getElementById("LHSChecker").checked;
+
+}
+// when hit "add" selText will be displayed whereever mentioned
+
+function add_custombrd() {
+    if (target == "") {
+        return document.getElementById("target_text").innerText = "_add 'target' first_"; // if user is choosing boundary before target
     }
-    // when hit "add" selText will be displayed whereever mentioned
-    
-    function add_custombrd() {
-      if (target=="") 
-      {
-        return document.getElementById("target_text").innerText="_add 'target' first_"; // if user is choosing boundary before target
-      }
-        const brd_lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
-        const start_bndry_at = area.selectionStart - brd_lineStart; // b0
-        const end_bndry_at = area.selectionEnd - brd_lineStart; // b1
-        const selText = textarea_data.value.substr(textarea_data.selectionStart, textarea_data.selectionEnd - textarea_data.selectionStart);
+    const brd_lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
+    const start_bndry_at = area.selectionStart - brd_lineStart; // b0
+    const end_bndry_at = area.selectionEnd - brd_lineStart; // b1
+    const selText = textarea_data.value.substr(textarea_data.selectionStart, textarea_data.selectionEnd - textarea_data.selectionStart);
 
-        if (start_target_at>end_bndry_at){
-          lrhs = 'lhs';
-        }
-        else if (start_bndry_at>end_target_at){
-          lrhs = 'rhs';
-        }
-        else {
-          alert("boundary cannot include target itself");
-          return; // if boundary include target itself, yell!!
-          }
-        
-        if (custom_brd_list.length === 0) 
-        { 
-         push_statics=({index:[start_bndry_at,end_bndry_at],word:selText,lrhs:lrhs  });
-         custom_brd_list.push(push_statics);
-        }
-        else 
+    if (start_target_at > end_bndry_at) {
+        lrhs = 'lhs';
+    } else if (start_bndry_at > end_target_at) {
+        lrhs = 'rhs';
+    } else {
+        alert("Static strings cannot include target itself!");
+        return; // if boundary include target itself, yell!!
+    }
+
+    if (custom_brd_list.length === 0) {
+        push_statics = ({
+            index: [start_bndry_at, end_bndry_at],
+            word: selText,
+            lrhs: lrhs
+        });
+        custom_brd_list.push(push_statics);
+    } else {
+      
+
+      // BELOW IS A HACK AND NEED CHANGE, USERS MAY SELECT RANDOMLY. SO LOOP ON ARRAY AND SORT IS NEEDED! CHECKOUT loop_list.js
+
+        index_b0 = custom_brd_list.at(-1)['index'][0]; //s0 
+        index_b1 = custom_brd_list.at(-1)['index'][1]; //s1
+        console.log(index_b0, index_b1);
+        if (index_b0 > end_bndry_at) // t0 as index_b0 end_bndry as b0
         {
-          index_b0 = custom_brd_list.at(-1)['index'][0]; //s0 
-          index_b1 = custom_brd_list.at(-1)['index'][1]; //s1
-          console.log(index_b0,index_b1);
-          if (index_b0>end_bndry_at) // t0 as index_b0 end_bndry as b0
-          {
-            let temp_val = custom_brd_list[custom_brd_list.length-1] // -1 index backup
-            push_statics=({index:[start_bndry_at,end_bndry_at],word:selText,lrhs:lrhs  });
-            custom_brd_list[custom_brd_list.length-1] = push_statics;
+            let temp_val = custom_brd_list[custom_brd_list.length - 1] // -1 index backup
+            push_statics = ({
+                index: [start_bndry_at, end_bndry_at],
+                word: selText,
+                lrhs: lrhs
+            });
+            custom_brd_list[custom_brd_list.length - 1] = push_statics;
             custom_brd_list.push(temp_val);
-          }
-          else if (start_bndry_at>index_b1){
-            push_statics=({index:[start_bndry_at,end_bndry_at],word:selText,lrhs:lrhs  });
+        } else if (start_bndry_at > index_b1) {
+            push_statics = ({
+                index: [start_bndry_at, end_bndry_at],
+                word: selText,
+                lrhs: lrhs
+            });
             custom_brd_list.push(push_statics);
-          }
-          else{
-            alert("seems already added boundary");
-            return; 
-          }
-      }
-       document.getElementById("display_static_brd").innerText+=selText;
+        } else {
+            alert("seems you just added that boundary! Please avoid this in feature!");
+            return;
+        }
     }
+    document.getElementById("display_static_brd").innerText += selText;
+}
 
 
 
 
-    function clear_static_brd(){
-       document.getElementById("display_static_brd").innerText="";
-        custom_brd_list=[]; //clear elements
-    }
+function clear_static_brd() {
+    document.getElementById("display_static_brd").innerText = "";
+    custom_brd_list = []; //clear elements
+}
 
 // if staticbrd is checked, show options, else show nothing
-    function show_brd_options(){
-     var CheckBox_StaticBrd = document.getElementById("brdcheck").checked;
-      if (CheckBox_StaticBrd==true) {
+function show_brd_options() {
+    var CheckBox_StaticBrd = document.getElementById("brdcheck").checked;
+    if (CheckBox_StaticBrd == true) {
         document.getElementById('makeclear').style.display = "inline";
         document.getElementById('add_static').style.display = "inline";
-   
-        }
-        else {
-          document.getElementById('makeclear').style.display = "none";
-           document.getElementById('add_static').style.display = "none";
-           document.getElementById("display_static_brd").innerText="";
 
-        }
+    } else {
+        document.getElementById('makeclear').style.display = "none";
+        document.getElementById('add_static').style.display = "none";
+        document.getElementById("display_static_brd").innerText = "";
+
     }
+}
 
-    function copyElementText(id) {
+function copyElementText(id) {
     var text = document.getElementById(id).innerText;
     var elem = document.createElement("textarea");
     document.body.appendChild(elem);
@@ -303,60 +307,55 @@
 }
 
 
-  function generator(){
-  const entire_line = area.value.split("\n");
-  const lineNo = textarea_data.value.substr(0, textarea_data.selectionStart).split("\n").length;
-  const selText = target; // current target
-  if (selText.length==0) {
-    return "";
-  } // to avoid undefined when no selection and hit generate
-  const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
-  // console.log(entire_line[lineNo])
-  // const word_index = [from_index,upto_index]; // returns the word index from:upto
-  // const full_line = entire_line[lineNo-1]; //line no starts with 1 and we minus-1 therefore
- 
+function generator() {
+    const entire_line = area.value.split("\n");
+    const lineNo = textarea_data.value.substr(0, textarea_data.selectionStart).split("\n").length;
+    const selText = target; // current target
+    if (selText.length == 0) {
+        return "";
+    } // to avoid undefined when no selection and hit generate
+    const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
+
 
     var entry = {
-      LINENUMBER: lineNo,
-      TEXTSELECTED: selText,
-      WHOLE_STUFF: entire_line,
-      start_index: start_target_at,
-      end_index: end_target_at,
-      TheLineNumStat: islinechecked,
-      TheLHSNumStat: isLHSchecked,
-      TheRHSNumStat: isRHSchecked,
-      full_line: entire_line,
-      // word_index:word_index,
-      // static_array: custom_brd_list
+        LINENUMBER: lineNo,
+        TEXTSELECTED: selText,
+        WHOLE_STUFF: entire_line,
+        start_index: start_target_at,
+        end_index: end_target_at,
+        TheLineNumStat: islinechecked,
+        TheLHSNumStat: isLHSchecked,
+        TheRHSNumStat: isRHSchecked,
+        full_line: entire_line,
+        // word_index:word_index,
+        // static_array: custom_brd_list
     }
-  //using fetch function to send data to /entry endpoint
+    //using fetch function to send data to /entry endpoint
 
 
-void async function(){
+    void async function() {
 
-    const response = await fetch(`${window.origin}/entry`, {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify(entry),
-        cache: "no-cache",
-        headers: new Headers({
-            "content-type": "application/json"
-        })
-    });
-    const data = await response.json();
-    document.querySelector("#patt1").innerText = data.pattern_1_result;
-    document.querySelector("#patt2").innerText = data.pattern_2_result;
-    document.querySelector("#patt3").innerText = data.pattern_3_result;
-    document.querySelector("#patt4").innerText = data.pattern_4_result;
-    document.querySelector("#patt5").innerText = data.pattern_5_result;
-    document.querySelector("#patt6").innerText = data.pattern_6_result;
-    
-    // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
-}();
+        const response = await fetch(`${window.origin}/entry`, {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify(entry),
+            cache: "no-cache",
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+        });
+        const data = await response.json();
+        document.querySelector("#patt1").innerText = data.pattern_1_result;
+        document.querySelector("#patt2").innerText = data.pattern_2_result;
+        document.querySelector("#patt3").innerText = data.pattern_3_result;
+        document.querySelector("#patt4").innerText = data.pattern_4_result;
+        document.querySelector("#patt5").innerText = data.pattern_5_result;
+        document.querySelector("#patt6").innerText = data.pattern_6_result;
+
+        // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
+    }();
 
 };
-
-
 </script>
 
 </html>
