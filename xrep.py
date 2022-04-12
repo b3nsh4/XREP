@@ -21,9 +21,10 @@ def stratg():
    string_selected=req['TEXTSELECTED']
    global full_line
    whole=req['WHOLE_STUFF']
-   print(req['static_array'])
+   # print(req['static_array'])
+   print("target-> ",string_selected)
    line_num = req['LINENUMBER']
-   word_index = req['word_index']
+   # word_index = req['word_index']
    full_line = req['full_line']
    #below index range of start and end of the line
    start_index=req['start_index']

@@ -1,7 +1,7 @@
 from github import Github
 import uuid,os
 g = Github('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')
-repo = g.get_repo("b3nsh4/XREP_BUG_REPORTS")
+# repo = g.get_repo("b3nsh4/XREP_BUG_REPORTS")
 
 def init_report(vars):
 
