@@ -44,8 +44,9 @@
           This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/ints.png) top -12px left / auto no-repeat, 
     linear-gradient(#ffff 50%, #ffff  50%) top left / 100% 32px; padding: 0 0 0 30px;" type="color" value="#563d7c" onselect="handle_select()" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
  <center>
-<pre class="text-success" id="target_text"></pre>
-        <button type="submit" onclick="generator()" id="gen_button" class="btn btn-success btn-sm">Generate</button>
+<span class="badge  bg-dark" id="target_text"></span>
+
+<button type="submit" onclick="generator()" id="gen_button" class="btn btn-success btn-sm">Generate</button>
         <br> 
   <p class="text-primary">LineNumber: <input class="form-check-input" autocomplete="off" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; 
 
@@ -55,19 +56,21 @@
 
     StaticBrd: <input type="checkbox" class="form-check-input" autocomplete="off" id="brdcheck" onclick="show_brd_options()"> 
   </p> 
+  </center>
 
-<div id="display_static_brd" class="d-flex mb-3">
-    <div class="p-2 order-3 border" id="100"></div>
-    <div class="p-2 order-2 border" id="101"></div>
-    <div class="p-2 order-1 border" id="102"></div>
-    <div class="p-2 order-1 border" id="103"></div>
-  </div>
+<div id="display_static_brd" style="display:none">
+    <span class="badge rounded-pill bg-secondary" id="100"></span>
+    <span class="badge rounded-pill bg-secondary" id="101"></span>
+    <span class="badge rounded-pill bg-secondary" id="102"></span>
+    <span class="badge rounded-pill bg-secondary" id="103"></span>
+</div>
 
-  
-    <button type="button" style="display:none;" class="btn btn-warning btn-sm" id="makeclear" onclick="clear_static_brd()">Clear</button>
-    <button type="button" style="display:none;" onclick="add_custombrd()" class="btn btn-primary btn-sm" id="add_static">Add</button>
+<center>
+  <button type="button" style="display:none;" class="btn btn-warning btn-sm" id="makeclear" onclick="clear_static_brd()">Clear</button>
+  <button type="button" style="display:none;" onclick="add_custombrd()" class="btn btn-primary btn-sm" id="add_static">Add</button>
+  <br>
       </center><br>
-  
+
         <!-- &#xf0c5; replace this instead of 'copy' to get icon affter enabling fontawesome cdn -->
   <div class="row">
     <div class="col-sm-4">
@@ -155,7 +158,6 @@
 </script>
 
 <script>
-    let sort_brd_list=[];
  let lrhs = "";
 let custom_brd_list = []; // dict to store the index , selText
 let target = ""; //current target
@@ -224,7 +226,7 @@ function LHSChkFn() {
 
 function add_custombrd() {
     if (target == "") {
-        return document.getElementById("target_text").innerText = "_add 'target' first_"; // if user is choosing boundary before target
+        return alert("_add 'target' first_"); // if user is choosing boundary before target
     }
     const brd_lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
     const start_bndry_at = area.selectionStart - brd_lineStart; // b0
@@ -258,17 +260,10 @@ function add_custombrd() {
     // sorting the custom_brd_list below
     if (custom_brd_list.length > 1) {
 
-    sort_brd_list = custom_brd_list.sort((a, b) => {
-        if (a.index[0] === b.index[0]) 
-         {
-             return alert("already added");
-         }
-        if (a.index[0] < b.index[0])
-        {
-         return 1;
-        }
+    custom_brd_list = custom_brd_list.sort((a, b) => {
+        return a.index[0] < b.index[0];
+        
 }); 
-    custom_brd_list=sort_brd_list;
     }      
     document.getElementById(dynamic_static_id).innerText = selText;
     dynamic_static_id=dynamic_static_id+1;
@@ -289,12 +284,11 @@ function show_brd_options() {
     if (CheckBox_StaticBrd == true) {
         document.getElementById('makeclear').style.display = "inline";
         document.getElementById('add_static').style.display = "inline";
-
+		document.getElementById('display_static_brd').style.display = "inline";
     } else {
         document.getElementById('makeclear').style.display = "none";
         document.getElementById('add_static').style.display = "none";
-        document.getElementById("display_static_brd").style.display = "none"; 
-        //ABOVE 'display_static_brd' DIV IS NOT HIDDEN ON PAGE LOAD 
+        document.getElementById('display_static_brd').style.display = "none"; 
 
     }
 }
