@@ -56,7 +56,13 @@
     StaticBrd: <input type="checkbox" class="form-check-input" autocomplete="off" id="brdcheck" onclick="show_brd_options()"> 
   </p> 
 
-  <p id="display_static_brd"></p>
+<div id="display_static_brd" class="d-flex mb-3">
+    <div class="p-2 order-3 border" id="100"></div>
+    <div class="p-2 order-2 border" id="101"></div>
+    <div class="p-2 order-1 border" id="102"></div>
+    <div class="p-2 order-1 border" id="103"></div>
+  </div>
+
   
     <button type="button" style="display:none;" class="btn btn-warning btn-sm" id="makeclear" onclick="clear_static_brd()">Clear</button>
     <button type="button" style="display:none;" onclick="add_custombrd()" class="btn btn-primary btn-sm" id="add_static">Add</button>
@@ -157,6 +163,7 @@ let target = ""; //current target
 let lineStart = 0;
 let start_target_at = 0;
 let end_target_at = 0;
+let dynamic_static_id=100;
 //above is index range of the target
 
 const textarea_data = document.getElementById("area");
@@ -263,7 +270,9 @@ function add_custombrd() {
 }); 
     custom_brd_list=sort_brd_list;
     }      
-    document.getElementById("display_static_brd").innerText += selText;
+    document.getElementById(dynamic_static_id).innerText = selText;
+    dynamic_static_id=dynamic_static_id+1;
+    // add text to 100 101 102 id
 }
 
 
@@ -284,7 +293,8 @@ function show_brd_options() {
     } else {
         document.getElementById('makeclear').style.display = "none";
         document.getElementById('add_static').style.display = "none";
-        document.getElementById("display_static_brd").innerText = "";
+        document.getElementById("display_static_brd").style.display = "none"; 
+        //ABOVE 'display_static_brd' DIV IS NOT HIDDEN ON PAGE LOAD 
 
     }
 }
