@@ -149,6 +149,7 @@
 </script>
 
 <script>
+    let sort_brd_list=[];
  let lrhs = "";
 let custom_brd_list = []; // dict to store the index , selText
 let target = ""; //current target
@@ -176,9 +177,9 @@ function handle_select() { // this fn is to display the current selected text on
         let start_bndry_at = area.selectionStart - lineStart; // b0
         let end_bndry_at = area.selectionEnd - lineStart; // b1
         if (start_target_at > end_bndry_at) {
-            console.log("lhs");
+            //console.log("lhs"); 
         } else if (start_bndry_at > end_target_at) {
-            console.log("rhs");
+            //console.log("rhs");
         } else {
             alert("Static strings cannot include target itself!");
             return; // if boundary include target itself, yell!!
@@ -231,44 +232,37 @@ function add_custombrd() {
         alert("Static strings cannot include target itself!");
         return; // if boundary include target itself, yell!!
     }
+    
+    //making sure to restrict 4 strings
+    if (custom_brd_list.length > 3)
+    {
+        return alert("not more than 4 static strings");
+    }
+    else{
 
-    if (custom_brd_list.length === 0) {
         push_statics = ({
             index: [start_bndry_at, end_bndry_at],
             word: selText,
             lrhs: lrhs
         });
         custom_brd_list.push(push_statics);
-    } else {
-      
-
-      // BELOW IS A HACK AND NEED CHANGE, USERS MAY SELECT RANDOMLY. SO LOOP ON ARRAY AND SORT IS NEEDED! CHECKOUT loop_list.js
-
-        index_b0 = custom_brd_list.at(-1)['index'][0]; //s0 
-        index_b1 = custom_brd_list.at(-1)['index'][1]; //s1
-        console.log(index_b0, index_b1);
-        if (index_b0 > end_bndry_at) // t0 as index_b0 end_bndry as b0
-        {
-            let temp_val = custom_brd_list[custom_brd_list.length - 1] // -1 index backup
-            push_statics = ({
-                index: [start_bndry_at, end_bndry_at],
-                word: selText,
-                lrhs: lrhs
-            });
-            custom_brd_list[custom_brd_list.length - 1] = push_statics;
-            custom_brd_list.push(temp_val);
-        } else if (start_bndry_at > index_b1) {
-            push_statics = ({
-                index: [start_bndry_at, end_bndry_at],
-                word: selText,
-                lrhs: lrhs
-            });
-            custom_brd_list.push(push_statics);
-        } else {
-            alert("seems you just added that boundary! Please avoid this in feature!");
-            return;
-        }
     }
+
+    // sorting the custom_brd_list below
+    if (custom_brd_list.length > 1) {
+
+    sort_brd_list = custom_brd_list.sort((a, b) => {
+        if (a.index[0] === b.index[0]) 
+         {
+             return alert("already added");
+         }
+        if (a.index[0] < b.index[0])
+        {
+         return 1;
+        }
+}); 
+    custom_brd_list=sort_brd_list;
+    }      
     document.getElementById("display_static_brd").innerText += selText;
 }
 
