@@ -44,8 +44,8 @@
           This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/ints.png) top -12px left / auto no-repeat, 
     linear-gradient(#ffff 50%, #ffff  50%) top left / 100% 32px; padding: 0 0 0 30px;" type="color" value="#563d7c" onselect="handle_select()" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
  <center>
-<span class="badge  bg-dark" id="target_text"></span>
-
+<span id="target_text"></span>
+<br>
 <button type="submit" onclick="generator()" id="gen_button" class="btn btn-success btn-sm">Generate</button>
         <br> 
   <p class="text-primary">LineNumber: <input class="form-check-input" autocomplete="off" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; 
@@ -256,26 +256,17 @@ function add_custombrd() {
         });
         custom_brd_list.push(push_statics);
     }
-
-    // sorting the custom_brd_list below
-    if (custom_brd_list.length > 1) {
-
-    custom_brd_list = custom_brd_list.sort((a, b) => {
-        return a.index[0] < b.index[0];
-        
-}); 
-    }      
+    console.log(dynamic_static_id);
     document.getElementById(dynamic_static_id).innerText = selText;
     dynamic_static_id=dynamic_static_id+1;
     // add text to 100 101 102 id
 }
 
 
-
-
 function clear_static_brd() {
     document.getElementById("display_static_brd").innerText = "";
     custom_brd_list = []; //clear elements
+    dynamic_static_id=100;
 }
 
 // if staticbrd is checked, show options, else show nothing
@@ -304,8 +295,25 @@ function copyElementText(id) {
 
 }
 
-
+ let sorted_custom_brd=[];
 function generator() {
+        
+
+    // sorting the custom_brd_list below
+    if (custom_brd_list.length > 1) {
+
+        sorted_custom_brd = custom_brd_list.sort((a, b) => {
+        if (a.index[0] === b.index[0])
+        {
+            alert("already added!");
+            return;
+        }
+        else if (a.index[0] < b.index[0])
+        return 1;
+        
+        }); 
+    }
+
     const entire_line = area.value.split("\n");
     const lineNo = textarea_data.value.substr(0, textarea_data.selectionStart).split("\n").length;
     const selText = target; // current target
@@ -316,6 +324,7 @@ function generator() {
 
 
     var entry = {
+        STATIC_STRINGS: sorted_custom_brd,
         LINENUMBER: lineNo,
         TEXTSELECTED: selText,
         WHOLE_STUFF: entire_line,

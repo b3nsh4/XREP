@@ -22,14 +22,11 @@ def stratg():
    global full_line
    whole=req['WHOLE_STUFF']
    # print(req['static_array'])
-   print("target-> ",string_selected)
+   print("sorted_custom_brd-> ",req['STATIC_STRINGS'],indent=4)
    line_num = req['LINENUMBER']
-   # word_index = req['word_index']
    full_line = req['full_line']
-   #below index range of start and end of the line
    start_index=req['start_index']
    end_index=req['end_index']
-   # print(full_line[word_index[0]:word_index[1]])
 
    #introductory to [LR]HS can be found at docs.xrep.in/boundaries
    # CHECKING IF LHS AND RHS HAS CHECKED
