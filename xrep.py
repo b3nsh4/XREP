@@ -22,7 +22,7 @@ def stratg():
    global full_line
    whole=req['WHOLE_STUFF']
    # print(req['static_array'])
-   print("sorted_custom_brd-> ",req['STATIC_STRINGS'],indent=4)
+   # print("sorted_custom_brd-> ",req['STATIC_STRINGS'],indent=4)
    line_num = req['LINENUMBER']
    full_line = req['full_line']
    start_index=req['start_index']

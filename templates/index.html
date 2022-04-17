@@ -3,11 +3,9 @@
 <head>
     <meta charset="utf-8">
        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-<!--     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bs.min.css') }}">
-     <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fa.min.css') }}"> -->
 
   <script src="{{ url_for('static', filename='bs.bundle.min.js') }}"></script>
   <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='textbox.css') }}"> -->
@@ -38,8 +36,7 @@
 <!-- ADD LINE NUMBER CHECK BOX HEREW -->
 <br>
 <center>𝙓𝙍𝙀𝙋 𝘽𝙀𝙏𝘼 𝙑.03</center>
-<!-- <textarea class="txtarea"  wrap="off" rows="17" placeholder="Paste your text here 👇  
-          This TextArea is resizeable 👉" cols="10" id="area"></textarea> -->
+
      <textarea class="form-control" placeholder="Paste your text here 👇  
           This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/ints.png) top -12px left / auto no-repeat, 
     linear-gradient(#ffff 50%, #ffff  50%) top left / 100% 32px; padding: 0 0 0 30px;" type="color" value="#563d7c" onselect="handle_select()" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
@@ -71,7 +68,6 @@
   <br>
       </center><br>
 
-        <!-- &#xf0c5; replace this instead of 'copy' to get icon affter enabling fontawesome cdn -->
   <div class="row">
     <div class="col-sm-4">
       <h5>PATTERN -1 ⁽ˢᵉᵗ⁾ 
@@ -132,12 +128,6 @@
       <div class="modal-body">
         <h6 id="report_notes"></h6>
       </div>
-
-      <!-- Modal footer -->
-<!--       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-      </div>
- -->
     </div>
   </div>
 </div>
@@ -178,21 +168,13 @@ function handle_select() { // this fn is to display the current selected text on
 
     if (CheckBox_StaticBrd == false) { //if static is not checked, it should be target. else its boundary
 
-        target = textarea_data.value.substr(textarea_data.selectionStart, textarea_data.selectionEnd -textarea_data.selectionStart);
+    target = textarea_data.value.substr(textarea_data.selectionStart, textarea_data.selectionEnd -textarea_data.selectionStart);
         start_target_at = area.selectionStart - lineStart; // t0
         end_target_at = area.selectionEnd - lineStart; // t1
     } // if cond ends
     else if (CheckBox_StaticBrd == true) {
         let start_bndry_at = area.selectionStart - lineStart; // b0
         let end_bndry_at = area.selectionEnd - lineStart; // b1
-        if (start_target_at > end_bndry_at) {
-            //console.log("lhs"); 
-        } else if (start_bndry_at > end_target_at) {
-            //console.log("rhs");
-        } else {
-            alert("Static strings cannot include target itself!");
-            return; // if boundary include target itself, yell!!
-        }
 
     }
 
@@ -225,9 +207,12 @@ function LHSChkFn() {
 // when hit "add" selText will be displayed whereever mentioned
 
 function add_custombrd() {
+
     if (target == "") {
         return alert("_add 'target' first_"); // if user is choosing boundary before target
     }
+    // sorting the custom_brd_list below
+
     const brd_lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
     const start_bndry_at = area.selectionStart - brd_lineStart; // b0
     const end_bndry_at = area.selectionEnd - brd_lineStart; // b1
@@ -242,6 +227,7 @@ function add_custombrd() {
         return; // if boundary include target itself, yell!!
     }
     
+
     //making sure to restrict 4 strings
     if (custom_brd_list.length > 3)
     {
@@ -255,18 +241,36 @@ function add_custombrd() {
             lrhs: lrhs
         });
         custom_brd_list.push(push_statics);
+        document.getElementById(dynamic_static_id).innerText = selText;
+        dynamic_static_id=dynamic_static_id+1;
+        //  check duplicate static strings
+        sorted_custom_brd = custom_brd_list.sort((a, b) => {
+        if (a.index[0] === b.index[0])
+        {   
+            clear_static_brd()
+            return alert("duplicate static string found! already added!");
+        }
+        else if (a.index[0] < b.index[0])
+        {
+        return;
+        }
+            }); 
+        // end check
+
+
     }
-    console.log(dynamic_static_id);
-    document.getElementById(dynamic_static_id).innerText = selText;
-    dynamic_static_id=dynamic_static_id+1;
+
     // add text to 100 101 102 id
 }
 
-
 function clear_static_brd() {
-    document.getElementById("display_static_brd").innerText = "";
+    document.getElementById("100").innerText="";
+    document.getElementById("101").innerText="";
+    document.getElementById("102").innerText="";
+    document.getElementById("103").innerText="";
     custom_brd_list = []; //clear elements
     dynamic_static_id=100;
+       
 }
 
 // if staticbrd is checked, show options, else show nothing
@@ -295,24 +299,9 @@ function copyElementText(id) {
 
 }
 
- let sorted_custom_brd=[];
-function generator() {
-        
+let sorted_custom_brd=[];
 
-    // sorting the custom_brd_list below
-    if (custom_brd_list.length > 1) {
-
-        sorted_custom_brd = custom_brd_list.sort((a, b) => {
-        if (a.index[0] === b.index[0])
-        {
-            alert("already added!");
-            return;
-        }
-        else if (a.index[0] < b.index[0])
-        return 1;
-        
-        }); 
-    }
+function generator() {        
 
     const entire_line = area.value.split("\n");
     const lineNo = textarea_data.value.substr(0, textarea_data.selectionStart).split("\n").length;
