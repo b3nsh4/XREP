@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
         
-       <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+       <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bs.min.css') }}">
@@ -39,7 +39,7 @@
 <center>𝙓𝙍𝙀𝙋 𝘽𝙀𝙏𝘼 𝙑.03</center>
 
      <textarea class="form-control" placeholder="Paste your text here 👇  
-          This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/ints.png) top -12px left / auto no-repeat, 
+          This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/images/ints.png) top -12px left / auto no-repeat, 
     linear-gradient(#ffff 50%, #ffff  50%) top left / 100% 32px; padding: 0 0 0 30px;" type="color" value="#563d7c" onselect="handle_select()" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
  <center>
 <span id="target_text"></span>
@@ -133,8 +133,11 @@
   </div>
 </div>
 
+
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<!-- main js file  -->
 <script src="{{ url_for('static', filename='jq.min.js') }}"></script>
+
 <script type=text/javascript>
         $(function() {
           $('a#bug').on('click', function(e) {
