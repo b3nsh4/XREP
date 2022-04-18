@@ -8,6 +8,7 @@ from patt2_core import pat_2_ready
 from pattern_6_beta import pattern_6_beta
 from simple_cooker import simple_chef,final_cooker
 from reports import init_report
+from static_arrang import static_res
 app = Flask(__name__)
 
 @app.route('/')
@@ -21,15 +22,26 @@ def stratg():
    string_selected=req['TEXTSELECTED']
    global full_line
    whole=req['WHOLE_STUFF']
-   # print(req['static_array'])
-   # print("sorted_custom_brd-> ",req['STATIC_STRINGS'],indent=4)
+   static_strings = req['STATIC_STRINGS']
    line_num = req['LINENUMBER']
    full_line = req['full_line']
    start_index=req['start_index']
    end_index=req['end_index']
 
+   rhs_static_str = []
+   lhs_static_str = []
    #introductory to [LR]HS can be found at docs.xrep.in/boundaries
    # CHECKING IF LHS AND RHS HAS CHECKED
+   res_lrhs_sorted = static_res(static_strings)
+   if len(static_strings)>1:
+      for l in res_lrhs_sorted['lhs_arr_sorted']:
+         lhs_static_str.append(l['word'])
+
+      for r in res_lrhs_sorted['rhs_arr_sorted']:
+         rhs_static_str.append(r['word'])
+
+   print("final_Lhs-> ",lhs_static_str)
+   print("final_Rhs-> ",rhs_static_str)
 
    # below global vars keeps output of checkboxes!
    global LINE_NUM
