@@ -33,7 +33,7 @@ def stratg():
    #introductory to [LR]HS can be found at docs.xrep.in/boundaries
    # CHECKING IF LHS AND RHS HAS CHECKED
    res_lrhs_sorted = static_res(static_strings)
-   if len(static_strings)>1:
+   if len(static_strings)>=1:
       for l in res_lrhs_sorted['lhs_arr_sorted']:
          lhs_static_str.append(l['word'])
 
