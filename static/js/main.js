@@ -120,6 +120,7 @@ function clear_static_brd() {
     document.getElementById("102").innerText="";
     document.getElementById("103").innerText="";
     custom_brd_list = []; //clear elements
+    sorted_custom_brd=[];
     dynamic_static_id=100;
        
 }

@@ -3,7 +3,8 @@ from itertools import groupby
 import json,sys,os,uuid
 sys.path.append('algos')
 from lookup import *
-from patt1_core import pat_1_ready,escape_brakt
+from escape_me import *
+from patt1_core import pat_1_ready
 from patt2_core import pat_2_ready
 from pattern_6_beta import pattern_6_beta
 from simple_cooker import simple_chef,final_cooker
@@ -27,7 +28,7 @@ def stratg():
    full_line = req['full_line']
    start_index=req['start_index']
    end_index=req['end_index']
-
+   print("static_strings",static_strings)
    rhs_static_str = []
    lhs_static_str = []
    #introductory to [LR]HS can be found at docs.xrep.in/boundaries
@@ -112,20 +113,20 @@ def stratg():
       cooked_pre_boundary = pre_boundary[:3]
       len_after_pre_boundary = len_for_pre_boundary-4
 
-      cooked_post_boundary = escape_brakt(post_boundary[:3])
+      cooked_post_boundary = escape_me(post_boundary[:3])
       len_after_post_boundary = len_for_post_boundary-4
 
    elif len_for_pre_boundary<6 and len_for_post_boundary<6:
       cooked_pre_boundary = pre_boundary
-      cooked_post_boundary = escape_brakt(post_boundary)
+      cooked_post_boundary = escape_me(post_boundary)
 
    elif len_for_pre_boundary<6:
       cooked_pre_boundary = pre_boundary
-      cooked_post_boundary = escape_brakt(post_boundary[:3])
+      cooked_post_boundary = escape_me(post_boundary[:3])
       len_after_post_boundary = len_for_post_boundary-4
 
    elif len_for_post_boundary<6:
-      cooked_post_boundary = escape_brakt(post_boundary)
+      cooked_post_boundary = escape_me(post_boundary)
 
       cooked_pre_boundary = pre_boundary[:3]
       len_after_pre_boundary = len_for_pre_boundary-4
@@ -348,7 +349,7 @@ def stratg():
    def escape_from_list(list):
       temp = []
       for i in list:
-         temp.append(escape_brakt(i))
+         temp.append(escape_me(i))
       return temp
 
    def pattern_1():
@@ -363,7 +364,7 @@ def stratg():
          pre_bndry_patt3="\\s*^"
       else:
          splitting_for_global_fn = pre_boundary.split()[-1]
-         pre_bndry_patt3 = glolbal_decision_for_pattern3(escape_brakt(splitting_for_global_fn))
+         pre_bndry_patt3 = glolbal_decision_for_pattern3(escape_me(splitting_for_global_fn))
       #settlement for pre_boundary
 
       prefetch_complex_subsitit = "sed -E -n "+'"'+str(LINE_NUM)+"s/("
@@ -426,7 +427,7 @@ def stratg():
 
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
       nonlocal cooked_pre_boundary
-      escaped_pre_boundary = escape_brakt(cooked_pre_boundary)
+      escaped_pre_boundary = escape_me(cooked_pre_boundary)
       final_cooked_string = ""
       short_cook = ".*"
       sub_it = "sed -E -n '{}s/.*(".format(LINE_NUM)
