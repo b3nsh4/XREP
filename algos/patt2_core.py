@@ -1,18 +1,8 @@
 #READY FOR BETA TEST !!!! CHECKOUT FOR SPACES IF OUTPUTS ARENOT WORKING
-
 # pattern-2: pre1.{N}(cookedsrsring)post1.{N}
+
 from simple_cooker import final_cooker
-
-escape = ['.', '[',']', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
-
-def escape_me(string):
-  res = ""
-  for i in string:
-    if i in escape:
-      res+="\\"+i
-    else:
-      res+=i
-  return res
+from escape_me import *
 
 def does_pre_post_exist(whatever):
 	splitted = whatever.split()

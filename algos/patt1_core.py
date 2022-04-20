@@ -4,18 +4,7 @@
 
 #For pattern-1, there is 2 pre1s and 2 pre2s - reason is above. therefore, if one select for
 #LHS , it should be [pre-1]?.*pre2(cooked_string)[post-1]?.*post2
-
-escape = ['.', '[',']', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
-
-def escape_me(string):
-  res = ""
-  for i in string:
-    if i in escape:
-      res+="\\"+i
-
-    else:
-      res+=i
-  return res
+from escape_me import *
 
 def spacer_finder(pre_or_post,stuff):  #pre2\s?(target)\s?post
   if pre_or_post=="pre":
@@ -38,7 +27,7 @@ def spacer_finder(pre_or_post,stuff):  #pre2\s?(target)\s?post
 def glolbal_len_decision(string):
   if len(string)>4: #checking if string is gt4
     gt4 = True
-    shorted_str = escape_brakt(string[:3])
+    shorted_str = escape_me(string[:3])
     len_after_shorted = len(string[3:])
     return {"gt4":gt4,"shorted_str":shorted_str,"len_after_shorted":str(len_after_shorted)}
   else:
@@ -71,7 +60,7 @@ def foo(lhs,rhs,what,splitted_stuff):
       global_res_2 = glolbal_len_decision(splitted_stuff[-1])
       bd2 = rhs_1+global_res_2["shorted_str"]+".{"+global_res_2["len_after_shorted"]+"}"+rhs_2
     else: #len is lt 4 
-      bd2 = rhs_1+escape_brakt(splitted_stuff[-1])+rhs_2
+      bd2 = rhs_1+escape_me(splitted_stuff[-1])+rhs_2
     final_res = bd1+".*"+bd2 #returns bd1.*bd2
     return final_res
 
@@ -80,23 +69,13 @@ def foo(lhs,rhs,what,splitted_stuff):
       global_res_1 = glolbal_len_decision(splitted_stuff[0])
       bd1 = lhs_1+global_res_1["shorted_str"]+".{"+global_res_1["len_after_shorted"]+"}"+lhs_2
     else: #if len is lt 4
-      bd1 = lhs_1+escape_brakt(splitted_stuff[0])+lhs_2
+      bd1 = lhs_1+escape_me(splitted_stuff[0])+lhs_2
     return bd1
   elif len(splitted_stuff)==0: #string is empty
     if what=="pre": #if pre strng is empty, retrun something relevant. so i return ^ and $ for the post
       return ""
     elif what=="post":
       return ""
-
-def escape_brakt(this):
-  bkts = ['.', '[',']', '{', '(', ')', '\\', '*', '+', '?', '|', '^', '$','/','"']
-  res = ""
-  for i in this:
-    if i in bkts:
-      res+="\\"+i
-    else:
-      res+=i
-  return res
 
 def pat_1_ready(lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy):
 
