@@ -1,9 +1,4 @@
-
 #### pre1.*pre2(target)post1.*post2 #A.K.A PATTERN-01
-#READY FOR BETA TEST !!!! CHECKOUT FOR SPACES IF OUTPUTS ARENOT WORKING
-
-#For pattern-1, there is 2 pre1s and 2 pre2s - reason is above. therefore, if one select for
-#LHS , it should be [pre-1]?.*pre2(cooked_string)[post-1]?.*post2
 from escape_me import *
 
 def spacer_finder(pre_or_post,stuff):  #pre2\s?(target)\s?post
@@ -106,3 +101,10 @@ def pat_1_ready(lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooke
 # - if len(splitted_stuff[0]) > 4 the run glolbal_len_decision else return the same string
 # - if splitted_stuff len eq 1, then we take 0th element since it is nearest to target
 # i.e bd(target)
+
+
+
+#READY FOR BETA TEST !!!! CHECKOUT FOR SPACES IF OUTPUTS ARENOT WORKING
+
+#For pattern-1, there is 2 pre1s and 2 pre2s - reason is above. therefore, if one select for
+#LHS , it should be [pre-1]?.*pre2(cooked_string)[post-1]?.*post2

@@ -1,6 +1,6 @@
-#READY FOR BETA TEST !!!! CHECKOUT FOR SPACES IF OUTPUTS ARENOT WORKING
 # pattern-2: pre1.{N}(cookedsrsring)post1.{N}
 
+from improved_len_decision import glolbal_len_decision
 from simple_cooker import final_cooker
 from escape_me import *
 
@@ -13,18 +13,6 @@ def does_pre_post_exist(whatever):
 		exist= False
 	return exist
 
-def glolbal_len_decision(string):
-	if len(string)>4: #checking if string is gt4
-		escaped_string = escape_me(string) 
-		gt4 = True
-		shorted_str = escaped_string[:3] #uses escaped string
-		# print("shorted_str",shorted_str)
-		len_after_shorted = str(len(string[3:])) #uses non escaped string for count
-		return shorted_str+".{"+len_after_shorted+"}"
-	elif len(string)==0:
-		return "" #if whatever is empty
-	else:
-		return escape_me(string) 
 
 def pat_2_ready(whatever):
 	if len(whatever)>=2:
@@ -36,10 +24,7 @@ def pat_2_ready(whatever):
 		return res #put escape_me(res) if needed
 	else:
 		return "" #if whatever is empty
-# one = pat_2_ready(pre_split_on)
-# two = pat_2_ready(post_split_on)
-# print(one)
-# print(two)
+
 
 # REF:01 
 # we take ['this', 'movie', 'is', 'feelgood'] 
