@@ -1,7 +1,11 @@
 from flask import Flask,render_template,request,jsonify,make_response
 from itertools import groupby
 import json,sys,os,uuid
+
+# append module dir
 sys.path.append('algos')
+sys.path.append('algos/special_patterns')
+
 from lookup import *
 from escape_me import *
 from patt1_core import pat_1_ready
@@ -10,8 +14,12 @@ from pattern_6_beta import pattern_6_beta
 from simple_cooker import simple_chef,final_cooker
 from reports import init_report
 from static_arrang import static_res
-app = Flask(__name__)
 
+#modules for static string
+from patt1_static_brd import patt1_static_str
+
+
+app = Flask(__name__)
 @app.route('/')
 def getstarted():
    return render_template('index.html')
@@ -353,6 +361,8 @@ def stratg():
       return temp
 
    def pattern_1():
+      if len(lhs_static_str)!=0 or len(rhs_static_str)!=0: #static string invoking
+         return patt1_static_str(lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM) 
       patt1_res = pat_1_ready(lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy)
       return patt1_res
 
