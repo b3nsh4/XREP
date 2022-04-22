@@ -180,19 +180,19 @@ function generator() {
         return "";
     } // to avoid undefined when no selection and hit generate
     const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
-
+    let pre_space="";
     // below cond if target-1 is " " 
     if (entire_line[0].charAt(start_target_at-1) === " ")
     {
-        pre_space = true
+        pre_space = true;
     } 
     else {
-        pre_space = false
+        pre_space = false;
     }
 
     var entry = {
         STATIC_STRINGS: sorted_custom_brd,
-        pre_char_space = pre_space,
+        pre_char_space: pre_space,
         LINENUMBER: lineNo,
         TEXTSELECTED: selText,
         WHOLE_STUFF: entire_line,

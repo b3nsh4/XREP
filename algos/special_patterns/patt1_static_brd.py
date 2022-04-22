@@ -23,20 +23,24 @@ def rhs_static_str(rhs):
 			post2=""
 			return [post1,post2]
 
-def patt1_static_str(lhs,rhs,cooked_string,LINE_NUM):
+def patt1_static_str(lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
+	if pre_has_space == True:
+		p_space="\\s+"
+	elif pre_has_space == False:
+		p_space=""
 	if len(lhs)!=0 and len(rhs)!=0:
 		pre_res = lhs_static_str(lhs)
 		post_res = rhs_static_str(rhs)
 		pre1,pre2 = pre_res[0],pre_res[1]
 		post1,post2 = post_res[0],post_res[1]
-		return f"sed -E -n '{LINE_NUM}s/.*"+pre1+".*"+pre2+".*"+"(."+(cooked_string)+").*"+post1+".*"+post2+"/\\1/p'"
+		return f"sed -E -n '{LINE_NUM}s/.*"+pre1+".*"+pre2+".*"+"("+p_space+(cooked_string)+").*"+post1+".*"+post2+"/\\1/p'"
 		
 	elif len(lhs)==0 and len(rhs)!=0:
 		post_res = rhs_static_str(rhs)
 		post1,post2 = post_res[0],post_res[1]
-		return f"sed -E -n '{LINE_NUM}s/.*(."+(cooked_string)+").*"+post1+".*"+post2+".*/\\1/p'"
+		return f"sed -E -n '{LINE_NUM}s/.*("+p_space+(cooked_string)+").*"+post1+".*"+post2+".*/\\1/p'"
 	
 	elif len(lhs)!=0 and len(rhs)==0:
 		pre_res = lhs_static_str(lhs)
 		pre1,pre2 = pre_res[0],pre_res[1]
-		return f"sed -E -n '{LINE_NUM}s/.*"+pre1+".*"+pre2+".*(."+(cooked_string)+").*/\\1/p'"
+		return f"sed -E -n '{LINE_NUM}s/.*"+pre1+".*"+pre2+".*("+p_space+(cooked_string)+").*/\\1/p'"

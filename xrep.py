@@ -33,6 +33,7 @@ def stratg():
    global full_line
    whole=req['WHOLE_STUFF']
    static_strings = req['STATIC_STRINGS']
+   pre_char_space = req['pre_char_space']
    line_num = req['LINENUMBER']
    full_line = req['full_line']
    start_index=req['start_index']
@@ -362,7 +363,7 @@ def stratg():
 
    def pattern_1():
       if len(lhs_static_str)!=0 or len(rhs_static_str)!=0: #static string invoking
-         return patt1_static_str(lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM) 
+         return patt1_static_str(lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space) 
       patt1_res = pat_1_ready(lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy)
       return patt1_res
 
