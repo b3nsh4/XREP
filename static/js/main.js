@@ -163,7 +163,7 @@ function copyElementText(id) {
 let sorted_custom_brd=[];
 
 function generator() {        
-
+    document.getElementById('run_test_button').style.display = "inline";
     const entire_line = area.value.split("\n");
     const lineNo = textarea_data.value.substr(0, textarea_data.selectionStart).split("\n").length;
     const selText = target; // current target
