@@ -140,6 +140,15 @@ function show_brd_options() {
     }
 }
 
+function show_run_live() {
+    document.getElementById('run_test_live').style.display = "inline";
+
+}
+
+function hide_run_live(){
+    document.getElementById('run_test_live').style.display = "none";
+}
+
 function copyElementText(id) {
     var text = document.getElementById(id).innerText;
     var elem = document.createElement("textarea");

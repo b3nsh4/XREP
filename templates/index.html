@@ -44,7 +44,8 @@
  <center>
 <span id="target_text"></span>
 <br>
-<button type="submit" onclick="generator()" id="gen_button" class="btn btn-success btn-sm">Generate</button>
+<button type="submit" onclick="generator()" id="gen_button" class="btn btn-success btn-sm">Generate</button> 
+<button type="submit" onclick="show_run_live()" id="gen_button" class="btn btn-success btn-sm">Run Test</button>
         <br> 
   <p class="text-primary">LineNumber: <input class="form-check-input" autocomplete="off" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; 
 
@@ -110,6 +111,27 @@
     </div>
 
   </div>
+
+<!-- starting test run div -->
+<div id="run_test_live" style="display:none">
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-body">
+     <pre class="card-text">Some example text. Some example text.</pre>
+      <pre class="card-text">Some example text. Some example text.</pre>
+       <pre class="card-text">Some example text. Some example text.</pre>
+        <pre class="card-text">Some example text. Some example text.</pre>
+         <pre class="card-text">Some example text. Some example text.</pre>
+<center>
+<button type="submit" onclick="hide_run_live()" id="gen_button" class="btn btn-warning btn-sm">Close</button>
+</center>
+    </div>
+  </div>
+</div>
+</div>
+<br>
+<!-- ending test run div -->
+
 </div>
 <br>
 <center><a href="#" id="bug"><button type="button" data-bs-toggle="modal" data-bs-target="#myModal" class="btn btn-secondary btn-sm">One-click Report this wrong result!</button><br></center></a>
