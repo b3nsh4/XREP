@@ -534,6 +534,13 @@ def bug_report():
    report_status=init_report(collect_report_vars)
    return report_status
 
+@app.route('/run_test',methods=["POST","GET"])
+def run_with_sed():
+   req = request.get_json()
+   print("RUN TESTS->",req['patt1'])
+   return 200
+
+
 @app.route('/donate')
 def donate_xrep():
    return render_template('donate.html')

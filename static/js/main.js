@@ -140,13 +140,10 @@ function show_brd_options() {
     }
 }
 
-function show_run_live() {
-    document.getElementById('run_test_live').style.display = "inline";
-
-}
 
 function hide_run_live(){
     document.getElementById('run_test_live').style.display = "none";
+
 }
 
 function copyElementText(id) {
@@ -159,6 +156,13 @@ function copyElementText(id) {
     document.body.removeChild(elem);
 
 }
+// collectin data for run_test
+let patt1_run_res = "";
+let patt2_run_res = "";
+let patt3_run_res = "";
+let patt4_run_res = "";
+let patt5_run_res = "";
+let patt6_run_res = "";
 
 let sorted_custom_brd=[];
 
@@ -208,8 +212,44 @@ function generator() {
         document.querySelector("#patt4").innerText = data.pattern_4_result;
         document.querySelector("#patt5").innerText = data.pattern_5_result;
         document.querySelector("#patt6").innerText = data.pattern_6_result;
-
+        patt1_run_res = data.pattern_1_result;
+        patt2_run_res = data.pattern_2_result;
+        patt3_run_res = data.pattern_3_result;
+        patt4_run_res = data.pattern_4_result;
+        patt5_run_res = data.pattern_5_result;
+        patt6_run_res = data.pattern_6_result;
         // document.body.appendChild(document.createTextNode(data.sub_with_spec_nums));
     }();
 
+};
+
+function run_sed_live() {
+    document.getElementById('run_test_live').style.display = "inline";
+    total_patterns = {
+        patt1: patt1_run_res,
+        patt2: patt2_run_res,
+        patt3: patt3_run_res,
+        patt4: patt4_run_res,
+        patt5: patt5_run_res,
+        patt6: patt6_run_res 
+    }
+        
+        void async function() {
+        const response = await fetch(`${window.origin}/run_test`, {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify(total_patterns),
+            cache: "no-cache",
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+        });
+        const data = await response.json();
+        document.querySelector("#200").innerText = data.pattern_1_result;
+        document.querySelector("#201").innerText = data.pattern_2_result;
+        document.querySelector("#202").innerText = data.pattern_3_result;
+        document.querySelector("#203").innerText = data.pattern_4_result;
+        document.querySelector("#204").innerText = data.pattern_5_result;
+        document.querySelector("#205").innerText = data.pattern_6_result;
+        }();
 };
