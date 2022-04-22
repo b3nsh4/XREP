@@ -22,6 +22,8 @@ function handle_select() { // this fn is to display the current selected text on
     target = textarea_data.value.substr(textarea_data.selectionStart, textarea_data.selectionEnd -textarea_data.selectionStart);
         start_target_at = area.selectionStart - lineStart; // t0
         end_target_at = area.selectionEnd - lineStart; // t1
+
+
     } // if cond ends
     else if (CheckBox_StaticBrd == true) {
         let start_bndry_at = area.selectionStart - lineStart; // b0
@@ -163,12 +165,15 @@ let patt3_run_res = "";
 let patt4_run_res = "";
 let patt5_run_res = "";
 let patt6_run_res = "";
+let line_to_run = "";
 
 let sorted_custom_brd=[];
 
-function generator() {        
+function generator() {   
+    
     document.getElementById('run_test_button').style.display = "inline";
     const entire_line = area.value.split("\n");
+    line_to_run = entire_line;
     const lineNo = textarea_data.value.substr(0, textarea_data.selectionStart).split("\n").length;
     const selText = target; // current target
     if (selText.length == 0) {
@@ -176,9 +181,18 @@ function generator() {
     } // to avoid undefined when no selection and hit generate
     const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
 
+    // below cond if target-1 is " " 
+    if (entire_line[0].charAt(start_target_at-1) === " ")
+    {
+        pre_space = true
+    } 
+    else {
+        pre_space = false
+    }
 
     var entry = {
         STATIC_STRINGS: sorted_custom_brd,
+        pre_char_space = pre_space,
         LINENUMBER: lineNo,
         TEXTSELECTED: selText,
         WHOLE_STUFF: entire_line,
@@ -231,7 +245,8 @@ function run_sed_live() {
         patt3: patt3_run_res,
         patt4: patt4_run_res,
         patt5: patt5_run_res,
-        patt6: patt6_run_res 
+        patt6: patt6_run_res,
+        full_line: line_to_run
     }
         
         void async function() {
@@ -245,11 +260,11 @@ function run_sed_live() {
             })
         });
         const data = await response.json();
-        document.querySelector("#200").innerText = data.pattern_1_result;
-        document.querySelector("#201").innerText = data.pattern_2_result;
-        document.querySelector("#202").innerText = data.pattern_3_result;
-        document.querySelector("#203").innerText = data.pattern_4_result;
-        document.querySelector("#204").innerText = data.pattern_5_result;
-        document.querySelector("#205").innerText = data.pattern_6_result;
+        document.getElementById("200").innerText = ">> "+data.patt1_shell_op;
+        document.getElementById("201").innerText = ">> "+data.patt2_shell_op;
+        document.getElementById("202").innerText = ">> "+data.patt3_shell_op;
+        document.getElementById("203").innerText = ">> "+data.patt4_shell_op;
+        document.getElementById("204").innerText = ">> "+data.patt5_shell_op;
+        document.getElementById("205").innerText = ">> "+data.patt6_shell_op;
         }();
 };

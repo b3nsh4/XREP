@@ -5,6 +5,7 @@ import json,sys,os,uuid
 # append module dir
 sys.path.append('algos')
 sys.path.append('algos/special_patterns')
+sys.path.append('algos/common_mods')
 
 from lookup import *
 from escape_me import *
@@ -36,7 +37,6 @@ def stratg():
    full_line = req['full_line']
    start_index=req['start_index']
    end_index=req['end_index']
-   print("static_strings",static_strings)
    rhs_static_str = []
    lhs_static_str = []
    #introductory to [LR]HS can be found at docs.xrep.in/boundaries
@@ -534,11 +534,35 @@ def bug_report():
    report_status=init_report(collect_report_vars)
    return report_status
 
+from echo_escape import echo_escaper
+import subprocess
 @app.route('/run_test',methods=["POST","GET"])
 def run_with_sed():
    req = request.get_json()
-   print("RUN TESTS->",req['patt1'])
-   return 200
+   patt1 = req['patt1']
+   patt2 = req['patt2']
+   patt3 = req['patt3']
+   patt4 = req['patt4']
+   patt5 = req['patt5']
+   patt6 = req['patt6']
+   full_line = req['full_line'][0]
+   fresh_echo=echo_escaper(full_line)
+   print("->",fresh_echo)
+   patt1_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
+   patt2_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
+   patt3_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
+   patt4_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
+   patt5_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
+   patt6_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
+   final_res = {
+      "patt1_shell_op":patt1_op,
+      "patt2_shell_op":patt2_op,
+      "patt3_shell_op":patt3_op,
+      "patt4_shell_op":patt4_op,
+      "patt5_shell_op":patt5_op,
+      "patt6_shell_op":patt6_op,
+   }
+   return final_res
 
 
 @app.route('/donate')
