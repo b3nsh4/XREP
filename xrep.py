@@ -34,6 +34,7 @@ def stratg():
    whole=req['WHOLE_STUFF']
    static_strings = req['STATIC_STRINGS']
    pre_char_space = req['pre_char_space']
+   post_char_space = req['post_char_space']
    line_num = req['LINENUMBER']
    full_line = req['full_line']
    start_index=req['start_index']
@@ -267,7 +268,7 @@ def stratg():
          t.append(k)
       if len(list_to_filter)%2!=0:
          t.append(list_to_filter[-1])
-#grouping with numbering
+      #grouping with numbering
       for i,k in groupby(t):
          l=list(k)
          temp.append((i,len(l)))
@@ -466,7 +467,7 @@ def stratg():
          return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+escaped_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)
 
    def pattern_6():
-      res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary)
+      res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary,post_char_space)
       return res
    #some global vars
    global sub_with_spec_nums
@@ -557,7 +558,7 @@ def run_with_sed():
    if patt5!="Works_better_with_complex":
       patt5_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt5,shell=True).decode()
    else:
-      patt5_op="__"
+      patt5_op=" "
    patt6_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt6,shell=True).decode()
    final_res = {
       "patt1_shell_op":patt1_op,

@@ -165,15 +165,13 @@ let patt3_run_res = "";
 let patt4_run_res = "";
 let patt5_run_res = "";
 let patt6_run_res = "";
-let line_to_run = "";
-
 let sorted_custom_brd=[];
-
+let line_to_run="";
 function generator() {   
     
     document.getElementById('run_test_button').style.display = "inline";
     const entire_line = area.value.split("\n");
-    line_to_run = entire_line;
+    line_to_run=entire_line; //saving a global copy of entire_line
     const lineNo = textarea_data.value.substr(0, textarea_data.selectionStart).split("\n").length;
     const selText = target; // current target
     if (selText.length == 0) {
@@ -181,6 +179,7 @@ function generator() {
     } // to avoid undefined when no selection and hit generate
     const lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
     let pre_space="";
+    let post_space="";
     // below cond if target-1 is " " 
     if (entire_line[0].charAt(start_target_at-1) === " ")
     {
@@ -189,10 +188,18 @@ function generator() {
     else {
         pre_space = false;
     }
-
+    // below cond if target+1 is " " 
+    if (entire_line[0].charAt(end_target_at) === " ")
+    {
+        post_space = true;
+    } 
+    else {
+        post_space = false;
+    }
     var entry = {
         STATIC_STRINGS: sorted_custom_brd,
         pre_char_space: pre_space,
+        post_char_space: post_space,
         LINENUMBER: lineNo,
         TEXTSELECTED: selText,
         WHOLE_STUFF: entire_line,

@@ -15,8 +15,14 @@ def glolbal_decision_6(string):
     else:
         return escape_me(string)
 
-def pattern_6_beta(lhs,rhs,LINE_NUM,preb,postb):
+def pattern_6_beta(lhs,rhs,LINE_NUM,preb,postb,post_char_space):
     res = preb.split()
+    #check if target+1 has space if, yes \\s+ else \\s*
+    if post_char_space==True:
+        p_space="\\s+"
+    elif post_char_space==False:
+        p_space="\\s*"
+
     if lhs==True:
         lhs_1 = "["
         lhs_2 = "]?"
@@ -39,7 +45,7 @@ def pattern_6_beta(lhs,rhs,LINE_NUM,preb,postb):
             return f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+"(.+)$/\\1/p'"
 
         if len(final_post)!=0:
-            return f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+"(.+)\\s*"+rhs_1+str(final_post)+rhs_2+".*/\\1/p'".format(LINE_NUM)
+            return f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+"(.+)"+p_space+rhs_1+str(final_post)+rhs_2+".*/\\1/p'".format(LINE_NUM)
     elif len(postb.split())==0: #if len is zero for postb
         return f"sed -E -n '{LINE_NUM}s/.*^(.+).*$.*/\\1/p'".format(LINE_NUM)
     else:
@@ -47,3 +53,6 @@ def pattern_6_beta(lhs,rhs,LINE_NUM,preb,postb):
         return f"sed -E -n '{LINE_NUM}s/.*^(.+).*"+rhs_1+str(final_post)+rhs_2+".*/\\1/p'"
 # foo(pre)
 
+"""
+if needed, get text after target and set it as boundary from Js instead of using \\s+ 
+"""
