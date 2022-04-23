@@ -139,7 +139,8 @@ def stratg():
 
       cooked_pre_boundary = pre_boundary[:3]
       len_after_pre_boundary = len_for_pre_boundary-4
-
+   elif len_for_pre_boundary==6:
+      cooked_pre_boundary = escape_me(pre_boundary)
    #limiting long selection outputs.. THIS DECIDES OVERALL OUTPUT!
    if len(string_selected) > 50:
       return  {
@@ -294,7 +295,6 @@ def stratg():
       postb = pat_2_ready(post_boundary.lstrip().split(" "))
       if len(di_2) < 4:  #changing value may affect filtering steps
          res = repeating_stuff(di_2)
-         # print("kondeee",preb)
          return "sed -E -n '{}s/{}\\s*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,res,rhs_1+postb+rhs_2)
       else:
          res = repeating_stuff(di_3)
@@ -316,7 +316,7 @@ def stratg():
             final = prefetch_for_pat5+res+').*/\\1/p"'
             return final
          else:
-            return "𝘞𝘰𝘳𝘬𝘴 𝘣𝘦𝘵𝘵𝘦𝘳 𝘸𝘪𝘵𝘩 𝘮𝘰𝘳𝘦 𝘤𝘮𝘱𝘭𝘹 𝘰𝘯𝘦𝘴!"
+            return "Works_better_with_complex"
 
    def filter_the_escape(filterthis): #filtering escape chars
       some_escapes = ["<",">"]
@@ -438,7 +438,8 @@ def stratg():
 
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
       nonlocal cooked_pre_boundary
-      escaped_pre_boundary = escape_me(cooked_pre_boundary)
+      nonlocal cooked_post_boundary
+      escaped_pre_boundary = cooked_pre_boundary
       final_cooked_string = ""
       short_cook = ".*"
       sub_it = "sed -E -n '{}s/.*(".format(LINE_NUM)
@@ -550,11 +551,14 @@ def run_with_sed():
    fresh_echo=echo_escaper(full_line)
    print("->",fresh_echo)
    patt1_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
-   patt2_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
-   patt3_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
-   patt4_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
-   patt5_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
-   patt6_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
+   patt2_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt2,shell=True).decode()
+   patt3_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt3,shell=True).decode()
+   patt4_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt4,shell=True).decode()
+   if patt5!="Works_better_with_complex":
+      patt5_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt5,shell=True).decode()
+   else:
+      patt5_op="__"
+   patt6_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt6,shell=True).decode()
    final_res = {
       "patt1_shell_op":patt1_op,
       "patt2_shell_op":patt2_op,
