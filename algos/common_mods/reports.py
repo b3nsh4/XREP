@@ -1,10 +1,8 @@
 from github import Github
 import uuid,os,sys
 g = Github('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')
-repo = g.get_repo("b3nsh4/XREP_BUG_REPORTS")
 
 def init_report(vars):
-
    entire_line=vars[0]
    string_selected=vars[1]
    pattern_1_result=vars[2]
@@ -27,7 +25,13 @@ def init_report(vars):
          new.write(pattern_4_result+"\t <--pattern_4\n")
          new.write(pattern_5_result+"\t <--pattern_5\n")
          new.write(pattern_6_result+"\t <--pattern_6\n")
-         new.seek(0) #pointer to start of line to read
+         new.seek(0) #pointer to start of line to read  
+         # is repo key has expired/incorrect. this will notify
+         try:
+            repo = g.get_repo("b3nsh4/XREP_BUG_REPORTS")
+         except Exception as e:
+            print(e)
+            return {"status":"Not sent!!","notes":"XREP_BUG_REPORT Repo key error!"}
          repo.create_file(rand_uuid, "NEW REPORT",new.read(), branch="main") #file creates
       
       report_status = "Report Sent"

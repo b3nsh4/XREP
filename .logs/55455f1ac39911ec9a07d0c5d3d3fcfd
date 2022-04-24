@@ -1,0 +1,8 @@
+inet 192.168.230.52/24 brd 192.168.230.255 scope global dynamic noprefixroute wlo1	 <--entire_line
+192.168.230.255	  <--selected_text
+sed -E -n 's/inet.*brd\s*(([0-9]+\.){3}[0-9]+)\s*sco.{2}.*wlo1/\1/p'	 <--pattern_1
+sed -E -n 's/inet.{23}\s*(([0-9]+\.){3}[0-9]+)\s*sco.{2}.{34}.*/\1/p'	 <--pattern_2
+sed -E 's/(.+)?(brd)\s*?(([0-9]+\.){3}[0-9]+)\s*?( sc)(.*)/\1 \2 XXX \5 \6/'	 <--pattern_3
+sed -E -n 's/.*ine.*(([0-9]){3}\.([0-9]){3}\.([0-9]){3}\.([0-9]){3})\s* sc.*/\1/p'	 <--pattern_4
+sed -E -n "s/.{27}(([0-9]+\.){3}[0-9]+).*/\1/p"	 <--pattern_5
+sed -E -n 's/.*brd(.+)\s+sco.{2}.*/\1/p'	 <--pattern_6
