@@ -1,6 +1,5 @@
 from github import Github
 import uuid,os,sys
-sys.path.append('.logs')
 g = Github('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')
 repo = g.get_repo("b3nsh4/XREP_BUG_REPORTS")
 
@@ -19,7 +18,7 @@ def init_report(vars):
       x=uuid.uuid1()
       rand_uuid = x.hex
       #rand_uuid has file name
-      with open('../.logs/'+rand_uuid,'a+') as new:
+      with open('.logs/'+rand_uuid,'a+') as new:
          new.write(entire_line[0]+"\t <--entire_line\n")
          new.write(string_selected+"\t  <--selected_text\n")
          new.write(pattern_1_result+"\t <--pattern_1\n")
@@ -33,7 +32,7 @@ def init_report(vars):
       
       report_status = "Report Sent"
       notes = "Thank you very much for submitting this report, this will help to improve 𝙓𝙍𝙀𝙋 RefID for this report is:  {}".format(rand_uuid)
-      os.remove('../.logs/'+rand_uuid) #removing file after use
+      os.remove('.logs/'+rand_uuid) #removing file after use
       return { "status":report_status,"notes":notes,"Ref:ID":rand_uuid}
    else:
       report_status = "Report NOT sent"

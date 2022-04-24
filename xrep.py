@@ -526,7 +526,7 @@ def bug_report():
    global pattern_1_result
    global pattern_5_result #pattern_5
    global patt6_result
-   
+   print("string_selected-->",string_selected)
    try:
       collect_report_vars= [
       full_line, string_selected, pattern_1_result,
