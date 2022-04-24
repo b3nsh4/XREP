@@ -19,7 +19,7 @@ def init_report(vars):
       x=uuid.uuid1()
       rand_uuid = x.hex
       #rand_uuid has file name
-      with open('../.logs'+rand_uuid,'a+') as new:
+      with open('../.logs/'+rand_uuid,'a+') as new:
          new.write(entire_line[0]+"\t <--entire_line\n")
          new.write(string_selected+"\t  <--selected_text\n")
          new.write(pattern_1_result+"\t <--pattern_1\n")
