@@ -33,7 +33,7 @@ def init_report(vars):
       
       report_status = "Report Sent"
       notes = "Thank you very much for submitting this report, this will help to improve 𝙓𝙍𝙀𝙋 RefID for this report is:  {}".format(rand_uuid)
-      os.remove('../.logs'+rand_uuid) #removing file after use
+      os.remove('../.logs/'+rand_uuid) #removing file after use
       return { "status":report_status,"notes":notes,"Ref:ID":rand_uuid}
    else:
       report_status = "Report NOT sent"
