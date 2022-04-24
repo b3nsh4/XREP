@@ -4,6 +4,7 @@ import json,sys,os,uuid
 
 # append module dir
 sys.path.append('algos')
+sys.path.append('.logs')
 sys.path.append('algos/special_patterns')
 sys.path.append('algos/common_mods')
 
