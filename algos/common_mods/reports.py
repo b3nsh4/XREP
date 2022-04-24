@@ -13,14 +13,13 @@ def init_report(vars):
    pattern_4_result=vars[5]
    pattern_5_result=vars[6]
    pattern_6_result=vars[7]
-   
    if string_selected!="":
       #creating new hash for the report
       x=uuid.uuid1()
       rand_uuid = x.hex
       #rand_uuid has file name
       with open('../.logs'+rand_uuid,'a+') as new:
-         new.write(entire_line+"\t <--entire_line\n")
+         new.write(entire_line[0]+"\t <--entire_line\n")
          new.write(string_selected+"\t  <--selected_text\n")
          new.write(pattern_1_result+"\t <--pattern_1\n")
          new.write(pattern_2_result+"\t <--pattern_2\n")
