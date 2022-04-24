@@ -19,8 +19,7 @@ from static_arrang import static_res
 
 #modules for static string
 from patt1_static_brd import patt1_static_str
-## some global vars ##
-string_selected=""
+from global_vars import *
 
 app = Flask(__name__)
 @app.route('/')
@@ -471,16 +470,7 @@ def stratg():
    def pattern_6():
       res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary,post_char_space)
       return res
-   #some global vars
-   global sub_with_spec_nums
-   global pattern_4_result
-   global pattern_2_result #speicif filter
-   global pattern_3_result
-   global pattern_1_result
-   global pattern_5_result #not_pattern_2
-   global patt6_result #NEW CHANGE !! FEB 23-22
-   #global var ends
-   # pattern_1_v2()
+
    sub_with_spec_nums = sub_with_specific_numbering(di)
    pattern_4_result = pattern_4(di)
    pattern_2_result = pattern_2()
@@ -493,6 +483,7 @@ def stratg():
       final_return = {
       # "sub_with_spec_nums":sub_with_spec_nums,
       "pattern_1_result":pattern_1_result,
+      "pattern_2_result":pattern_2_result,
       "pattern_4_result":pattern_4_result,
       "pattern_3_result":pattern_3_result,
       "pattern_5_result":pattern_5_result,
@@ -520,13 +511,6 @@ def stratg():
 def bug_report():
    global full_line
    # global string_selected
-   global sub_with_spec_nums
-   global pattern_4_result
-   global pattern_2_result #speicif filter
-   global pattern_3_result
-   global pattern_1_result
-   global pattern_5_result #pattern_5
-   global patt6_result
    print("string_selected-->",string_selected)
    try:
       collect_report_vars= [
