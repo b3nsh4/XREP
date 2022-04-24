@@ -19,7 +19,8 @@ from static_arrang import static_res
 
 #modules for static string
 from patt1_static_brd import patt1_static_str
-
+## some global vars ##
+string_selected=""
 
 app = Flask(__name__)
 @app.route('/')
@@ -518,7 +519,7 @@ def stratg():
 @app.route('/bug')
 def bug_report():
    global full_line
-   global string_selected
+   # global string_selected
    global sub_with_spec_nums
    global pattern_4_result
    global pattern_2_result #speicif filter
