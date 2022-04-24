@@ -470,7 +470,15 @@ def stratg():
    def pattern_6():
       res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary,post_char_space)
       return res
-
+   #some global vars
+   global sub_with_spec_nums
+   global pattern_4_result
+   global pattern_2_result 
+   global pattern_3_result
+   global pattern_1_result
+   global pattern_5_result 
+   global patt6_result 
+   #global var ends
    sub_with_spec_nums = sub_with_specific_numbering(di)
    pattern_4_result = pattern_4(di)
    pattern_2_result = pattern_2()
@@ -511,7 +519,6 @@ def stratg():
 def bug_report():
    global full_line
    # global string_selected
-   print("string_selected-->",string_selected)
    try:
       collect_report_vars= [
       full_line, string_selected, pattern_1_result,
