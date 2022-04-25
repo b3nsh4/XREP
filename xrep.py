@@ -52,9 +52,6 @@ def stratg():
       for r in res_lrhs_sorted['rhs_arr_sorted']:
          rhs_static_str.append(r['word'])
 
-   print("final_Lhs-> ",lhs_static_str)
-   print("final_Rhs-> ",rhs_static_str)
-
    # below global vars keeps output of checkboxes!
    global LINE_NUM
    global is_lhs_enabled
@@ -366,7 +363,7 @@ def stratg():
    def pattern_1():
       if len(lhs_static_str)!=0 or len(rhs_static_str)!=0: #static string invoking
          return patt1_static_str(lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space) 
-      patt1_res = pat_1_ready(lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy)
+      patt1_res = pat_1_ready(lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_char_space,post_char_space)
       return patt1_res
 
 

@@ -1,24 +1,6 @@
 #### pre1.*pre2(target)post1.*post2 #A.K.A PATTERN-01
 from escape_me import *
 
-def spacer_finder(pre_or_post,stuff):  #pre2\s?(target)\s?post
-  if pre_or_post=="pre":
-    splitted_stuff = stuff.lstrip().split(" ")
-
-    if splitted_stuff[-1] == "":
-      space_before = True
-    else:
-      space_before = False
-    return space_before
-
-  elif pre_or_post=="post":
-    splitted_stuff = stuff.rstrip().split(" ")
-    if splitted_stuff[0] == "":
-      space_after = True
-    else:
-      space_after = False
-    return space_after
-
 def glolbal_len_decision(string):
   if len(string)>4: #checking if string is gt4
     gt4 = True
@@ -72,25 +54,23 @@ def foo(lhs,rhs,what,splitted_stuff):
     elif what=="post":
       return ""
 
-def pat_1_ready(lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy):
+def pat_1_ready(lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy,pre_h_space,post_h_space):
 
   bd1 =  foo(lhss,rhss,"pre",splitted_pre)
   bd2 = foo(lhss,rhss,"post",splitted_post)#put escape_me(fo....) here
   #checking for spaces
-  pre_has_space = spacer_finder("pre",prebd)
-  post_has_space = spacer_finder("post",postbd)
+  if pre_h_space==True:
+    pre_spc = "\\s+"
+  elif pre_h_space==False:
+    pre_spc = "\\s*"
 
-  if pre_has_space ==True and post_has_space==True:
-    return (f"sed -E -n '{LINE_NUM}s/{bd1}\\s*({cooked_string_copy})\\s*{bd2}/\\1/p'")
+  if post_h_space==True:
+    post_spc="\\s+"
+  elif post_h_space==False:
+    post_spc="\\s*"
 
-  elif pre_has_space ==False and post_has_space==False:
-    return (f"sed -E -n '{LINE_NUM}s/{bd1}({cooked_string_copy}){bd2}/\\1/p'")
+  return (f"sed -E -n '{LINE_NUM}s/{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}/\\1/p'")
 
-  elif pre_has_space == True and post_has_space== False:
-    return (f"sed -E -n '{LINE_NUM}s/{bd1}\\s*({cooked_string_copy}){bd2}/\\1/p'")
-
-  elif pre_has_space == False and post_has_space ==True:
-    return (f"sed -E -n '{LINE_NUM}s/{bd1}({cooked_string_copy})\\s*{bd2}/\\1/p'")
 
 # this worked becasue both strings were >4
 # so we can achieve below output for pattern1
