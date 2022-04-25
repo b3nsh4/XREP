@@ -8,3 +8,6 @@ pattern_1_result=""
 pattern_5_result =""
 patt6_result =""
 #global var ends
+
+pre_spc=""
+post_spc=""

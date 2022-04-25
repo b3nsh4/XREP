@@ -4,15 +4,17 @@ from improved_len_decision import glolbal_len_decision
 from simple_cooker import final_cooker
 from escape_me import *
 
-def does_pre_post_exist(whatever):
-	splitted = whatever.split()
+# def pat_2_ready(string):
 
-	if len(splitted)>=1:
-		exist = True
-	else:
-		exist= False
-	return exist
-
+# 	if len(string[0])>4:
+# 		gt4 = True
+# 		shorted_str = string[0][:3] 
+# 		len_after_shorted = str(len(string[0][3:])) 
+# 		return escape_me(shorted_str)+".{"+len_after_shorted+"}" 
+# 	elif len(string[0])==0:
+# 		return "" 
+# 	else:
+# 		return escape_me(string[0])
 
 def pat_2_ready(whatever):
 	if len(whatever)>=2:
@@ -24,7 +26,6 @@ def pat_2_ready(whatever):
 		return res #put escape_me(res) if needed
 	else:
 		return "" #if whatever is empty
-
 
 # REF:01 
 # we take ['this', 'movie', 'is', 'feelgood'] 

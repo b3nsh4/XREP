@@ -54,21 +54,11 @@ def foo(lhs,rhs,what,splitted_stuff):
     elif what=="post":
       return ""
 
-def pat_1_ready(lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy,pre_h_space,post_h_space):
+def pat_1_ready(lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy,pre_spc,post_spc):
 
   bd1 =  foo(lhss,rhss,"pre",splitted_pre)
   bd2 = foo(lhss,rhss,"post",splitted_post)#put escape_me(fo....) here
   #checking for spaces
-  if pre_h_space==True:
-    pre_spc = "\\s+"
-  elif pre_h_space==False:
-    pre_spc = "\\s*"
-
-  if post_h_space==True:
-    post_spc="\\s+"
-  elif post_h_space==False:
-    post_spc="\\s*"
-
   return (f"sed -E -n '{LINE_NUM}s/{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}/\\1/p'")
 
 

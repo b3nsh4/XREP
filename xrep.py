@@ -29,7 +29,7 @@ def getstarted():
 @app.route("/entry", methods=["POST","GET"])
 def stratg():
    req = request.get_json() #getting text and line from frontend
-   global string_selected
+   global string_selected,pre_spc,post_spc
    string_selected=req['TEXTSELECTED']
    global full_line
    whole=req['WHOLE_STUFF']
@@ -42,6 +42,18 @@ def stratg():
    end_index=req['end_index']
    rhs_static_str = []
    lhs_static_str = []
+   
+   #check if having space!!
+   if pre_char_space==True:
+      pre_spc = "\\s+"
+   else:
+      pre_spc = "\\s*"
+   if post_char_space == True:
+      post_spc= "\\s+"
+   else:
+      post_spc = "\\s*"
+   #above var can now be used if having space!!
+   
    #introductory to [LR]HS can be found at docs.xrep.in/boundaries
    # CHECKING IF LHS AND RHS HAS CHECKED
    res_lrhs_sorted = static_res(static_strings)
@@ -293,12 +305,14 @@ def stratg():
       preb = pat_2_ready(pre_boundary.lstrip().split(" "))
       postb = pat_2_ready(post_boundary.lstrip().split(" "))
       if len(di_2) < 4:  #changing value may affect filtering steps
-         res = repeating_stuff(di_2)
-         return "sed -E -n '{}s/{}\\s*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,res,rhs_1+postb+rhs_2)
+         patt_2_res = repeating_stuff(di_2) #actual pattern2 a.k.a cooked_string
+         #IF CHECKED--> lhs_1=[ lhs_2= ]?  --- rhs_1 = [  rhs_2 = ]?
+         # N/s/[xx]?pre_spc(cookec)post_spc[xx]?
+         return "sed -E -n '{}s/{}\\s*({}){}{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,patt_2_res,post_spc,rhs_1+postb+rhs_2)
       else:
-         res = repeating_stuff(di_3)
-         return "sed -E -n '{}s/{}\\s*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,res,rhs_1+postb+rhs_2)
-
+         patt_2_res = repeating_stuff(di_3)
+         return "sed -E -n '{}s/{}\\s*({}){}{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,patt_2_res,post_spc,rhs_1+postb+rhs_2)
+   
    def pattern_5(): #mostly have \\w+ than [[:class:]]
       nonlocal di_4
       if len(di_3) > 15:
@@ -363,7 +377,7 @@ def stratg():
    def pattern_1():
       if len(lhs_static_str)!=0 or len(rhs_static_str)!=0: #static string invoking
          return patt1_static_str(lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space) 
-      patt1_res = pat_1_ready(lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_char_space,post_char_space)
+      patt1_res = pat_1_ready(lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_spc,post_spc)
       return patt1_res
 
 
@@ -460,9 +474,9 @@ def stratg():
       if escaped_pre_boundary=="":
          closest_pre_boundary=pre_boundary[-1:-4]
          # line_num varibale is not using AS OF NOW!!
-         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+closest_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)
+         return  "sed -E -n '{}s/.*{}.*({})\\s*?{}.*/\\1/p'".format(LINE_NUM,lhs_1+closest_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)
       else:
-         return  "sed -E -n '{}s/.*{}.*({})\\s*{}.*/\\1/p'".format(LINE_NUM,lhs_1+escaped_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)
+         return  "sed -E -n '{}s/.*{}.*({})\\s*?{}.*/\\1/p'".format(LINE_NUM,lhs_1+escaped_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)
 
    def pattern_6():
       res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary,post_char_space)
