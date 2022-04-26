@@ -14,10 +14,10 @@ def run_shell(req):
    patt2_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt2,shell=True).decode()
    patt3_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt3,shell=True).decode()
    patt4_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt4,shell=True).decode()
-   if patt5!="Works_better_with_complex":
+   if patt5!="Works_better_with_complex patterns":
       patt5_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt5,shell=True).decode()
    else:
-      patt5_op=" "
+      patt5_op="___"
    patt6_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt6,shell=True).decode()
    final_res = {
       "patt1_shell_op":patt1_op,

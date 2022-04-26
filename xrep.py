@@ -329,7 +329,7 @@ def stratg():
             final = prefetch_for_pat5+res+f'){post_spc}.*/\\1/p"'
             return final
          else:
-            return "Works_better_with_complex"
+            return "Works_better_with_complex_patterns"
 
    def filter_the_escape(filterthis): #filtering escape chars
       some_escapes = ["<",">"]
@@ -476,7 +476,7 @@ def stratg():
          return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+escaped_pre_boundary+lhs_2}.*({final_cooked_string}){post_spc}.*/\\1/p'"
 
    def pattern_6():
-      res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary,post_char_space)
+      res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
       return res
    #some global vars
    global sub_with_spec_nums
