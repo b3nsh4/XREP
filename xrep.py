@@ -321,12 +321,12 @@ def stratg():
          di_4 = [i[0] for i in groupby(di_4)]
 
          res = repeating_stuff(di_4)
-         final = prefetch_for_pat5+res+').*/\\1/p"'
+         final = prefetch_for_pat5+res+f'){post_spc}/\\1/p"'
          return final
       else:
          if len(di_3)!=0:
             res = repeating_stuff(di_3)
-            final = prefetch_for_pat5+res+').*/\\1/p"'
+            final = prefetch_for_pat5+res+f'){post_spc}.*/\\1/p"'
             return final
          else:
             return "Works_better_with_complex"
@@ -452,7 +452,6 @@ def stratg():
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
       nonlocal cooked_pre_boundary
       escaped_pre_boundary = cooked_pre_boundary
-      print("cooked_POST-4_boundary-->",cooked_post_boundary)
       final_cooked_string = ""
       temp = []
       l = []
