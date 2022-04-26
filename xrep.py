@@ -451,11 +451,9 @@ def stratg():
 
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
       nonlocal cooked_pre_boundary
-      nonlocal cooked_post_boundary
       escaped_pre_boundary = cooked_pre_boundary
+      print("cooked_POST-4_boundary-->",cooked_post_boundary)
       final_cooked_string = ""
-      short_cook = ".*"
-      sub_it = "sed -E -n '{}s/.*(".format(LINE_NUM)
       temp = []
       l = []
 
@@ -474,9 +472,9 @@ def stratg():
       if escaped_pre_boundary=="":
          closest_pre_boundary=pre_boundary[-1:-4]
          # line_num varibale is not using AS OF NOW!!
-         return  "sed -E -n '{}s/.*{}.*({})\\s*?{}.*/\\1/p'".format(LINE_NUM,lhs_1+closest_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)
+         return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}.*({final_cooked_string}){post_spc}.*/\\1/p'"
       else:
-         return  "sed -E -n '{}s/.*{}.*({})\\s*?{}.*/\\1/p'".format(LINE_NUM,lhs_1+escaped_pre_boundary+lhs_2,final_cooked_string,rhs_1+cooked_post_boundary+rhs_2)
+         return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+escaped_pre_boundary+lhs_2}.*({final_cooked_string}){post_spc}.*/\\1/p'"
 
    def pattern_6():
       res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary,post_char_space)
