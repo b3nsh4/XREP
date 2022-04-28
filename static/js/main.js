@@ -134,10 +134,16 @@ function show_brd_options() {
         document.getElementById('makeclear').style.display = "inline";
         document.getElementById('add_static').style.display = "inline";
 		document.getElementById('display_static_brd').style.display = "inline";
+        document.getElementById("LHSChecker").disabled = true;
+        document.getElementById("RHSChecker").disabled = true;
+
     } else {
         document.getElementById('makeclear').style.display = "none";
         document.getElementById('add_static').style.display = "none";
         document.getElementById('display_static_brd').style.display = "none"; 
+        document.getElementById('LHSChecker').disabled = false;
+        document.getElementById('RHSChecker').disabled = false;
+
 
     }
 }
