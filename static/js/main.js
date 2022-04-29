@@ -134,6 +134,10 @@ function show_brd_options() {
         document.getElementById('makeclear').style.display = "inline";
         document.getElementById('add_static').style.display = "inline";
 		document.getElementById('display_static_brd').style.display = "inline";
+            // unchecking before 
+        document.getElementById("LHSChecker").checked = false;
+        document.getElementById("RHSChecker").checked = false;
+            // disabling checkbox on static brd
         document.getElementById("LHSChecker").disabled = true;
         document.getElementById("RHSChecker").disabled = true;
 
