@@ -62,7 +62,7 @@ def pat_1_ready(lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooke
   elif rhss==False:
     bd2 = foo(no_h1,no_h2,splitted_post)
 
-  return (f"sed -E -n '{LINE_NUM}s/{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}/\\1/p'")
+  return (f"sed -E -n '{LINE_NUM}s/{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}.*/\\1/p'")
 
 
 # this worked becasue both strings were >4
