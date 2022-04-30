@@ -17,6 +17,7 @@ from simple_cooker import simple_chef,final_cooker
 from reports import init_report
 from static_arrang import static_res
 from improved_len_decision import glolbal_len_decision as gld
+
 #modules for static string
 from patt1_static_brd import patt1_static_str
 from global_vars import *
@@ -124,6 +125,7 @@ def stratg():
 
    splitted_post_len = len(splitted_post) #len of splitted POST array
 
+   # cooked_pre_boundary <- used in patt_4,  post used in patt_3 (substitution)
    if splitted_pre_len!=0:
       cooked_pre_boundary = gld(splitted_pre[-1])
    else:
@@ -446,12 +448,21 @@ def stratg():
          elif i[1]==1:
             stuff=str(i[0])
             final_cooked_string+=stuff
-      closest_pre_boundary = gld(splitted_pre[-1])
+      if splitted_pre_len!=0:
+         closest_pre_boundary = gld(splitted_pre[-1])
+      elif splitted_pre_len==0:
+         closest_pre_boundary = ""
+      
       return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*/\\1/p'"
 
    def pattern_6():
-      res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
+      if len(lhs_static_str)!=0: #static-str invoking
+         from patt6_static_brd import patt6_static_brd
+         res=patt6_static_brd(LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc,lhs_static_str)
+      else:
+         res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
       return res
+   
    #some global vars
    global sub_with_spec_nums
    global pattern_4_result

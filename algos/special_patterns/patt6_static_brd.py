@@ -1,6 +1,5 @@
-# .*pre-2(.+).{N}
+# .*pre2-static(.+).{N}
 
-# if pre-2 doesnot exist, use pre-1 
 from escape_me import *
 
 def glolbal_decision_6(string):
@@ -14,38 +13,25 @@ def glolbal_decision_6(string):
     else:
         return escape_me(string)
 
-def pattern_6_beta(lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
-    res = preb.split()
 
-    if lhs==True:
-        lhs_1 = "["
-        lhs_2 = "]?"
-    else:
-        lhs_1 = ""
-        lhs_2 = ""
-    if rhs==True:
-        rhs_1 = "["
-        rhs_2 = "]?"
-    else:
-        rhs_1 = ""
-        rhs_2 = ""
-	    # print("pre a",preb,postb)
-	    # print("postb",postb.split())
+def patt6_static_brd(LINE_NUM,preb,postb,pre_spc,post_spc,lhs_static_str):
+    pre_str = glolbal_decision_6(lhs_static_str[-1])
+    res = preb.split()
     if len(res)>=1:
         pre_res = escape_me(res[-1])
         try:
             final_post = glolbal_decision_6(postb.split()[0])
         except IndexError:
-            return f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+"(.+)$/\\1/p'"
+            return f"sed -E -n '{LINE_NUM}s/.*"+pre_str+"(.+)$/\\1/p'"
 
         if len(final_post)!=0:
-            return f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+pre_spc+"(.+)"+post_spc+rhs_1+str(final_post)+rhs_2+".*/\\1/p'".format(LINE_NUM)
+            return f"sed -E -n '{LINE_NUM}s/.*"+pre_str+pre_spc+"(.+)"+post_spc+str(final_post)+".*/\\1/p'".format(LINE_NUM)
     elif len(postb.split())==0: #if len is zero for postb
         return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}.*$.*/\\1/p'".format(LINE_NUM)
     else:
         final_post = glolbal_decision_6(postb.split()[0])
-        return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}.*"+rhs_1+str(final_post)+rhs_2+".*/\\1/p'"
-# foo(pre)
+        return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}.*"+str(final_post)+".*/\\1/p'"
+
 
 """
 if needed, get text after target and set it as boundary from Js instead of using \\s+ 
