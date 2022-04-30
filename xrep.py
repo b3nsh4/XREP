@@ -124,36 +124,16 @@ def stratg():
 
    splitted_post_len = len(splitted_post) #len of splitted POST array
 
-   if len_for_pre_boundary==0 and len_for_post_boundary==0:
-      cooked_pre_boundary=""
-      cooked_post_boundary=""
-      print("zero")
-
-   elif len_for_pre_boundary>6 and len_for_pre_boundary>6:
-      cooked_pre_boundary = pre_boundary[:3]
-      len_after_pre_boundary = len_for_pre_boundary-4
-
-      cooked_post_boundary = escape_me(post_boundary[:3])
-      len_after_post_boundary = len_for_post_boundary-4
-
-   elif len_for_pre_boundary<6 and len_for_post_boundary<6:
-      cooked_pre_boundary = pre_boundary
-      cooked_post_boundary = escape_me(post_boundary)
-
-   elif len_for_pre_boundary<6:
-      cooked_pre_boundary = pre_boundary
-      cooked_post_boundary = escape_me(post_boundary[:3])
-      len_after_post_boundary = len_for_post_boundary-4
-
-   elif len_for_post_boundary<6:
-      cooked_post_boundary = escape_me(post_boundary)
-
-      cooked_pre_boundary = pre_boundary[:3]
-      len_after_pre_boundary = len_for_pre_boundary-4
-   elif len_for_pre_boundary==6 or len_for_post_boundary==6:
-      cooked_pre_boundary = escape_me(pre_boundary)
-      cooked_post_boundary = escape_me(post_boundary)
+   if splitted_pre_len!=0:
+      cooked_pre_boundary = gld(splitted_pre[-1])
+   else:
+      cooked_pre_boundary = ""
+   if splitted_post_len!=0:
+      cooked_post_boundary = gld(splitted_post[0])
+   else:
+      cooked_post_boundary = ""
    #limiting long selection outputs.. THIS DECIDES OVERALL OUTPUT!
+   
    if len(string_selected) > 50:
       return  {
       "pattern_4_result":"Non-useful pattern!",
@@ -491,7 +471,6 @@ def stratg():
       pattern_1_result = pattern_1()
 
       final_return = {
-      # "sub_with_spec_nums":sub_with_spec_nums,
       "pattern_1_result":pattern_1_result,
       "pattern_2_result":pattern_2_result,
       "pattern_4_result":pattern_4_result,
