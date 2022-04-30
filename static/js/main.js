@@ -142,6 +142,7 @@ function show_brd_options() {
         document.getElementById("RHSChecker").disabled = true;
 
     } else {
+        clear_static_brd();
         document.getElementById('makeclear').style.display = "none";
         document.getElementById('add_static').style.display = "none";
         document.getElementById('display_static_brd').style.display = "none"; 
