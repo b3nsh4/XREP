@@ -16,7 +16,7 @@ from pattern_6_beta import pattern_6_beta
 from simple_cooker import simple_chef,final_cooker
 from reports import init_report
 from static_arrang import static_res
-
+from improved_len_decision import glolbal_len_decision as gld
 #modules for static string
 from patt1_static_brd import patt1_static_str
 from global_vars import *
@@ -150,8 +150,9 @@ def stratg():
 
       cooked_pre_boundary = pre_boundary[:3]
       len_after_pre_boundary = len_for_pre_boundary-4
-   elif len_for_pre_boundary==6:
+   elif len_for_pre_boundary==6 or len_for_post_boundary==6:
       cooked_pre_boundary = escape_me(pre_boundary)
+      cooked_post_boundary = escape_me(post_boundary)
    #limiting long selection outputs.. THIS DECIDES OVERALL OUTPUT!
    if len(string_selected) > 50:
       return  {
@@ -390,7 +391,6 @@ def stratg():
          splitting_for_global_fn = pre_boundary.split()[-1]
          pre_bndry_patt3 = glolbal_decision_for_pattern3(escape_me(splitting_for_global_fn))
       #settlement for pre_boundary
-
       prefetch_complex_subsitit = "sed -E -n "+'"'+str(LINE_NUM)+"s/("
       if len_for_pre_boundary==0 and len_for_post_boundary==0:
          return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy})$(.*)/XXX/'")
@@ -451,7 +451,6 @@ def stratg():
 
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
       nonlocal cooked_pre_boundary
-      escaped_pre_boundary = cooked_pre_boundary
       final_cooked_string = ""
       temp = []
       l = []
@@ -467,13 +466,8 @@ def stratg():
          elif i[1]==1:
             stuff=str(i[0])
             final_cooked_string+=stuff
-
-      if escaped_pre_boundary=="":
-         closest_pre_boundary=pre_boundary[-1:-4]
-         # line_num varibale is not using AS OF NOW!!
-         return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}.*({final_cooked_string}){post_spc}.*/\\1/p'"
-      else:
-         return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+escaped_pre_boundary+lhs_2}.*({final_cooked_string}){post_spc}.*/\\1/p'"
+      closest_pre_boundary = gld(splitted_pre[-1])
+      return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*/\\1/p'"
 
    def pattern_6():
       res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
