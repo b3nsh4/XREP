@@ -38,10 +38,7 @@ def foo(h1,h2,splitted_stuff):
       bd1 = h1+escape_me(splitted_stuff[0])+h2
     return bd1
   elif len(splitted_stuff)==0: #string is empty
-    if what=="pre": #if pre strng is empty, return something relevant. so i return ^ and $ for the post
-      return ""
-    elif what=="post":
-      return ""
+    return ""
 
 def pat_1_ready(lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy,pre_spc,post_spc):
   
