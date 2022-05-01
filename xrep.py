@@ -41,6 +41,7 @@ def stratg():
    full_line = req['full_line']
    start_index=req['start_index']
    end_index=req['end_index']
+   delta_check = req['delta_check']
    rhs_static_str = []
    lhs_static_str = []
    
@@ -294,9 +295,15 @@ def stratg():
          return "sed -E -n '{}s/{}\\s*({}){}{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,patt_2_res,post_spc,rhs_1+postb+rhs_2)
       else:
          patt_2_res = repeating_stuff(di_3)
-         return "sed -E -n '{}s/{}\\s*({}){}{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,patt_2_res,post_spc,rhs_1+postb+rhs_2)
+      if delta_check==True:
+         patt_2_res = "[^ ]+"
+      return "sed -E -n '{}s/{}\\s*({}){}{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,patt_2_res,post_spc,rhs_1+postb+rhs_2)
    
    def pattern_5(): #mostly have \\w+ than [[:class:]]
+      if delta_check==True:
+         final = prefetch_for_pat5+"[^ ]+"+f'){post_spc}/\\1/p"'
+         return final
+
       nonlocal di_4
       if len(di_3) > 15:
          alnum_algo(di_3,di_4)
@@ -432,6 +439,13 @@ def stratg():
 
 
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
+      if delta_check==True:
+         if splitted_pre_len!=0:
+            closest_pre_boundary = gld(splitted_pre[-1])
+         elif splitted_pre_len==0:
+            closest_pre_boundary = ""
+         return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*/\\1/p'"
+      
       nonlocal cooked_pre_boundary
       final_cooked_string = ""
       temp = []

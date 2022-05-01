@@ -1,5 +1,5 @@
 function generator() {   
-    
+    const delta_check = document.getElementById("deltacheck").checked;
     document.getElementById('run_test_button').style.display = "inline";
     const entire_line = area.value.split("\n");
     line_to_run=entire_line; //saving a global copy of entire_line
@@ -28,6 +28,7 @@ function generator() {
         post_space = false;
     }
     var entry = {
+        delta_check: delta_check,
         STATIC_STRINGS: sorted_custom_brd,
         pre_char_space: pre_space,
         post_char_space: post_space,
