@@ -452,8 +452,10 @@ def stratg():
          closest_pre_boundary = gld(splitted_pre[-1])
       elif splitted_pre_len==0:
          closest_pre_boundary = ""
-      
-      return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*/\\1/p'"
+      if len(final_cooked_string)>40:
+         return "long_result_ignored"
+      else:
+         return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*/\\1/p'"
 
    def pattern_6():
       if len(lhs_static_str)!=0: #static-str invoking
