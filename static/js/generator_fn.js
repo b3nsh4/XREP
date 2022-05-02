@@ -20,7 +20,7 @@ function generator() {
         pre_space = false;
     }
     // below cond if target+1 is " " 
-    if (entire_line[0].charAt(end_target_at) === " ")
+    if (entire_line[0].charAt(end_target_at+1) === " ")
     {
         post_space = true;
     } 
