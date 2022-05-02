@@ -112,7 +112,7 @@ def stratg():
 
    pre_boundary = this_full_text[:start_index]
 
-   post_boundary = this_full_text[end_index:]
+   post_boundary = this_full_text[end_index+1:]
 
    len_for_pre_boundary = len(this_full_text[:start_index])
 
@@ -122,6 +122,9 @@ def stratg():
 
    splitted_post = post_boundary.split()
 
+   print("end_index-->",end_index)
+   print("splitted_post-->",splitted_post)
+   
    splitted_pre_len = len(splitted_pre) #len of splitted PRE array
 
    splitted_post_len = len(splitted_post) #len of splitted POST array

@@ -14,7 +14,7 @@ def glolbal_len_decision(string):
 #lhs and rhs is the status of the checkbox, if checked we change it with []? else nothing
 
 def foo(h1,h2,splitted_stuff):
-
+  
   if len(splitted_stuff)>=2:
     if len(splitted_stuff[0])>4:
       global_res_1 = glolbal_len_decision(splitted_stuff[0])
