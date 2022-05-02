@@ -16,7 +16,6 @@ def glolbal_decision_6(string):
 
 def pattern_6_beta(lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
     res = preb.split()
-
     if lhs==True:
         lhs_1 = "["
         lhs_2 = "]?"
@@ -41,10 +40,10 @@ def pattern_6_beta(lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
         if len(final_post)!=0:
             return f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+pre_spc+"(.+)"+post_spc+rhs_1+str(final_post)+rhs_2+".*/\\1/p'".format(LINE_NUM)
     elif len(postb.split())==0: #if len is zero for postb
-        return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}.*$.*/\\1/p'".format(LINE_NUM)
+        return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}$/\\1/p'".format(LINE_NUM)
     else:
         final_post = glolbal_decision_6(postb.split()[0])
-        return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}.*"+rhs_1+str(final_post)+rhs_2+".*/\\1/p'"
+        return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}"+rhs_1+str(final_post)+rhs_2+".*/\\1/p'"
 # foo(pre)
 
 """
