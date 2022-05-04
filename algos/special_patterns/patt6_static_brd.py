@@ -22,7 +22,7 @@ def patt6_static_brd(LINE_NUM,preb,postb,pre_spc,post_spc,lhs_static_str):
         try:
             final_post = glolbal_decision_6(postb.split()[0])
         except IndexError:
-            return f"sed -E -n '{LINE_NUM}s/.*"+pre_str+"(.+)$/\\1/p'"
+            return f"sed -E -n '{LINE_NUM}s/.*"+pre_str+"([^ ]+)$/\\1/p'"
 
         if len(final_post)!=0:
             return f"sed -E -n '{LINE_NUM}s/.*"+pre_str+pre_spc+"(.+)"+post_spc+str(final_post)+".*/\\1/p'".format(LINE_NUM)

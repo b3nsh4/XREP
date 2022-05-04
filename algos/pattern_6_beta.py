@@ -34,7 +34,7 @@ def pattern_6_beta(lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
         try:
             final_post = glolbal_decision_6(postb.split()[0])
         except IndexError:
-            return f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+"(.+)$/\\1/p'"
+            return f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+"([^ ]+)$/\\1/p'"
 
         if len(final_post)!=0:
             return f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+pre_spc+"(.+)"+post_spc+rhs_1+str(final_post)+rhs_2+".*/\\1/p'".format(LINE_NUM)
@@ -43,8 +43,13 @@ def pattern_6_beta(lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
     else:
         final_post = glolbal_decision_6(postb.split()[0])
         return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}"+rhs_1+str(final_post)+rhs_2+".*/\\1/p'"
-# foo(pre)
+
 
 """
 if needed, get text after target and set it as boundary from Js instead of using \\s+ 
+- When RHS-vary, we use [^ ]+ since, no RHS
+- We can't use (.+) as it goes till EOL since no RHS
+- When LHS-vary, we use (.+) since RHS is present, it won't go EOL
+- If LHS-vary and RHS-vary, return "Not useful pattern" 
+
 """
