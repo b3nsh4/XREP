@@ -16,6 +16,10 @@ def glolbal_decision_6(string):
 
 def pattern_6_beta(lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
     res = preb.split()
+    
+    if lhs==True and rhs==True:
+        return "non_useful_pattern"
+
     if lhs==True:
         lhs_1 = "["
         lhs_2 = "]?"

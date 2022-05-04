@@ -21,7 +21,10 @@ def run_shell(req):
       patt5_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt5,shell=True).decode()
    else:
       patt5_op="Exit reason: ignored patt5"
-   patt6_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt6,shell=True).decode()
+   if patt6!="non_useful_pattern":
+      patt6_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt6,shell=True).decode()
+   else:
+      patt6_op = "non_useful_pattern"
    final_res = {
       "patt1_shell_op":patt1_op,
       "patt2_shell_op":patt2_op,
