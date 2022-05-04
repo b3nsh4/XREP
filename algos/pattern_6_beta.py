@@ -28,8 +28,7 @@ def pattern_6_beta(lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
     else:
         rhs_1 = ""
         rhs_2 = ""
-	    # print("pre a",preb,postb)
-	    # print("postb",postb.split())
+
     if len(res)>=1:
         pre_res = escape_me(res[-1])
         try:

@@ -113,7 +113,6 @@ def stratg():
    pre_boundary = this_full_text[:start_index]
 
    post_boundary = this_full_text[end_index+1:] 
-   # end_index is the index of last char. postb should be anything after it
    # refer commit 0288294 comments 
 
    len_for_pre_boundary = len(this_full_text[:start_index])
@@ -442,10 +441,17 @@ def stratg():
 
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
       if delta_check==True:
-         if splitted_pre_len!=0:
-            closest_pre_boundary = gld(splitted_pre[-1])
-         elif splitted_pre_len==0:
-            closest_pre_boundary = ""
+         
+         # custom static string does not exist 
+         if len(lhs_static_str)==0:
+            if splitted_pre_len!=0:
+               closest_pre_boundary = gld(splitted_pre[-1])
+            elif splitted_pre_len==0:
+               closest_pre_boundary = ""
+         # custom static string exists
+         elif len(lhs_static_str)!=0:
+            closest_pre_boundary = gld(lhs_static_str[-1])
+         
          return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*/\\1/p'"
       
       nonlocal cooked_pre_boundary
@@ -464,10 +470,15 @@ def stratg():
          elif i[1]==1:
             stuff=str(i[0])
             final_cooked_string+=stuff
-      if splitted_pre_len!=0:
-         closest_pre_boundary = gld(splitted_pre[-1])
-      elif splitted_pre_len==0:
-         closest_pre_boundary = ""
+      
+      if len(lhs_static_str)==0: #static-str invoking
+         if splitted_pre_len!=0:
+            closest_pre_boundary = gld(splitted_pre[-1])
+         elif splitted_pre_len==0:
+            closest_pre_boundary = ""
+      elif len(lhs_static_str)!=0:
+         closest_pre_boundary = gld(lhs_static_str[-1])
+      
       if len(final_cooked_string)>40:
          return "long_result_ignored"
       else:

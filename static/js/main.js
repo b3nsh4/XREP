@@ -67,19 +67,25 @@ function add_custombrd() {
     // sorting the custom_brd_list below
 
     const brd_lineStart = area.value.lastIndexOf("\n", area.selectionStart) + 1;
-    // start_bndry_at -> start of new static boundary string
-    // end_bndry_at -> where static string ends
+    // start_bndry_at -> start of CUSTOM static boundary string
+    // end_bndry_at -> where CUSTOM static string ends
     const start_bndry_at = area.selectionStart - brd_lineStart ; // b0
-    const end_bndry_at = area.selectionEnd - brd_lineStart; // b1
+    const end_bndry_at = area.selectionEnd - brd_lineStart -1; // b1
     const selText = textarea_data.value.substr(textarea_data.selectionStart, textarea_data.selectionEnd - textarea_data.selectionStart);
+    
     // below check if static string ENDS before target, if yes LHS
+    
     if (start_target_at > end_bndry_at) {
         lrhs = 'lhs';
-    // below check if static string STARTS after target, if yes RHS
+        // console.log(start_bndry_at,end_bndry_at);
+        // below check if static string STARTS after target, if yes RHS
+    
     } else if (start_bndry_at > end_target_at) {
         lrhs = 'rhs';
+        // console.log(start_bndry_at,end_bndry_at);
 
     } else {
+        // console.log(start_bndry_at,end_bndry_at);
         alert("Static strings cannot include target itself!");
         return; // if boundary include target itself, yell!!
     }

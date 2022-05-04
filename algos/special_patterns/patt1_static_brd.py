@@ -27,7 +27,7 @@ def patt1_static_str(lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 	if pre_has_space == True:
 		p_space="\\s+"
 	elif pre_has_space == False:
-		p_space=""
+		p_space="\\s*"
 	if len(lhs)!=0 and len(rhs)!=0:
 		pre_res = lhs_static_str(lhs)
 		post_res = rhs_static_str(rhs)
