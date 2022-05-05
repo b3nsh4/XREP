@@ -301,7 +301,9 @@ def stratg():
       else:
          patt_2_res = repeating_stuff(di_3)
       if delta_check==True:
-         patt_2_res = "[^ ]+"
+         patt_2_res = ".+"
+      if len(lhs_static_str)!=0:
+         preb = ".*"+gld(lhs_static_str[-1])
       return "sed -E -n '{}s/{}{}({}){}{}.*/\\1/p'".format(LINE_NUM,preb,pre_spc,patt_2_res,post_spc,rhs_1+postb+rhs_2)
    
    def pattern_5(): #mostly have \\w+ than [[:class:]]
