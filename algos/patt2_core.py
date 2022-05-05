@@ -4,23 +4,12 @@ from improved_len_decision import glolbal_len_decision
 from simple_cooker import final_cooker
 from escape_me import *
 
-# def pat_2_ready(string):
 
-# 	if len(string[0])>4:
-# 		gt4 = True
-# 		shorted_str = string[0][:3] 
-# 		len_after_shorted = str(len(string[0][3:])) 
-# 		return escape_me(shorted_str)+".{"+len_after_shorted+"}" 
-# 	elif len(string[0])==0:
-# 		return "" 
-# 	else:
-# 		return escape_me(string[0])
 
-def pat_2_ready(whatever):
+def pat_2_ready(whatever,pre_spc):
 	if len(whatever)>=2:
 		res = glolbal_len_decision(whatever[0])
-		len_after_that = str(len(" ".join(whatever[1:]))+1)
-		return res+".{"+len_after_that+"}" #put escape_me(res) if needed
+		return res #put escape_me(res) if needed
 	elif len(whatever)==1:
 		res = glolbal_len_decision(whatever[0])
 		return res #put escape_me(res) if needed

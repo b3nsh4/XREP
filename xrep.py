@@ -80,8 +80,8 @@ def stratg():
    if lhs==True:
       lhs_1 = "["
       lhs_2 = "]?"
-      prd = "."  #for pattern-5
-      wild = ".*" #for pattern-5
+      prd = "."  #for pattern-5 and pattern-2 when LHS vary
+      wild = ".*"+pre_spc #for pattern-5
    else:
       lhs_1 = ""
       lhs_2 = ""
@@ -282,23 +282,27 @@ def stratg():
 
    def pattern_2():
       ##lhs and rhs is the status of the checkbox, if checked we change it with []? else nothing
-
       nonlocal di_3
       alnum_algo(di_2,di_3) #1st stage alnum filter
 
       di_3 = [i[0] for i in groupby(di_3)]
-      preb = pat_2_ready(pre_boundary.lstrip().split(" "))
-      postb = pat_2_ready(post_boundary.lstrip().split(" "))
+      
+      if lhs==True:
+         preb = ".+"
+      else:
+         preb = pat_2_ready(pre_boundary.lstrip().split(" "),pre_spc)
+      
+      postb = pat_2_ready(post_boundary.lstrip().split(" "),pre_spc)
       if len(di_2) < 4:  #changing value may affect filtering steps
          patt_2_res = repeating_stuff(di_2) #actual pattern2 a.k.a cooked_string
          #IF CHECKED--> lhs_1=[ lhs_2= ]?  --- rhs_1 = [  rhs_2 = ]?
          # N/s/[xx]?pre_spc(cookec)post_spc[xx]?
-         return "sed -E -n '{}s/{}\\s*({}){}{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,patt_2_res,post_spc,rhs_1+postb+rhs_2)
+         return "sed -E -n '{}s/{}{}({}){}{}.*/\\1/p'".format(LINE_NUM,preb,pre_spc,patt_2_res,post_spc,rhs_1+postb+rhs_2)
       else:
          patt_2_res = repeating_stuff(di_3)
       if delta_check==True:
          patt_2_res = "[^ ]+"
-      return "sed -E -n '{}s/{}\\s*({}){}{}.*/\\1/p'".format(LINE_NUM,lhs_1+preb+lhs_2,patt_2_res,post_spc,rhs_1+postb+rhs_2)
+      return "sed -E -n '{}s/{}{}({}){}{}.*/\\1/p'".format(LINE_NUM,preb,pre_spc,patt_2_res,post_spc,rhs_1+postb+rhs_2)
    
    def pattern_5(): #mostly have \\w+ than [[:class:]]
       if delta_check==True:
