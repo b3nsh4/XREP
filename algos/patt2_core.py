@@ -6,7 +6,7 @@ from escape_me import *
 
 
 
-def pat_2_ready(whatever,pre_spc):
+def pat_2_ready(whatever):
 	if len(whatever)>=2:
 		res = glolbal_len_decision(whatever[0])
 		return res #put escape_me(res) if needed

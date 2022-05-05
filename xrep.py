@@ -290,9 +290,9 @@ def stratg():
       if lhs==True:
          preb = ".+"
       else:
-         preb = pat_2_ready(pre_boundary.lstrip().split(" "),pre_spc)
+         preb = pat_2_ready(pre_boundary.lstrip().split(" "))+".*"
       
-      postb = pat_2_ready(post_boundary.lstrip().split(" "),pre_spc)
+      postb = pat_2_ready(post_boundary.lstrip().split(" "))
       if len(di_2) < 4:  #changing value may affect filtering steps
          patt_2_res = repeating_stuff(di_2) #actual pattern2 a.k.a cooked_string
          #IF CHECKED--> lhs_1=[ lhs_2= ]?  --- rhs_1 = [  rhs_2 = ]?
