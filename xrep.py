@@ -280,31 +280,34 @@ def stratg():
       cooked_string_copy+=cooked_string
       return cooked_string
 
-   def pattern_2():
-      ##lhs and rhs is the status of the checkbox, if checked we change it with []? else nothing
+   def pattern_2():      
       nonlocal di_3
+      
       alnum_algo(di_2,di_3) #1st stage alnum filter
-
       di_3 = [i[0] for i in groupby(di_3)]
-      
-      if lhs==True:
-         preb = ".+"
-      else:
-         preb = pat_2_ready(pre_boundary.lstrip().split(" "))+".*"
-      
-      postb = pat_2_ready(post_boundary.lstrip().split(" "))
-      if len(di_2) < 4:  #changing value may affect filtering steps
+      if len(di_2) < 4:
          patt_2_res = repeating_stuff(di_2) #actual pattern2 a.k.a cooked_string
-         #IF CHECKED--> lhs_1=[ lhs_2= ]?  --- rhs_1 = [  rhs_2 = ]?
-         # N/s/[xx]?pre_spc(cookec)post_spc[xx]?
-         return "sed -E -n '{}s/{}{}({}){}{}.*/\\1/p'".format(LINE_NUM,preb,pre_spc,patt_2_res,post_spc,rhs_1+postb+rhs_2)
+      
       else:
          patt_2_res = repeating_stuff(di_3)
+      #if preb LHS exists, we will have target will be in group 2
+      if len_for_pre_boundary>=1:
+         grp="2"
+      else:
+         grp="1"
+      
+      preb = pat_2_ready(pre_boundary.lstrip().split(" "),pre_boundary)
+      postb = ".*"    
+      
+      if lhs==True:
+         return "non_useful_pattern"
+      
       if delta_check==True:
          patt_2_res = ".+"
       if len(lhs_static_str)!=0:
-         preb = ".*"+gld(lhs_static_str[-1])
-      return "sed -E -n '{}s/{}{}({}){}{}.*/\\1/p'".format(LINE_NUM,preb,pre_spc,patt_2_res,post_spc,rhs_1+postb+rhs_2)
+         preb = ".*"+gld(lhs_static_str[-1])+pre_spc
+         grp="1"
+      return "sed -E -n '{}s/{}({}){}{}/\\{}/p'".format(LINE_NUM,preb,patt_2_res,post_spc,postb,grp)
    
    def pattern_5(): #mostly have \\w+ than [[:class:]]
       if delta_check==True:
@@ -373,7 +376,7 @@ def stratg():
 
    def pattern_1():
       if len(lhs_static_str)!=0 or len(rhs_static_str)!=0: #static string invoking
-         return patt1_static_str(lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space) 
+         return patt1_static_str(lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space)
       patt1_res = pat_1_ready(lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_spc,post_spc)
       return patt1_res
 

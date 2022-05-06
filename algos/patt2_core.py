@@ -4,12 +4,21 @@ from improved_len_decision import glolbal_len_decision
 from simple_cooker import final_cooker
 from escape_me import *
 
+def count_by_spc(preb): #[^ ]\s+{N}
+	init_count = 0
+	for i in preb:
+		if i == " ":
+			init_count+=1
+	split_preb = preb.split(" ")
+	if split_preb[-1]==" ":
+		return '.{'+str(init_count)+'}'
+	elif split_preb[-1]!=" ":
+		return '{'+str(init_count)+'}'+'.{'+str(len(split_preb[-1]))+'}'
 
-
-def pat_2_ready(whatever):
+def pat_2_ready(whatever,pre_boundary):
 	if len(whatever)>=2:
-		res = glolbal_len_decision(whatever[0])
-		return res #put escape_me(res) if needed
+		res = "([^ ]+\\s+)"
+		return res+count_by_spc(pre_boundary)
 	elif len(whatever)==1:
 		res = glolbal_len_decision(whatever[0])
 		return res #put escape_me(res) if needed

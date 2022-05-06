@@ -11,7 +11,10 @@ def run_shell(req):
    fresh_echo=echo_escaper(full_line)
    print("->",fresh_echo)
    patt1_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
-   patt2_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt2,shell=True).decode()
+   if patt2!="non_useful_pattern":
+      patt2_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt2,shell=True).decode()
+   else:
+      patt2_op = "non_useful_pattern"
    patt3_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt3,shell=True).decode()
    if patt4!="long_result_ignored":
       patt4_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt4,shell=True).decode()
