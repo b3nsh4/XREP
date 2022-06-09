@@ -32,7 +32,7 @@ def stratg():
    req = request.get_json() #getting text and line from frontend
    global string_selected,pre_spc,post_spc
    string_selected=req['TEXTSELECTED']
-   global full_line
+   global full_line,PYTHON_RE
    whole=req['WHOLE_STUFF']
    static_strings = req['STATIC_STRINGS']
    pre_char_space = req['pre_char_space']
@@ -42,6 +42,11 @@ def stratg():
    start_index=req['start_index']
    end_index=req['end_index']
    delta_check = req['delta_check']
+   end_point = req['URLpath']
+   
+   if end_point=="/pythonre":
+      PYTHON_RE = True
+   
    rhs_static_str = []
    lhs_static_str = []
    
@@ -487,7 +492,7 @@ def stratg():
             closest_pre_boundary = gld(lhs_static_str[-1])
          
          if pyre==True:
-            return  f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*)'"
+            return  f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*')"
          elif pyre==False:
             return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*/\\1/p'"
       

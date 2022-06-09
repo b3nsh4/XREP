@@ -1,4 +1,5 @@
 function generator() {   
+    const path_name = window.location.pathname
     const delta_check = document.getElementById("deltacheck").checked;
     document.getElementById('run_test_button').style.display = "inline";
     const entire_line = area.value.split("\n");
@@ -28,6 +29,7 @@ function generator() {
         post_space = false;
     }
     var entry = {
+        URLpath:path_name,
         delta_check: delta_check,
         STATIC_STRINGS: sorted_custom_brd,
         pre_char_space: pre_space,
