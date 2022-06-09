@@ -161,9 +161,9 @@ def stratg():
    # not using +str(line_num)+ AS OF NOW!!
    if len_for_pre_boundary!=0:
       prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
-      python_prefetch = f"re.search(."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
+      python_prefetch = f"re.search('."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
    else:
-      python_prefetch = f"re.search("
+      python_prefetch = f"re.search('"
       prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/\\s*("
 
    i=0
@@ -326,7 +326,7 @@ def stratg():
          final = prefetch_for_pat5+"[^ ]+"+f'){post_spc}/\\1/p"'
          
          if pyre==True:
-            final = python_prefetch+"[^ ]+"+f'){post_spc})'
+            final = python_prefetch+"[^ ]+"+f"){post_spc}')"
             return final
          elif pyre==False:
             return final
@@ -342,7 +342,7 @@ def stratg():
          if pre==True:
             return
          if pyre==True:
-            final = python_prefetch+res+f'){post_spc})'
+            final = python_prefetch+res+f"){post_spc}')"
             return final
          elif pyre==False:
             return final
@@ -352,7 +352,7 @@ def stratg():
             res = repeating_stuff(di_3)
             final = prefetch_for_pat5+res+f'){post_spc}.*/\\1/p"'
             if pyre==True:
-               final = python_prefetch+res+f'){post_spc})'
+               final = python_prefetch+res+f"){post_spc}')"
                return final
             elif pyre==False:
                return final
@@ -525,7 +525,7 @@ def stratg():
          return "long_result_ignored"
       else:
          if pyre==True:
-            return  f"re.search(.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*)'"
+            return  f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*')"
          elif pyre==False:
             return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*/\\1/p'"
 
