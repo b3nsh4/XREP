@@ -7,6 +7,7 @@ pattern_3_result=""
 pattern_1_result=""
 pattern_5_result =""
 patt6_result =""
+PYTHON_RE = False
 #global var ends
 
 pre_spc=""

@@ -25,7 +25,7 @@ from global_vars import *
 app = Flask(__name__)
 @app.route('/')
 def getstarted():
-   return render_template('index.html')
+   return render_template('posixre.html')
 
 @app.route("/entry", methods=["POST","GET"])
 def stratg():
@@ -156,7 +156,9 @@ def stratg():
    # not using +str(line_num)+ AS OF NOW!!
    if len_for_pre_boundary!=0:
       prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
+      python_prefetch = f"re.search(."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
    else:
+      python_prefetch = f"re.search("
       prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/\\s*("
 
    i=0
@@ -281,8 +283,8 @@ def stratg():
       return cooked_string
 
    def pattern_2():      
+      pyre = PYTHON_RE
       nonlocal di_3
-      
       alnum_algo(di_2,di_3) #1st stage alnum filter
       di_3 = [i[0] for i in groupby(di_3)]
       if len(di_2) < 4:
@@ -307,12 +309,22 @@ def stratg():
       if len(lhs_static_str)!=0:
          preb = ".*"+gld(lhs_static_str[-1])+pre_spc
          grp="1"
-      return "sed -E -n '{}s/{}({}){}{}/\\{}/p'".format(LINE_NUM,preb,patt_2_res,post_spc,postb,grp)
+      
+      if pyre==True:
+         return "re.search('{}({}){}{}'".format(preb,patt_2_res,post_spc,postb)
+      elif pyre==False:
+         return "sed -E -n '{}s/{}({}){}{}/\\{}/p'".format(LINE_NUM,preb,patt_2_res,post_spc,postb,grp)
    
    def pattern_5(): #mostly have \\w+ than [[:class:]]
+      pyre = PYTHON_RE
       if delta_check==True:
          final = prefetch_for_pat5+"[^ ]+"+f'){post_spc}/\\1/p"'
-         return final
+         
+         if pyre==True:
+            final = python_prefetch+"[^ ]+"+f'){post_spc})'
+            return final
+         elif pyre==False:
+            return final
 
       nonlocal di_4
       if len(di_3) > 15:
@@ -322,12 +334,23 @@ def stratg():
 
          res = repeating_stuff(di_4)
          final = prefetch_for_pat5+res+f'){post_spc}/\\1/p"'
-         return final
+         if pre==True:
+            return
+         if pyre==True:
+            final = python_prefetch+res+f'){post_spc})'
+            return final
+         elif pyre==False:
+            return final
+      
       else:
          if len(di_3)!=0:
             res = repeating_stuff(di_3)
             final = prefetch_for_pat5+res+f'){post_spc}.*/\\1/p"'
-            return final
+            if pyre==True:
+               final = python_prefetch+res+f'){post_spc})'
+               return final
+            elif pyre==False:
+               return final
          else:
             return "Works_better_with_complex_patterns"
 
@@ -375,9 +398,10 @@ def stratg():
       return temp
 
    def pattern_1():
+      pyre=PYTHON_RE
       if len(lhs_static_str)!=0 or len(rhs_static_str)!=0: #static string invoking
-         return patt1_static_str(lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space)
-      patt1_res = pat_1_ready(lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_spc,post_spc)
+         return patt1_static_str(pyre,lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space)
+      patt1_res = pat_1_ready(pyre,lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_spc,post_spc)
       return patt1_res
 
 
@@ -414,7 +438,7 @@ def stratg():
          t.append(k)
       if len(list_to_filter)%2!=0:
          t.append(list_to_filter[-1])
-#grouping with numbering
+      #grouping with numbering
       for i,k in groupby(t):
          l=list(k)
          temp.append((i,len(l)))
@@ -449,6 +473,7 @@ def stratg():
 
 
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
+      pyre = PYTHON_RE
       if delta_check==True:
          
          # custom static string does not exist 
@@ -461,7 +486,10 @@ def stratg():
          elif len(lhs_static_str)!=0:
             closest_pre_boundary = gld(lhs_static_str[-1])
          
-         return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*/\\1/p'"
+         if pyre==True:
+            return  f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*)'"
+         elif pyre==False:
+            return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*/\\1/p'"
       
       nonlocal cooked_pre_boundary
       final_cooked_string = ""
@@ -491,14 +519,18 @@ def stratg():
       if len(final_cooked_string)>40:
          return "long_result_ignored"
       else:
-         return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*/\\1/p'"
+         if pyre==True:
+            return  f"re.search(.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*)'"
+         elif pyre==False:
+            return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*/\\1/p'"
 
    def pattern_6():
+      pyre = PYTHON_RE
       if len(lhs_static_str)!=0: #static-str invoking
          from patt6_static_brd import patt6_static_brd
-         res=patt6_static_brd(LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc,lhs_static_str)
+         res=patt6_static_brd(pyre,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc,lhs_static_str)
       else:
-         res = pattern_6_beta(lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
+         res = pattern_6_beta(pyre,lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
       return res
    
    #some global vars
@@ -574,6 +606,12 @@ def donate_xrep():
 @app.route('/api')
 def api():
     return render_template('api.html')
+
+@app.route('/pythonre')
+def pyre():
+    global PYTHON_RE
+    PYTHON_RE = True
+    return render_template('pythonre.html')
 
 if __name__ == '__main__':
    app.run(debug=True)

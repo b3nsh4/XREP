@@ -40,7 +40,7 @@ def foo(h1,h2,splitted_stuff):
   elif len(splitted_stuff)==0: #string is empty
     return ""
 
-def pat_1_ready(lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy,pre_spc,post_spc):
+def pat_1_ready(pyre,lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy,pre_spc,post_spc):
   
   h1 = "["
   h2 = "]?"
@@ -58,7 +58,12 @@ def pat_1_ready(lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooke
     bd2 = foo(h1,h2,splitted_post)#put escape_me(fo....) here
   elif rhss==False:
     bd2 = foo(no_h1,no_h2,splitted_post)
-  return (f"sed -E -n '{LINE_NUM}s/{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}.*/\\1/p'")
+  
+  #checks if user needs POSIX or Pyre
+  if pyre==True:
+    return (f"re.search('{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}.*')")
+  elif pyre==False:
+    return (f"sed -E -n '{LINE_NUM}s/{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}.*/\\1/p'")
 
 
 # this worked becasue both strings were >4

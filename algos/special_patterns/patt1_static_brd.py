@@ -23,7 +23,7 @@ def rhs_static_str(rhs):
 			post2=""
 			return [post1,post2]
 
-def patt1_static_str(lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
+def patt1_static_str(pyre,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 	if pre_has_space == True:
 		p_space="\\s+"
 	elif pre_has_space == False:
@@ -44,7 +44,11 @@ def patt1_static_str(lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 			pre2=pre2
 
 		post1,post2 = post_res[0],post_res[1]
-		return f"sed -E -n '{LINE_NUM}s/.*"+pre1+pre2+"("+p_space+(cooked_string)+").*"+post1+".*"+post2+"/\\1/p'"
+		
+		if pyre==True:
+			return f"re.search('.*"+pre1+pre2+"("+p_space+(cooked_string)+").*"+post1+".*"+post2+")'"
+		elif pyre==False:
+			return f"sed -E -n '{LINE_NUM}s/.*"+pre1+pre2+"("+p_space+(cooked_string)+").*"+post1+".*"+post2+"/\\1/p'"
 		
 	elif len(lhs)==0 and len(rhs)!=0:
 		post_res = rhs_static_str(rhs)
@@ -60,7 +64,10 @@ def patt1_static_str(lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 		if post2!="":
 			post2=post2+".*"
 		
-		return f"sed -E -n '{LINE_NUM}s/{init_with}("+p_space+(cooked_string)+").*"+post1+post2+"/\\1/p'"
+		if pyre==True:
+			return f"re.search('{init_with}("+p_space+(cooked_string)+").*"+post1+post2+")'"
+		elif pyre==False:
+			return f"sed -E -n '{LINE_NUM}s/{init_with}("+p_space+(cooked_string)+").*"+post1+post2+"/\\1/p'"
 	
 	elif len(lhs)!=0 and len(rhs)==0:
 		pre_res = lhs_static_str(lhs)
@@ -76,6 +83,8 @@ def patt1_static_str(lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 		else:
 			pre2=pre2
 		
+		if pyre==True:
+			return f"re.search('.*"+pre1+pre2+"("+p_space+(cooked_string)+").*)'"
 		return f"sed -E -n '{LINE_NUM}s/.*"+pre1+pre2+"("+p_space+(cooked_string)+").*/\\1/p'"
 
 

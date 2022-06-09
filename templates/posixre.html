@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+        
+       <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bs.min.css') }}">
+
+  <script src="{{ url_for('static', filename='bs.bundle.min.js') }}"></script>
+  <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='textbox.css') }}"> -->
+
+
+
+  <ul class="nav justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('donate_xrep') }}">Donate♡</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Blog</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('api') }}">API</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/pythonre">Python</a>
+    </li>
+  </ul>
+    <div class="container mt-5 border">
+  <title>𝙓𝙍𝙀𝙋</title>
+</head>
+<style> 
+</style> 
+</head>
+<body>
+<!-- ADD LINE NUMBER CHECK BOX HEREW -->
+<br>
+<center>𝙓𝙍𝙀𝙋 𝘽𝙀𝙏𝘼 𝙑.04</center>
+
+     <textarea class="form-control" placeholder="Paste your text here 👇  
+          This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/images/ints.png) top -12px left / auto no-repeat, 
+    linear-gradient(#ffff 50%, #ffff  50%) top left / 100% 32px; padding: 0 0 0 30px;" type="color" value="#563d7c" onselect="handle_select()" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
+ <center>
+<span id="target_text"></span>
+<br>
+<button type="submit" onclick="generator()" id="gen_button" class="btn btn-success btn-sm">Generate</button> 
+<button type="submit" onclick="run_sed_live()" id="run_test_button" style="display:none" class="btn btn-success btn-sm">Run Test</button>
+        <br> 
+  <p class="text-primary">LineNumber: <input class="form-check-input" autocomplete="off" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; 
+
+    LHS Vary: <input class="form-check-input" type="checkbox" autocomplete="off" id="LHSChecker" onchange="LHSChkFn()" >&nbsp;&nbsp;&nbsp;&nbsp;   
+
+    RHS Vary: <input type="checkbox" class="form-check-input" autocomplete="off" id="RHSChecker" onchange=" RHSChkFn()">&nbsp;&nbsp;&nbsp;&nbsp; 
+
+    StaticBrd: <input type="checkbox" class="form-check-input" autocomplete="off" id="brdcheck" onclick="show_brd_options()"> &nbsp;&nbsp;&nbsp;&nbsp;
+
+   Δ-Target: <input type="checkbox" class="form-check-input" autocomplete="off" id="deltacheck"> 
+ 
+  </p> 
+  </center>
+
+<div id="display_static_brd" style="display:none">
+    <span class="badge rounded-pill bg-secondary" id="100"></span>
+    <span class="badge rounded-pill bg-secondary" id="101"></span>
+    <span class="badge rounded-pill bg-secondary" id="102"></span>
+    <span class="badge rounded-pill bg-secondary" id="103"></span>
+</div>
+
+<center>
+  <button type="button" style="display:none;" class="btn btn-warning btn-sm" id="makeclear" onclick="clear_static_brd()">Clear</button>
+  <button type="button" style="display:none;" onclick="add_custombrd()" class="btn btn-primary btn-sm" id="add_static">Add</button>
+  <br>
+      </center><br>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <h5>PATTERN -1 ⁽ˢᵉᵗ⁾ 
+     <button onclick="copyElementText('patt1')" style="font-size:10px" class="btn btn-link">copy </button></h5>
+      <pre id="patt1" style="font-size: 15px;"></pre>
+    </div>
+    <div class="col-sm-4">
+      <h5>PATTERN -2 ⁽ˢᵗ⁾
+  <button onclick="copyElementText('patt2')" style="font-size:10px" class="btn btn-link">copy </button></h5>
+      <pre id="patt2" style="font-size: 15px;"></pre>
+    </div>
+    <div class="col-sm-4">
+      <h5>PATTERN -3 ⁽ˢˢᵗ⁾ 
+     <button onclick="copyElementText('patt3')" style="font-size:10px" class="btn btn-link">copy </button></h5>
+      <pre id="patt3" style="font-size: 15px;"></pre>      
+    </div>
+      
+
+       <div class="col-sm-4">
+     
+      <h5>PATTERN -4 ⁽ᵉᵗ⁻¹⁾
+      <button onclick="copyElementText('patt4')" style="font-size:10px" class="btn btn-link">copy </button></h5>
+      <pre id="patt4" style="font-size: 14px;"></pre>      
+    </div>
+       
+       <div class="col-sm-4">
+      
+      <h5>PATTERN -5 ⁽ᵉᵗ⁻²⁾
+     <button onclick="copyElementText('patt5')" style="font-size:11px" class="btn btn-link">copy </button></h5> 
+      <pre id="patt5" style="font-size: 15px;"></pre>      
+    </div>
+    
+       <div class="col-sm-4">
+     
+      <h5>PATTERN -6 
+
+      <button onclick="copyElementText('patt6')" style="font-size:10px" class="btn btn-link">copy</button>  </h5>    
+      <pre id="patt6" style="font-size: 14px;"></pre>   
+    </div>
+
+  </div>
+
+<!-- starting test run div -->
+<div id="run_test_live" style="display:none">
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-body">
+     <pre class="card-text" id="200"></pre>
+      <pre class="card-text" id="201"></pre>
+       <pre class="card-text" id="202"></pre>
+        <pre class="card-text" id="203"></pre>
+         <pre class="card-text" id="204"></pre>
+         <pre class="card-text" id="205"></pre>
+         <pre class="card-text" id="206"></pre>
+<center>
+<button type="submit" onclick="hide_run_live()" id="gen_button" class="btn btn-warning btn-sm">Close</button>
+</center>
+    </div>
+  </div>
+</div>
+</div>
+<br>
+<!-- ending test run div -->
+
+</div>
+<br>
+<center><a href="#" id="bug"><button type="button" data-bs-toggle="modal" data-bs-target="#myModal" class="btn btn-secondary btn-sm">One-click Report this wrong result!</button><br></center></a>
+<br>
+<!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" id="report_status"></h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <h6 id="report_notes"></h6>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<!-- main js file  -->
+<script src="{{ url_for('static', filename='js/generator_fn.js') }}"></script>
+<!-- run sed caller fn -->
+<script src="{{ url_for('static', filename='js/run_sed.js') }}"></script>
+<!-- jq min script -->
+<script src="{{ url_for('static', filename='jq.min.js') }}"></script>
+
+<script type=text/javascript>
+        $(function() {
+          $('a#bug').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/bug',
+                function(data) {
+                  document.querySelector("#report_status").innerText = data.status;
+                  document.querySelector("#report_notes").innerText = data.notes;
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+</html>
