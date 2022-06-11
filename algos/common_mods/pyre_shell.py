@@ -10,14 +10,13 @@ def run_pyre_shell(req):
 	patt6 = req['patt6']
 	full_line = req['full_line'][0]
 	TXT=echo_escaper(full_line)
-	print("########",patt1)
 	final_res = {
-	"patt1_shell_op":patt1,
-	"patt2_shell_op":patt2,
+	"patt1_shell_op":str(eval(patt1).groups()),
+	"patt2_shell_op":str(eval(patt2).groups()),
 	"patt3_shell_op":"___",
-	"patt4_shell_op":patt4,
-	"patt5_shell_op":patt5,
-	"patt6_shell_op":patt6,
+	"patt4_shell_op":str(eval(patt4).groups()),
+	"patt5_shell_op":str(eval(patt5).groups()),
+	"patt6_shell_op":str(eval(patt6).groups())
 	}
 	return final_res
 
