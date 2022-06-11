@@ -45,7 +45,7 @@
 <span id="target_text"></span>
 <br>
 <button type="submit" onclick="generator()" id="gen_button" class="btn btn-success btn-sm">Generate</button> 
-<button type="submit" onclick="run_sed_live()" id="run_test_button" style="display:none" class="btn btn-success btn-sm">Run Test (beta)</button>
+<button type="submit" onclick="run_pyre_live()" id="run_test_button" style="display:none" class="btn btn-success btn-sm">Run Test (beta)</button>
         <br> 
   <p class="text-primary">
     
@@ -165,7 +165,7 @@
 <!-- main js file  -->
 <script src="{{ url_for('static', filename='js/generator_fn.js') }}"></script>
 <!-- run sed caller fn -->
-<script src="{{ url_for('static', filename='js/run_sed.js') }}"></script>
+<script src="{{ url_for('static', filename='js/run_pyre.js') }}"></script>
 <!-- jq min script -->
 <script src="{{ url_for('static', filename='jq.min.js') }}"></script>
 

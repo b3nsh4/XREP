@@ -1,4 +1,4 @@
-function run_sed_live() {
+function run_pyre_live() {
     document.getElementById('run_test_live').style.display = "inline";
     total_patterns = {
         patt1: patt1_run_res,
@@ -11,7 +11,7 @@ function run_sed_live() {
     }
         
         void async function() {
-        const response = await fetch(`${window.origin}/run_sed`, {
+        const response = await fetch(`${window.origin}/run_pyre`, {
             method: "POST",
             credentials: "include",
             body: JSON.stringify(total_patterns),

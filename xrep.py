@@ -18,6 +18,10 @@ from reports import init_report
 from static_arrang import static_res
 from improved_len_decision import glolbal_len_decision as gld
 
+#run in subprocess
+from pyre_shell import run_pyre_shell
+from subprocess_shell import run_shell
+
 #modules for static string
 from patt1_static_brd import patt1_static_str
 from global_vars import *
@@ -321,7 +325,7 @@ def stratg():
          grp="1"
       
       if pyre==True:
-         res = "re.search('{}({}){}{}')".format(preb,patt_2_res,post_spc,postb)
+         res = "re.search('{}({}){}{}',TXT)".format(preb,patt_2_res,post_spc,postb)
          pyre_2_result = res
          return res
       elif pyre==False:
@@ -338,7 +342,7 @@ def stratg():
          final = prefetch_for_pat5+"[^ ]+"+f'){post_spc}/\\1/p"'
          
          if pyre==True:
-            final = python_prefetch+"[^ ]+"+f"){post_spc}')"
+            final = python_prefetch+"[^ ]+"+f"){post_spc}',TXT)"
             pyre_5_result = final
             return final
          elif pyre==False:
@@ -355,7 +359,7 @@ def stratg():
          if pre==True:
             return
          if pyre==True:
-            final = python_prefetch+res+f"){post_spc}')"
+            final = python_prefetch+res+f"){post_spc}',TXT)"
             pyre_5_result = final
             return final
          elif pyre==False:
@@ -366,7 +370,7 @@ def stratg():
             res = repeating_stuff(di_3)
             final = prefetch_for_pat5+res+f'){post_spc}.*/\\1/p"'
             if pyre==True:
-               final = python_prefetch+res+f"){post_spc}')"
+               final = python_prefetch+res+f"){post_spc}',TXT)"
                pyre_5_result = final
                return final
             elif pyre==False:
@@ -521,7 +525,7 @@ def stratg():
             closest_pre_boundary = gld(lhs_static_str[-1])
          
          if pyre==True:
-            res =  f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*')"
+            res =  f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*',TXT)"
             pyre_4_result = res
             return res
          elif pyre==False:
@@ -556,7 +560,7 @@ def stratg():
          return "long_result_ignored"
       else:
          if pyre==True:
-            res  = f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*')"
+            res  = f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*',TXT)"
             pyre_4_result = res
             return res
          elif pyre==False:
@@ -574,7 +578,6 @@ def stratg():
       else:
          res = pattern_6_beta(pyre,lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
       if pyre:
-         print("########check")
          pyre6_result = res
       return res
    
@@ -637,12 +640,15 @@ def bug_report():
    report_status=init_report(collect_report_vars)
    return report_status
 
-
-from subprocess_shell import run_shell
-@app.route('/run_test',methods=["POST","GET"])
+@app.route('/run_sed',methods=["POST","GET"])
 def run_with_sed():
    req = request.get_json()
    return run_shell(req)
+
+@app.route('/run_pyre',methods=["POST","GET"])
+def run_python_re():
+   req = request.get_json()
+   return run_pyre_shell(req)
 
 @app.route('/donate')
 def donate_xrep():
