@@ -1,5 +1,4 @@
 # .*pre2-static(.+).{N}
-
 from escape_me import *
 
 def glolbal_decision_6(string):
@@ -23,26 +22,30 @@ def patt6_static_brd(pyre,LINE_NUM,preb,postb,pre_spc,post_spc,lhs_static_str):
             final_post = glolbal_decision_6(postb.split()[0])
         except IndexError:
             if pyre==True:
-                return f"re.search('.*"+pre_str+"([^ ]+)$/')"
+                res = f"re.search('.*"+pre_str+"([^ ]+)$/')"
+                return res
             elif pyre==False:
                 return f"sed -E -n '{LINE_NUM}s/.*"+pre_str+"([^ ]+)$/\\1/p'"
 
         if len(final_post)!=0:
             if pyre==True:
-                return f"re.search('"+pre_str+pre_spc+"(.+)"+post_spc+str(final_post)+".*')"
+                res =  f"re.search('"+pre_str+pre_spc+"(.+)"+post_spc+str(final_post)+".*')"
+                return res
             elif pyre==False:
                 return f"sed -E -n '{LINE_NUM}s/.*"+pre_str+pre_spc+"(.+)"+post_spc+str(final_post)+".*/\\1/p'".format(LINE_NUM)
     
     elif len(postb.split())==0: #if len is zero for postb
         if pyre==True:
-            return f"re.search('^([^ ]+){post_spc}.*$.*')"
+            res = f"re.search('^([^ ]+){post_spc}.*$.*')"
+            return res
         elif pyre==False:
             return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}.*$.*/\\1/p'".format(LINE_NUM)    
     else:
         final_post = glolbal_decision_6(postb.split()[0])
         
         if pyre==True:
-            return f"re.search('^([^ ]+){post_spc}.*"+str(final_post)+".*')"
+            res =  f"re.search('^([^ ]+){post_spc}.*"+str(final_post)+".*')"
+            return res
         elif pyre==False:
             return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}.*"+str(final_post)+".*/\\1/p'"
 

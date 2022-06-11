@@ -287,7 +287,12 @@ def stratg():
       cooked_string_copy+=cooked_string
       return cooked_string
 
-   def pattern_2():      
+   ###########################################
+   ################# PATTERN_2 ##############
+   ##########################################
+   
+   def pattern_2():
+      global pyre_2_result   
       pyre = PYTHON_RE
       nonlocal di_3
       alnum_algo(di_2,di_3) #1st stage alnum filter
@@ -316,17 +321,25 @@ def stratg():
          grp="1"
       
       if pyre==True:
-         return "re.search('{}({}){}{}'".format(preb,patt_2_res,post_spc,postb)
+         res = "re.search('{}({}){}{}')".format(preb,patt_2_res,post_spc,postb)
+         pyre_2_result = res
+         return res
       elif pyre==False:
          return "sed -E -n '{}s/{}({}){}{}/\\{}/p'".format(LINE_NUM,preb,patt_2_res,post_spc,postb,grp)
    
+   ###########################################
+   ################# PATTERN_5 ##############
+   ##########################################
+   
    def pattern_5(): #mostly have \\w+ than [[:class:]]
+      global pyre_5_result
       pyre = PYTHON_RE
       if delta_check==True:
          final = prefetch_for_pat5+"[^ ]+"+f'){post_spc}/\\1/p"'
          
          if pyre==True:
             final = python_prefetch+"[^ ]+"+f"){post_spc}')"
+            pyre_5_result = final
             return final
          elif pyre==False:
             return final
@@ -343,6 +356,7 @@ def stratg():
             return
          if pyre==True:
             final = python_prefetch+res+f"){post_spc}')"
+            pyre_5_result = final
             return final
          elif pyre==False:
             return final
@@ -353,6 +367,7 @@ def stratg():
             final = prefetch_for_pat5+res+f'){post_spc}.*/\\1/p"'
             if pyre==True:
                final = python_prefetch+res+f"){post_spc}')"
+               pyre_5_result = final
                return final
             elif pyre==False:
                return final
@@ -402,11 +417,21 @@ def stratg():
          temp.append(escape_me(i))
       return temp
 
+   ###########################################
+   ################# PATTERN_1 ##############
+   ##########################################
+   
    def pattern_1():
+      global pyre_1_result
       pyre=PYTHON_RE
       if len(lhs_static_str)!=0 or len(rhs_static_str)!=0: #static string invoking
-         return patt1_static_str(pyre,lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space)
+         patt1_res = patt1_static_str(pyre,lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space)
+         if pyre:
+            pyre_1_result = patt1_res
+         return patt1_res
       patt1_res = pat_1_ready(pyre,lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_spc,post_spc)
+      if pyre:
+         pyre_1_result = patt1_res
       return patt1_res
 
 
@@ -477,7 +502,11 @@ def stratg():
       return sub_it+final_cooked_string+"/XXX/'"
 
 
+   ###########################################
+   ################# PATTERN_4 ##############
+   ##########################################
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
+      global pyre_4_result
       pyre = PYTHON_RE
       if delta_check==True:
          
@@ -492,7 +521,9 @@ def stratg():
             closest_pre_boundary = gld(lhs_static_str[-1])
          
          if pyre==True:
-            return  f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*')"
+            res =  f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*')"
+            pyre_4_result = res
+            return res
          elif pyre==False:
             return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*/\\1/p'"
       
@@ -525,17 +556,26 @@ def stratg():
          return "long_result_ignored"
       else:
          if pyre==True:
-            return  f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*')"
+            res  = f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*')"
+            pyre_4_result = res
+            return res
          elif pyre==False:
             return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*/\\1/p'"
 
+   ###########################################
+   ################# PATTERN_6 ##############
+   ##########################################
    def pattern_6():
+      global pyre6_result
       pyre = PYTHON_RE
       if len(lhs_static_str)!=0: #static-str invoking
          from patt6_static_brd import patt6_static_brd
          res=patt6_static_brd(pyre,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc,lhs_static_str)
       else:
          res = pattern_6_beta(pyre,lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
+      if pyre:
+         print("########check")
+         pyre6_result = res
       return res
    
    #some global vars
