@@ -67,7 +67,7 @@ def patt1_static_str(pyre,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 			post2=post2+".*"
 		
 		if pyre==True:
-			res = f"re.search('{init_with}("+p_space+(cooked_string)+").*"+post1+post2+",TXT)'"
+			res = f"re.search('{init_with}("+p_space+(cooked_string)+").*"+post1+post2+"',TXT)"
 			return res
 		elif pyre==False:
 			return f"sed -E -n '{LINE_NUM}s/{init_with}("+p_space+(cooked_string)+").*"+post1+post2+"/\\1/p'"
@@ -87,7 +87,7 @@ def patt1_static_str(pyre,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 			pre2=pre2
 		
 		if pyre==True:
-			res  = f"re.search('.*"+pre1+pre2+"("+p_space+(cooked_string)+").*,TXT)'"
+			res  = f"re.search('.*"+pre1+pre2+"("+p_space+(cooked_string)+").*',TXT)"
 			return res
 		return f"sed -E -n '{LINE_NUM}s/.*"+pre1+pre2+"("+p_space+(cooked_string)+").*/\\1/p'"
 
