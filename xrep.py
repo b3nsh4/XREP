@@ -344,7 +344,7 @@ def stratg():
          final = prefetch_for_pat5+"[^ ]+"+f'){post_spc}/\\1/p"'
          
          if pyre==True:
-            final = python_prefetch+"[^ ]+"+f"){post_spc}',TXT)"
+            final = python_prefetch+"[^ ]+"+f"{post_spc}',TXT)"
             pyre_5_result = final
             return final
          elif pyre==False:
@@ -361,7 +361,7 @@ def stratg():
          if pre==True:
             return
          if pyre==True:
-            final = python_prefetch+res+f"){post_spc}',TXT)"
+            final = python_prefetch+res+f"{post_spc}',TXT)"
             pyre_5_result = final
             return final
          elif pyre==False:
@@ -372,7 +372,7 @@ def stratg():
             res = repeating_stuff(di_3)
             final = prefetch_for_pat5+res+f'){post_spc}.*/\\1/p"'
             if pyre==True:
-               final = python_prefetch+res+f"){post_spc}',TXT)"
+               final = python_prefetch+res+f"{post_spc}',TXT)"
                pyre_5_result = final
                return final
             elif pyre==False:
