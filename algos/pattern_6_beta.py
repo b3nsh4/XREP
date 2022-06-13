@@ -38,10 +38,10 @@ def pattern_6_beta(pyre,lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
             final_post = glolbal_decision_6(postb.split()[0])
         except IndexError:
             if pyre==True:
-                res = f"re.search('.*"+lhs_1+pre_res+lhs_2+"([^ ]+)$',TXT)"
+                res = f"re.search('.*"+lhs_1+pre_res+lhs_2+pre_spc+"([^ ]+)$',TXT)"
                 return res
             elif pyre==False:
-                res = f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+"([^ ]+)$/\\1/p'"
+                res = f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+pre_spc+"([^ ]+)$/\\1/p'"
                 return res
         if len(final_post)!=0:
             if pyre==True:

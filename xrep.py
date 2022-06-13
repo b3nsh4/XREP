@@ -50,6 +50,8 @@ def stratg():
    
    if end_point=="/pythonre":
       PYTHON_RE = True
+   else:
+      PYTHON_RE = False
    
    rhs_static_str = []
    lhs_static_str = []
