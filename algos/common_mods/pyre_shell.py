@@ -51,12 +51,15 @@ def run_pyre_shell(req):
 			patt6_shell_op=str(eval(patt6).group())
 	except AttributeError:
 		patt6_shell_op = "Something went wrong, please report this!"
-
+	# try:
+	patt3_shell_op = str(eval(patt3))
+	# except:
+		# patt3_shell_op = "Something went wrong, re.sub()"
 	
 	final_res = {
 	"patt1_shell_op":patt1_shell_op,
 	"patt2_shell_op":patt2_shell_op,
-	"patt3_shell_op":"___",
+	"patt3_shell_op":patt3_shell_op,
 	"patt4_shell_op":patt4_shell_op,
 	"patt5_shell_op":patt5_shell_op,
 	"patt6_shell_op":patt6_shell_op
