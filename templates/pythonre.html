@@ -14,7 +14,7 @@
 
   <ul class="nav justify-content-center">
     <li class="nav-item">
-      <a class="nav-link" href="{{ url_for('donate_xrep') }}">Donate♡</a>
+      <a class="nav-link" href="{{ url_for('donate_xrep') }}">Donate</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#">Docs</a>
@@ -23,7 +23,7 @@
       <a class="nav-link" href="{{ url_for('api') }}">API</a>
     </li>
     <li class="nav-item">
-      <a class="btn btn-outline-primary" href="/">POSIX</a>
+      <a class="btn btn-outline-success" href="/">POSIX <img src="{{ url_for('static', filename='images/posix.svg') }}" width="20" height="20" alt=""></a>
     </li>
   </ul>
     <div class="container mt-5 border">
@@ -37,7 +37,7 @@
 <center>
   <a class="navbar-brand" href="/pythonre">
     <img src="{{ url_for('static', filename='images/py.svg') }}" width="25" height="25" alt=""></a>
-  𝙓𝙍𝙀𝙋 𝘉𝘌𝘛𝘈 𝘝.04 </center>
+  𝙓𝙍𝙀𝙋 <i>0.1.10-beta</i></center>
   <br>
      <textarea class="form-control" placeholder="Paste your text here 👇  
           This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/images/ints.png) top -12px left / auto no-repeat, 
@@ -86,7 +86,7 @@
       <pre id="patt2" style="font-size: 15px;"></pre>
     </div>
     <div class="col-sm-4">
-      <h5>PATTERN -3 <i class="text-warning">ᵇᵉᵗᵃ</i>
+      <h5>PATTERN -3
      <button onclick="copyElementText('patt3')" style="font-size:10px" class="btn btn-link">copy </button></h5>
       <pre id="patt3" style="font-size: 15px;"></pre>      
     </div>

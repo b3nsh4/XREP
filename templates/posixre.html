@@ -15,18 +15,18 @@
 
   <ul class="nav justify-content-center">
     <li class="nav-item">
-      <a class="nav-link" href="{{ url_for('donate_xrep') }}">Donate♡</a>
+      <a class="nav-link" href="{{ url_for('donate_xrep') }}">Donate</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#">Docs</a>
     </li>
+        </li>
     <li class="nav-item">
       <a class="nav-link" href="{{ url_for('api') }}">API</a>
     </li>
     <li class="nav-item">
-<!--       <button type="button" class="btn btn-outline-warning">Warning</button> -->
-      <a class="btn btn-outline-warning" href="/pythonre">Python <img src="{{ url_for('static', filename='images/py.svg') }}" width="15" height="15" alt=""></a>
-    </li>
+      <a class="btn btn-outline-warning" href="/pythonre">PYTHON <img src="{{ url_for('static', filename='images/py.svg') }}" width="15" height="15" alt=""></a>
+        </li>
   </ul>
     <div class="container mt-5 border">
   <title>𝙓𝙍𝙀𝙋</title>
@@ -37,7 +37,9 @@
 <body>
 <!-- ADD LINE NUMBER CHECK BOX HEREW -->
 
-<center>𝙓𝙍𝙀𝙋 𝘉𝘌𝘛𝘈 𝘝.04</center>
+<center>
+<a class="navbar-brand" href="/">
+<img src="{{ url_for('static', filename='images/posix.svg') }}" width="25" height="25" alt="posix-shell"></a>𝙓𝙍𝙀𝙋 <i>0.1.10-beta</i></center>
 <br>
      <textarea class="form-control" placeholder="Paste your text here 👇  
           This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/images/ints.png) top -12px left / auto no-repeat, 
