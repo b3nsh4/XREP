@@ -37,27 +37,27 @@ def patt1_static_str(pyre,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 		if pre1=="":
 			pre1=""
 		else:
-			pre1=pre1+".*"
+			pre1=pre1 # used pre1+".*" here before
 		
 		if pre_has_space==True:
-			pre2=pre2+".*"
+			pre2=pre2 # used pre2+".*" here before
 		else:
 			pre2=pre2
 
 		post1,post2 = post_res[0],post_res[1]
 		
 		if pyre==True:
-			res = f"re.search(\".*"+pre1+pre2+"("+p_space+(cooked_string)+").*"+post1+".*"+post2+"\",TXT)"
+			res = f"re.search(\""+pre1+pre2+"("+p_space+(cooked_string)+").*"+post1+".*"+post2+"\",TXT)"
 			return res
 		elif pyre==False:
-			return f"sed -E -n '{LINE_NUM}s/.*"+pre1+pre2+"("+p_space+(cooked_string)+").*"+post1+".*"+post2+"/\\1/p'"
+			return f"sed -E -n '{LINE_NUM}s/"+pre1+pre2+"("+p_space+(cooked_string)+").*"+post1+".*"+post2+"/\\1/p'"
 		
 	elif len(lhs)==0 and len(rhs)!=0:
 		post_res = rhs_static_str(rhs)
 		post1,post2 = post_res[0],post_res[1]
 		
 		if pre_has_space==True:
-			init_with = ".*"
+			init_with = "" #used .* here before. 
 		else:
 			init_with = "^"
 		
@@ -79,7 +79,7 @@ def patt1_static_str(pyre,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 		if pre1=="":
 			pre1=""
 		else:
-			pre1=pre1+".*"
+			pre1=pre1+""  #used .* here before
 
 		if pre_has_space==True:
 			pre2=pre2+"" #REF-psb-01
@@ -87,9 +87,9 @@ def patt1_static_str(pyre,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 			pre2=pre2
 		
 		if pyre==True:
-			res  = f"re.search(\".*"+pre1+pre2+"("+p_space+(cooked_string)+").*\",TXT)"
+			res  = f"re.search(\""+pre1+pre2+"("+p_space+(cooked_string)+").*\",TXT)"
 			return res
-		return f"sed -E -n '{LINE_NUM}s/.*"+pre1+pre2+"("+p_space+(cooked_string)+").*/\\1/p'"
+		return f"sed -E -n '{LINE_NUM}s/"+pre1+pre2+"("+p_space+(cooked_string)+").*/\\1/p'"
 
 
 """

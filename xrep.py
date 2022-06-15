@@ -315,7 +315,11 @@ def stratg():
          grp="1"
       
       preb = pat_2_ready(pre_boundary.lstrip().split(" "),pre_boundary)
-      postb = ".*"    
+      # static string support for post
+      if len(rhs_static_str)!=0:
+         postb=gld(rhs_static_str[0])
+      else:
+         postb = ".*"    
       
       if lhs==True:
          return "non_useful_pattern"
@@ -331,7 +335,7 @@ def stratg():
          pyre_2_result = res
          return res
       elif pyre==False:
-         return "sed -E -n '{}s/{}({}){}{}/\\{}/p'".format(LINE_NUM,preb,patt_2_res,post_spc,postb,grp)
+         return f"sed -E -n '{LINE_NUM}s/{preb}({patt_2_res}).*{post_spc}{postb}/\\{grp}/p'"
    
    ###########################################
    ################# PATTERN_5 ##############
