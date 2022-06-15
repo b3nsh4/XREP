@@ -61,7 +61,7 @@ def pat_1_ready(pyre,lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,
   
   #checks if user needs POSIX or Pyre
   if pyre==True:
-    res = (f"re.search('{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}.*',TXT)")
+    res = f"re.search(\"{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}.*\",TXT)"
     return res
   elif pyre==False:
     return (f"sed -E -n '{LINE_NUM}s/{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}.*/\\1/p'")

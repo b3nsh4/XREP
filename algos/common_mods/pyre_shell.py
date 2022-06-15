@@ -1,4 +1,5 @@
 from echo_escape import echo_escaper
+
 import re
 
 def run_pyre_shell(req):
@@ -15,23 +16,24 @@ def run_pyre_shell(req):
 		patt1_shell_op=str(eval(patt1).groups())
 		if patt1_shell_op=="()":
 			patt1_shell_op=str(eval(patt1).group())
-	except AttributeError:
-		patt1_shell_op="Something went wrong, please report this!"
+	# except AttributeError:
+	except Exception as e:
+		patt1_shell_op=f"Run-Test bug,please report this: {e}"
 	
 	try:
 		patt2_shell_op=str(eval(patt2).groups())
 		if patt2_shell_op=="()":
 			patt2_shell_op=str(eval(patt2).group())
-	except AttributeError:
-		patt2_shell_op = "Something went wrong, please report this!"
+	except Exception as e:
+		patt2_shell_op = f"Run-Test bug,please report this: {e}"
 	
 	if patt4!="long_result_ignored":
 		try:
 			patt4_shell_op=str(eval(patt4).groups())
 			if patt4_shell_op=="()":
 				patt4_shell_op = str(eval(patt4).group())
-		except AttributeError:
-			patt4_shell_op = "Something went wrong, please report this!"
+		except Exception as e:
+			patt4_shell_op = f"Something went wrong, please report this: {e}"
 	else:
 		patt4_shell_op="long_result_ignored"
 	
@@ -42,19 +44,19 @@ def run_pyre_shell(req):
 				patt5_shell_op = str(eval(patt5).group())
 		else:
 				patt5_shell_op = "Works_better_with_complex_patterns"
-	except AttributeError:
-		patt5_shell_op = "Something went wrong, please report this!"
+	except Exception as e:
+		patt5_shell_op = f"Run-Test bug,please report this: {e}"
 	
 	try:
 		patt6_shell_op=str(eval(patt6).groups())
 		if patt6_shell_op=="()":
 			patt6_shell_op=str(eval(patt6).group())
-	except AttributeError:
-		patt6_shell_op = "Something went wrong, please report this!"
+	except Exception as e:
+		patt6_shell_op = f"Run-Test bug,please report this: {e}"
 	try:
 		patt3_shell_op = str(eval(patt3))
-	except:
-		patt3_shell_op = "Something went wrong, re.sub()"
+	except Exception as e:
+		patt3_shell_op = f"Run-Test bug,please report this: {e}"
 	
 	final_res = {
 	"patt1_shell_op":patt1_shell_op,

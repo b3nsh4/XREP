@@ -167,9 +167,9 @@ def stratg():
    # not using +str(line_num)+ AS OF NOW!!
    if len_for_pre_boundary!=0:
       prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
-      python_prefetch = f"re.search('."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
+      python_prefetch = f"re.search(\"."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
    else:
-      python_prefetch = f"re.search('\\s*("
+      python_prefetch = f"re.search(\"\\s*("
       prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/\\s*("
 
    i=0
@@ -327,7 +327,7 @@ def stratg():
          grp="1"
       
       if pyre==True:
-         res = "re.search('{}({}){}{}',TXT)".format(preb,patt_2_res,post_spc,postb)
+         res = 're.search("{}({}){}{}",TXT)'.format(preb,patt_2_res,post_spc,postb)
          pyre_2_result = res
          return res
       elif pyre==False:
@@ -344,7 +344,7 @@ def stratg():
          final = prefetch_for_pat5+"[^ ]+"+f'){post_spc}/\\1/p"'
          
          if pyre==True:
-            final = python_prefetch+"[^ ]+"+f"){post_spc}',TXT)"
+            final = python_prefetch+"[^ ]+"+f'){post_spc}",TXT)'
             pyre_5_result = final
             return final
          elif pyre==False:
@@ -361,7 +361,7 @@ def stratg():
          if pre==True:
             return
          if pyre==True:
-            final = python_prefetch+res+f"){post_spc}',TXT)"
+            final = python_prefetch+res+f'){post_spc}",TXT)'
             pyre_5_result = final
             return final
          elif pyre==False:
@@ -372,7 +372,7 @@ def stratg():
             res = repeating_stuff(di_3)
             final = prefetch_for_pat5+res+f'){post_spc}.*/\\1/p"'
             if pyre==True:
-               final = python_prefetch+res+f"){post_spc}',TXT)"
+               final = python_prefetch+res+f'){post_spc}",TXT)'
                pyre_5_result = final
                return final
             elif pyre==False:
@@ -456,31 +456,31 @@ def stratg():
       prefetch_complex_subsitit = "sed -E -n "+'"'+str(LINE_NUM)+"s/("
       if len_for_pre_boundary==0 and len_for_post_boundary==0:
          if PYTHON_RE:
-            return (f"re.sub('(.+)?({cooked_string_copy})$(.*)','XXX',TXT)")
+            return f"re.sub(\"(.+)?({cooked_string_copy})$(.*)\",'XXX',TXT)"
          return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy})$(.*)/XXX/'")
       
       elif len_for_pre_boundary==0: #preboundary missing
          if number_of_repeats==0:
             if PYTHON_RE:
-               return (f"re.sub('(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?(.*)',r'XXX \\3 \\4',TXT)")
+               return f"re.sub(\"(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?(.*)\",r'XXX \\3 \\4',TXT)"
             return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?(.*)/XXX \\3 \\4/'")
          else:
             if PYTHON_RE:
-               return (f"re.sub('(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?(.*)',r'XXX \\4 \\5',TXT)")
+               return f"re.sub(\"(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?(.*)\",r'XXX \\4 \\5',TXT)"
             return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\4 \\5/'")
       
       elif len_for_post_boundary==0: #postboundry missing
          if PYTHON_RE:
-            return (f"re.sub('(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy})$',r'\\1 \\2 XXX',TXT)")
+            return f"re.sub(\"(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy})$\",r'\\1 \\2 XXX',TXT)"
          return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy})$/\\1 \\2 XXX/'")
       else:
          if number_of_repeats ==0:
             if PYTHON_RE:
-               return (f"re.sub('(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy}){post_spc}({cooked_post_boundary})(.*)',r'\\1 \\2 XXX \\4 \\5',TXT)")
+               return f"re.sub(\"(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy}){post_spc}({cooked_post_boundary})(.*)\",r'\\1 \\2 XXX \\4 \\5',TXT)"
             return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\4 \\5/'")
          else:
             if PYTHON_RE:
-               return (f"re.sub('(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy}){post_spc}({cooked_post_boundary})(.*)',r'\\1 \\2 XXX \\5 \\6',TXT)")
+               return f"re.sub(\"(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy}){post_spc}({cooked_post_boundary})(.*)\",r'\\1 \\2 XXX \\5 \\6',TXT)"
             return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\5 \\6/'")
 
 
@@ -544,7 +544,7 @@ def stratg():
             closest_pre_boundary = gld(lhs_static_str[-1])
          
          if pyre==True:
-            res =  f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*',TXT)"
+            res =  f"re.search(\".*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*\",TXT)"
             pyre_4_result = res
             return res
          elif pyre==False:
@@ -579,7 +579,7 @@ def stratg():
          return "long_result_ignored"
       else:
          if pyre==True:
-            res  = f"re.search('.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*',TXT)"
+            res  = f"re.search(\".*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*\",TXT)"
             pyre_4_result = res
             return res
          elif pyre==False:
@@ -589,7 +589,6 @@ def stratg():
    ################# PATTERN_6 ##############
    ##########################################
    def pattern_6():
-      global pyre6_result
       pyre = PYTHON_RE
       if len(lhs_static_str)!=0: #static-str invoking
          from patt6_static_brd import patt6_static_brd
