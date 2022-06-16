@@ -3,6 +3,8 @@ import sys
 sys.path.append('algos')
 from improved_len_decision import glolbal_len_decision
 
+NonGreedyStatus=False
+
 def lhs_static_str(lhs):
 		if len(lhs)>=2:
 			pre1=glolbal_len_decision(lhs[-2])
@@ -23,8 +25,14 @@ def rhs_static_str(rhs):
 			post2=""
 			return [post1,post2]
 
-def patt1_static_str(pyre,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
-	global pyre_1_result
+def patt1_static_str(pyre,GreedyStatus,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
+	global pyre_1_result,NonGreedyStatus
+	NonGreedyStatus = GreedyStatus
+
+	if NonGreedyStatus:
+		quantifier = ".*?"
+	else:
+		 quantifier = ".*"
 	if pre_has_space == True:
 		p_space="\\s+"
 	elif pre_has_space == False:
@@ -37,17 +45,17 @@ def patt1_static_str(pyre,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 		if pre1=="":
 			pre1=""
 		else:
-			pre1=pre1+".*"
+			pre1=pre1+quantifier
 		
 		if pre_has_space==True:
-			pre2=pre2+".*"
+			pre2=pre2+quantifier
 		else:
 			pre2=pre2
 
 		post1,post2 = post_res[0],post_res[1]
 		
 		if pyre==True:
-			res = f"re.search(\".*"+pre1+pre2+"("+p_space+(cooked_string)+").*"+post1+".*"+post2+"\",TXT)"
+			res = f"re.search(\"{quantifier}{pre1}{pre2}({p_space}({cooked_string}).*{post1}.*{post2}\",TXT)"
 			return res
 		elif pyre==False:
 			return f"sed -E -n '{LINE_NUM}s/.*"+pre1+pre2+"("+p_space+(cooked_string)+").*"+post1+".*"+post2+"/\\1/p'"
@@ -57,7 +65,10 @@ def patt1_static_str(pyre,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 		post1,post2 = post_res[0],post_res[1]
 		
 		if pre_has_space==True:
-			init_with = ".*"
+			if NonGreedyStatus:
+				init_with = ".*?"
+			else:
+				init_with = ".*"
 		else:
 			init_with = "^"
 		
@@ -79,7 +90,7 @@ def patt1_static_str(pyre,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 		if pre1=="":
 			pre1=""
 		else:
-			pre1=pre1+".*"
+			pre1=pre1+quantifier
 
 		if pre_has_space==True:
 			pre2=pre2+"" #REF-psb-01
@@ -87,7 +98,7 @@ def patt1_static_str(pyre,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
 			pre2=pre2
 		
 		if pyre==True:
-			res  = f"re.search(\".*"+pre1+pre2+"("+p_space+(cooked_string)+").*\",TXT)"
+			res  = f"re.search(\"{quantifier}{pre1}{pre2}({p_space}({cooked_string})).*\",TXT)"
 			return res
 		return f"sed -E -n '{LINE_NUM}s/.*"+pre1+pre2+"("+p_space+(cooked_string)+").*/\\1/p'"
 
