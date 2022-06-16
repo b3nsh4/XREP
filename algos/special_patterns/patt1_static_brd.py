@@ -81,7 +81,7 @@ def patt1_static_str(pyre,GreedyStatus,lhs,rhs,cooked_string,LINE_NUM,pre_has_sp
 			res = f"re.search(\"{init_with}{p_space}{(cooked_string)}.*{post1}{post2}\",TXT)"
 			return res
 		elif pyre==False:
-			return f"sed -E -n '{LINE_NUM}s/{init_with}("+p_space+(cooked_string)+").*"+post1+post2+"/\\1/p'"
+			return f"sed -E -n '{LINE_NUM}s/{init_with}{p_space}({cooked_string}).*{post1+post2}/\\1/p'"
 	
 	elif len(lhs)!=0 and len(rhs)==0:
 		pre_res = lhs_static_str(lhs)
@@ -100,7 +100,7 @@ def patt1_static_str(pyre,GreedyStatus,lhs,rhs,cooked_string,LINE_NUM,pre_has_sp
 		if pyre==True:
 			res  = f"re.search(\"{quantifier}{pre1}{pre2}{p_space}({cooked_string}).*\",TXT)"
 			return res
-		return f"sed -E -n '{LINE_NUM}s/.*"+pre1+pre2+"("+p_space+(cooked_string)+").*/\\1/p'"
+		return f"sed -E -n '{LINE_NUM}s/.*{pre1+pre2}{p_space}({cooked_string}).*/\\1/p'"
 
 
 """
