@@ -605,9 +605,9 @@ def stratg():
       pyre = PYTHON_RE
       if len(lhs_static_str)!=0: #static-str invoking
          from patt6_static_brd import patt6_static_brd
-         res=patt6_static_brd(pyre,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc,lhs_static_str)
+         res=patt6_static_brd(pyre,NonGreedyStatus,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc,lhs_static_str)
       else:
-         res = pattern_6_beta(pyre,lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
+         res = pattern_6_beta(pyre,NonGreedyStatus,lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
       if pyre:
          pyre6_result = res
       return res

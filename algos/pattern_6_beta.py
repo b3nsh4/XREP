@@ -14,7 +14,12 @@ def glolbal_decision_6(string):
     else:
         return escape_me(string)
 
-def pattern_6_beta(pyre,lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
+def pattern_6_beta(pyre,GreedyStatus,lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
+    if GreedyStatus:
+        quantifier = ".*?"
+    else:
+        quantifier = ".*"
+    
     res = preb.split()
     if lhs==True and rhs==True:
         return "non_useful_pattern"
@@ -38,14 +43,14 @@ def pattern_6_beta(pyre,lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
             final_post = glolbal_decision_6(postb.split()[0])
         except IndexError:
             if pyre:
-                res = f"re.search(\".*"+lhs_1+pre_res+lhs_2+pre_spc+"([^ ]+)$\",TXT)"
+                res = f"re.search(\"{quantifier}{lhs_1}{pre_res}{lhs_2}{pre_spc}([^ ]+)$\",TXT)"
                 return res
             elif pyre==False:
                 res = f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+pre_spc+"([^ ]+)$/\\1/p'"
                 return res
         if len(final_post)!=0:
             if pyre==True:
-                res = f"re.search(\".*"+lhs_1+pre_res+lhs_2+pre_spc+"(.+)"+post_spc+rhs_1+str(final_post)+rhs_2+".*\",TXT)"
+                res = f"re.search(\"{quantifier}{lhs_1}{pre_res}{lhs_2}{pre_spc}(.+){post_spc}{rhs_1}{str(final_post)}{rhs_2}.*\",TXT)"
                 return res
             elif pyre==False:
                 return f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+pre_spc+"(.+)"+post_spc+rhs_1+str(final_post)+rhs_2+".*/\\1/p'".format(LINE_NUM)
@@ -60,7 +65,7 @@ def pattern_6_beta(pyre,lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
         final_post = glolbal_decision_6(postb.split()[0])
         
         if pyre==True:
-            res = f"re.search(\"^([^ ]+){post_spc}"+rhs_1+str(final_post)+rhs_2+".*\",TXT)"
+            res = f"re.search(\"^([^ ]+){post_spc}{rhs_1}{str(final_post)}{rhs_2}.*\",TXT)"
             return res
         elif pyre==False:
             return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}"+rhs_1+str(final_post)+rhs_2+".*/\\1/p'"
