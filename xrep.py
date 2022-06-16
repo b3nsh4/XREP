@@ -468,11 +468,11 @@ def stratg():
          if number_of_repeats==0:
             if PYTHON_RE:
                return f"re.sub(\"(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?(.*)\",r'XXX \\3 \\4',TXT)"
-            return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?(.*)/XXX \\3 \\4/'")
+            return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*(.*)/XXX \\3 \\4/'")
          else:
             if PYTHON_RE:
                return f"re.sub(\"(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?(.*)\",r'XXX \\4 \\5',TXT)"
-            return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy})\\s*?({cooked_post_boundary})\\s*?(.*)/XXX \\4 \\5/'")
+            return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy})\\s*({cooked_post_boundary})\\s*(.*)/XXX \\4 \\5/'")
       
       elif len_for_post_boundary==0: #postboundry missing
          if PYTHON_RE:
@@ -482,11 +482,11 @@ def stratg():
          if number_of_repeats ==0:
             if PYTHON_RE:
                return f"re.sub(\"(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy}){post_spc}({cooked_post_boundary})(.*)\",r'\\1 \\2 XXX \\4 \\5',TXT)"
-            return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\4 \\5/'")
+            return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*({cooked_string_copy})\\s*({cooked_post_boundary})(.*)/\\1 \\2 XXX \\4 \\5/'")
          else:
             if PYTHON_RE:
                return f"re.sub(\"(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy}){post_spc}({cooked_post_boundary})(.*)\",r'\\1 \\2 XXX \\5 \\6',TXT)"
-            return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*?({cooked_string_copy})\\s*?({cooked_post_boundary})(.*)/\\1 \\2 XXX \\5 \\6/'")
+            return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*({cooked_string_copy})\\s*({cooked_post_boundary})(.*)/\\1 \\2 XXX \\5 \\6/'")
 
 
    def count_this_repeats(list_to_filter): #can be used in di_1 if needed
@@ -535,6 +535,10 @@ def stratg():
    ##########################################
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
       global pyre_4_result
+      if NonGreedyStatus:
+         quantifier = ".*?"
+      else:
+         quantifier = ".*"
       pyre = PYTHON_RE
       if delta_check==True:
          
@@ -549,7 +553,7 @@ def stratg():
             closest_pre_boundary = gld(lhs_static_str[-1])
          
          if pyre==True:
-            res =  f"re.search(\".*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*\",TXT)"
+            res =  f"re.search(\"{quantifier}{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*\",TXT)"
             pyre_4_result = res
             return res
          elif pyre==False:
@@ -584,7 +588,7 @@ def stratg():
          return "long_result_ignored"
       else:
          if pyre==True:
-            res  = f"re.search(\".*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*\",TXT)"
+            res  = f"re.search(\"{quantifier}{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*\",TXT)"
             pyre_4_result = res
             return res
          elif pyre==False:
