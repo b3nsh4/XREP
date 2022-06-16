@@ -1,6 +1,7 @@
 #### pre1.*pre2(target)post1.*post2 #A.K.A PATTERN-01
 ## pre1 is splitted[0] and pre2 is splitted[-1] post1, post2 accordingly
 from escape_me import *
+NonGreedyStatus=False
 
 def glolbal_len_decision(string):
   if len(string)>4: #checking if string is gt4
@@ -13,7 +14,11 @@ def glolbal_len_decision(string):
 
 #lhs and rhs is the status of the checkbox, if checked we change it with []? else nothing
 
-def foo(h1,h2,splitted_stuff):
+def cute_cut(h1,h2,splitted_stuff):
+  if NonGreedyStatus:
+    quantifier = ".*?"
+  else:
+    quantifier=".*"
   
   if len(splitted_stuff)>=2:
     if len(splitted_stuff[0])>4:
@@ -27,7 +32,7 @@ def foo(h1,h2,splitted_stuff):
       bd2 = h1+global_res_2["shorted_str"]+".{"+global_res_2["len_after_shorted"]+"}"+h2
     else: #len is lt 4 
       bd2 = h1+escape_me(splitted_stuff[-1])+h2
-    final_res = bd1+".*"+bd2 #returns bd1.*bd2
+    final_res = bd1+quantifier+bd2 #returns bd1.*bd2
     return final_res
 
   elif len(splitted_stuff)==1:
@@ -40,8 +45,9 @@ def foo(h1,h2,splitted_stuff):
   elif len(splitted_stuff)==0: #string is empty
     return ""
 
-def pat_1_ready(pyre,lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy,pre_spc,post_spc):
-  
+def pat_1_ready(pyre,GreedyStatus,lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy,pre_spc,post_spc):
+  global NonGreedyStatus
+  NonGreedyStatus = GreedyStatus
   h1 = "["
   h2 = "]?"
   no_h1 = ""
@@ -49,15 +55,15 @@ def pat_1_ready(pyre,lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,
   global pyre_1_result
   
   if lhss==True:
-    bd1 = foo(h1,h2,splitted_pre)
+    bd1 = cute_cut(h1,h2,splitted_pre)
   elif lhss==False:
-    bd1 = foo(no_h1,no_h2,splitted_pre)
+    bd1 = cute_cut(no_h1,no_h2,splitted_pre)
   
   
   if rhss==True:
-    bd2 = foo(h1,h2,splitted_post)#put escape_me(fo....) here
+    bd2 = cute_cut(h1,h2,splitted_post)#put escape_me(fo....) here
   elif rhss==False:
-    bd2 = foo(no_h1,no_h2,splitted_post)
+    bd2 = cute_cut(no_h1,no_h2,splitted_post)
   
   #checks if user needs POSIX or Pyre
   if pyre==True:

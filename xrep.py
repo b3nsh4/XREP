@@ -36,7 +36,7 @@ def stratg():
    req = request.get_json() #getting text and line from frontend
    global string_selected,pre_spc,post_spc
    string_selected=req['TEXTSELECTED']
-   global full_line,PYTHON_RE
+   global full_line,PYTHON_RE,NonGreedyStatus
    whole=req['WHOLE_STUFF']
    static_strings = req['STATIC_STRINGS']
    pre_char_space = req['pre_char_space']
@@ -47,6 +47,7 @@ def stratg():
    end_index=req['end_index']
    delta_check = req['delta_check']
    end_point = req['URLpath']
+   NonGreedyStatus = req['NonGreedy']
    
    if end_point=="/pythonre":
       PYTHON_RE = True
@@ -327,7 +328,7 @@ def stratg():
       if delta_check==True:
          patt_2_res = ".+"
       if len(lhs_static_str)!=0:
-         preb = ".*"+gld(lhs_static_str[-1])+pre_spc
+         preb = gld(lhs_static_str[-1])+pre_spc
          grp="1"
       
       if pyre==True:
@@ -435,11 +436,11 @@ def stratg():
       global pyre_1_result
       pyre=PYTHON_RE
       if len(lhs_static_str)!=0 or len(rhs_static_str)!=0: #static string invoking
-         patt1_res = patt1_static_str(pyre,lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space)
+         patt1_res = patt1_static_str(pyre,NonGreedyStatus,lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space)
          if pyre:
             pyre_1_result = patt1_res
          return patt1_res
-      patt1_res = pat_1_ready(pyre,lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_spc,post_spc)
+      patt1_res = pat_1_ready(pyre,NonGreedyStatus,lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_spc,post_spc)
       if pyre:
          pyre_1_result = patt1_res
       return patt1_res

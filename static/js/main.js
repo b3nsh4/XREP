@@ -41,6 +41,7 @@ function handle_select() { // this fn is to display the current selected text on
 let islinechecked = false;
 let isRHSchecked = false;
 let isLHSchecked = false;
+let isgreedychecked = false;
 // add more vars if needed to above
 
 function LineChkFn() {
@@ -57,6 +58,12 @@ function LHSChkFn() {
     isLHSchecked = document.getElementById("LHSChecker").checked;
 
 }
+
+function nongreedy() {
+    isgreedychecked = document.getElementById("greedyChecker").checked;
+
+}
+
 // when hit "add" selText will be displayed whereever mentioned
 
 function add_custombrd() {

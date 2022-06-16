@@ -29,6 +29,7 @@ function generator() {
         post_space = false;
     }
     var entry = {
+        NonGreedy:isgreedychecked,
         URLpath:path_name,
         delta_check: delta_check,
         STATIC_STRINGS: sorted_custom_brd,
