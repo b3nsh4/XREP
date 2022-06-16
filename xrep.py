@@ -465,31 +465,31 @@ def stratg():
       prefetch_complex_subsitit = "sed -E -n "+'"'+str(LINE_NUM)+"s/("
       if len_for_pre_boundary==0 and len_for_post_boundary==0:
          if PYTHON_RE:
-            return f"re.sub(\"(.+)?({cooked_string_copy})$(.*)\",'XXX',TXT)"
+            return f"re.sub(\"({quantifier})({cooked_string_copy})$(.*)\",'XXX',TXT)"
          return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy})$(.*)/XXX/'")
       
       elif len_for_pre_boundary==0: #preboundary missing
          if number_of_repeats==0:
             if PYTHON_RE:
-               return f"re.sub(\"(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?({quantifier})\",r'XXX \\3 \\4',TXT)"
+               return f"re.sub(\"({quantifier})({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?({quantifier})\",r'XXX \\3 \\4',TXT)"
             return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*(.*)/XXX \\3 \\4/'")
          else:
             if PYTHON_RE:
-               return f"re.sub(\"(.+)?({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?({quantifier})\",r'XXX \\4 \\5',TXT)"
+               return f"re.sub(\"({quantifier})({cooked_string_copy}){post_spc}({cooked_post_boundary})\\s*?({quantifier})\",r'XXX \\4 \\5',TXT)"
             return (f"sed -E '{LINE_NUM}s/(.+)?({cooked_string_copy})\\s*({cooked_post_boundary})\\s*(.*)/XXX \\4 \\5/'")
       
       elif len_for_post_boundary==0: #postboundry missing
          if PYTHON_RE:
-            return f"re.sub(\"(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy})$\",r'\\1 \\2 XXX',TXT)"
+            return f"re.sub(\"({quantifier})({pre_bndry_patt3}){pre_spc}({cooked_string_copy})$\",r'\\1 \\2 XXX',TXT)"
          return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy})$/\\1 \\2 XXX/'")
       else:
          if number_of_repeats ==0:
             if PYTHON_RE:
-               return f"re.sub(\"(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy}){post_spc}({cooked_post_boundary})({quantifier})\",r'\\1 \\2 XXX \\4 \\5',TXT)"
+               return f"re.sub(\"({quantifier})({pre_bndry_patt3}){pre_spc}({cooked_string_copy}){post_spc}({cooked_post_boundary})({quantifier})\",r'\\1 \\2 XXX \\4 \\5',TXT)"
             return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*({cooked_string_copy})\\s*({cooked_post_boundary})(.*)/\\1 \\2 XXX \\4 \\5/'")
          else:
             if PYTHON_RE:
-               return f"re.sub(\"(.+)?({pre_bndry_patt3}){pre_spc}({cooked_string_copy}){post_spc}({cooked_post_boundary})({quantifier})\",r'\\1 \\2 XXX \\5 \\6',TXT)"
+               return f"re.sub(\"({quantifier})({pre_bndry_patt3}){pre_spc}({cooked_string_copy}){post_spc}({cooked_post_boundary})({quantifier})\",r'\\1 \\2 XXX \\5 \\6',TXT)"
             return (f"sed -E '{LINE_NUM}s/(.+)?({pre_bndry_patt3})\\s*({cooked_string_copy})\\s*({cooked_post_boundary})(.*)/\\1 \\2 XXX \\5 \\6/'")
 
 

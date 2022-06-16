@@ -50,7 +50,7 @@ def pattern_6_beta(pyre,GreedyStatus,lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_sp
                 return res
         if len(final_post)!=0:
             if pyre==True:
-                res = f"re.search(\"{quantifier}{lhs_1}{pre_res}{lhs_2}{pre_spc}(.+){post_spc}{rhs_1}{str(final_post)}{rhs_2}.*\",TXT)"
+                res = f"re.search(\"{quantifier}{lhs_1}{pre_res}{lhs_2}{pre_spc}([^ ]+){post_spc}{rhs_1}{str(final_post)}{rhs_2}.*\",TXT)"
                 return res
             elif pyre==False:
                 return f"sed -E -n '{LINE_NUM}s/.*"+lhs_1+pre_res+lhs_2+pre_spc+"(.+)"+post_spc+rhs_1+str(final_post)+rhs_2+".*/\\1/p'".format(LINE_NUM)
