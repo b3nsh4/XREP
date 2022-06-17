@@ -689,6 +689,10 @@ def donate_xrep():
 def api():
     return render_template('api.html')
 
+@app.route('/docs')
+def docs():
+    return render_template('docs.html')
+
 @app.route('/pythonre')
 def pyre():
     global PYTHON_RE

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+        
+       <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bs.min.css') }}">
+
+  <script src="{{ url_for('static', filename='bs.bundle.min.js') }}"></script>
+
+<br>
+
+  <ul class="nav justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('donate_xrep') }}">Donate</a>
+    </li>
+    <li class="nav-item">
+     <a class="nav-link" href="{{ url_for('docs') }}">Docs</a>
+    </li>
+        </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('api') }}">API</a>
+    </li>
+    <li class="nav-item">
+      <a class="btn btn-outline-warning" href="/pythonre">PYTHON <img src="{{ url_for('static', filename='images/py.svg') }}" width="15" height="15" alt=""></a>
+        </li>
+        <pre> </pre>
+            <li class="nav-item">
+      <a class="btn btn-outline-success" href="/">POSIX <img src="{{ url_for('static', filename='images/posix.svg') }}" width="15" height="15" alt=""></a>
+    </li>
+  </ul>
+
+</head>
+</html>
