@@ -34,7 +34,7 @@ def patt6_static_brd(pyre,GreedyStatus,LINE_NUM,preb,postb,pre_spc,post_spc,lhs_
 
         if len(final_post)!=0:
             if pyre==True:
-                res =  f"re.search(\"{pre_str}{pre_spc}(.+){post_spc}{str(final_post)}.*\",TXT)"
+                res =  f"re.search(\"{quantifier}{pre_str}{pre_spc}(.+){post_spc}{str(final_post)}.*\",TXT)"
                 return res
             elif pyre==False:
                 return f"sed -E -n '{LINE_NUM}s/.*{pre_str}{pre_spc}(.+){post_spc}{str(final_post)}.*/\\1/p'"
