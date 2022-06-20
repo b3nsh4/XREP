@@ -287,7 +287,8 @@ def stratg():
          t = ''.join(m[0])
          if m[1]>1:
             number_of_repeats+=1
-            cooked_string+="("+t+")"+"{"+str(m[1])+"}"
+            cooked_string+=f"({t}){{{str(m[1])}}}"
+            # https://stackoverflow.com/a/70481363/6655469 ABOUT {{{VAR}}}
          elif m[1]==1:
             for n in m[0]:
                cooked_string+=n
@@ -298,22 +299,30 @@ def stratg():
    ################# PATTERN_2 ##############
    ##########################################
    
+   def patt2_lazy_mode():
+      pass
+   
    def pattern_2():
       global pyre_2_result   
       pyre = PYTHON_RE
       nonlocal di_3
       alnum_algo(di_2,di_3) #1st stage alnum filter
       di_3 = [i[0] for i in groupby(di_3)]
-      if len(di_2) < 4:
+      if len(di_2) < 4:  #i.e [a-z][A-Z][0-9] is <4
          patt_2_res = repeating_stuff(di_2) #actual pattern2 a.k.a cooked_string
       
       else:
-         patt_2_res = repeating_stuff(di_3)
-      #if preb LHS exists, we will have target will be in group 2
-      if len_for_pre_boundary>=1:
+         patt_2_res = repeating_stuff(di_3) #if len is >4 , then
+      #if preb pre_char_space exists, there is no string before TARGET, so 1 group (theoritically)
+      if " " in pre_boundary:
          grp="2"
       else:
          grp="1"
+      
+      if len_for_pre_boundary == 0:
+         quantifier = "^"
+      else:
+         quantifier = ".*"
       
       preb = pat_2_ready(pre_boundary.lstrip().split(" "),pre_boundary)
       # static string support for post
@@ -332,11 +341,11 @@ def stratg():
          grp="1"
       
       if pyre==True:
-         res = 're.search("{}({}){}{}",TXT)'.format(preb,patt_2_res,post_spc,postb)
+         res = f"re.search({preb}({patt_2_res}){post_spc}{postb},TXT)"
          pyre_2_result = res
          return res
       elif pyre==False:
-         return f"sed -E -n '{LINE_NUM}s/{preb}({patt_2_res}).*{post_spc}{postb}/\\{grp}/p'"
+         return f"sed -E -n '{LINE_NUM}s/{quantifier}{preb}({patt_2_res}).*{post_spc}{postb}/\\{grp}/p'"
    
    ###########################################
    ################# PATTERN_5 ##############
