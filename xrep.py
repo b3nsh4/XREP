@@ -345,7 +345,7 @@ def stratg():
          pyre_2_result = res
          return res
       elif pyre==False:
-         return f"sed -E -n '{LINE_NUM}s/{quantifier}{preb}({patt_2_res}).*{post_spc}{postb}/\\{grp}/p'"
+         return f"sed -E -n '{LINE_NUM}s/{quantifier}{preb}({patt_2_res}){post_spc}{postb}/\\{grp}/p'"
    
    ###########################################
    ################# PATTERN_5 ##############
