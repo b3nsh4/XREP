@@ -8,6 +8,7 @@ sys.path.append('.logs')
 sys.path.append('algos/special_patterns')
 sys.path.append('algos/common_mods')
 
+from lazy_match import lazy_pattern
 from lookup import *
 from escape_me import *
 from patt1_core import pat_1_ready
@@ -303,6 +304,8 @@ def stratg():
       pass
    
    def pattern_2():
+      # print("### DI:",di_2)
+      print("lazy_pattern:",''.join(lazy_pattern(di_2)))
       global pyre_2_result   
       pyre = PYTHON_RE
       nonlocal di_3
