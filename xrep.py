@@ -295,27 +295,26 @@ def stratg():
                cooked_string+=n
       cooked_string_copy+=cooked_string
       return cooked_string
-
-   ###########################################
-   ################# PATTERN_2 ##############
-   ##########################################
    
-   def patt2_lazy_mode():
-      pass
-   
-   def pattern_2():
-      # print("### DI:",di_2)
-      print("lazy_pattern:",''.join(lazy_pattern(di_2)))
-      global pyre_2_result   
-      pyre = PYTHON_RE
+   def di_shortner():
       nonlocal di_3
       alnum_algo(di_2,di_3) #1st stage alnum filter
       di_3 = [i[0] for i in groupby(di_3)]
       if len(di_2) < 4:  #i.e [a-z][A-Z][0-9] is <4
-         patt_2_res = repeating_stuff(di_2) #actual pattern2 a.k.a cooked_string
-      
+         repeating_stuff(di_2) #actual pattern2 a.k.a cooked_string
       else:
-         patt_2_res = repeating_stuff(di_3) #if len is >4 , then
+         repeating_stuff(di_3) #if len is >4 , then
+   
+   ###########################################
+   ################# PATTERN_2 ##############
+   ##########################################
+
+   def pattern_2():
+      di_shortner()  
+      global pyre_2_result
+      
+      patt_2_res = ''.join(lazy_pattern(di_2)) 
+      pyre = PYTHON_RE
       #if preb pre_char_space exists, there is no string before TARGET, so 1 group (theoritically)
       if " " in pre_boundary:
          grp="2"
@@ -344,6 +343,7 @@ def stratg():
          grp="1"
       
       if pyre==True:
+         # res = f"re.search({preb}({patt_2_res}){post_spc}{postb},TXT)"
          res = f"re.search({preb}({patt_2_res}){post_spc}{postb},TXT)"
          pyre_2_result = res
          return res
