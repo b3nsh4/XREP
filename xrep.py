@@ -341,7 +341,7 @@ def stratg():
          grp="1"
       
       if pyre==True:
-         res = f"re.search({preb}({patt_2_res}){post_spc}{postb},TXT)"
+         res = f"re.search(\"{preb}({patt_2_res}){post_spc}{postb}\",TXT)"
          pyre_2_result = res
          return res
       elif pyre==False:
