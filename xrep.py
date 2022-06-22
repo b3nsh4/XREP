@@ -336,14 +336,11 @@ def stratg():
       if lhs==True:
          return "non_useful_pattern"
       
-      if delta_check==True:
-         patt_2_res = ".+"
       if len(lhs_static_str)!=0:
          preb = gld(lhs_static_str[-1])+pre_spc
          grp="1"
       
       if pyre==True:
-         # res = f"re.search({preb}({patt_2_res}){post_spc}{postb},TXT)"
          res = f"re.search({preb}({patt_2_res}){post_spc}{postb},TXT)"
          pyre_2_result = res
          return res
