@@ -18,8 +18,11 @@ def group_all(lis):
 					temp.append('A-Z')
 				elif k in num_class:
 					temp.append('0-9')
-			temp = list(dict.fromkeys(temp,None)) # no dups
-			grouped.append(f"[{''.join(temp)}]+")
+				else:
+					grouped.append(''.join(k))
+			if len(temp) !=0:
+				temp = list(dict.fromkeys(temp,None)) # no dups
+				grouped.append(f"[{''.join(temp)}]+")
 		else:
 			grouped.append(''.join(i))
 	return grouped
