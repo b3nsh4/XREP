@@ -27,21 +27,21 @@ def patt6_static_brd(pyre,GreedyStatus,LINE_NUM,preb,postb,pre_spc,post_spc,lhs_
             final_post = glolbal_decision_6(postb.split()[0])
         except IndexError:
             if pyre==True:
-                res = f"re.search(\"{quantifier}{pre_str}([^ ]+)$/\",TXT)"
+                res = f"re.findall(\"{quantifier}{pre_str}([^ ]+)$/\",TXT)"
                 return res
             elif pyre==False:
                 return f"sed -E -n '{LINE_NUM}s/.*{pre_str}([^ ]+)$/\\1/p'"
 
         if len(final_post)!=0:
             if pyre==True:
-                res =  f"re.search(\"{quantifier}{pre_str}{pre_spc}(.+){post_spc}{str(final_post)}.*\",TXT)"
+                res =  f"re.findall(\"{quantifier}{pre_str}{pre_spc}(.+){post_spc}{str(final_post)}.*\",TXT)"
                 return res
             elif pyre==False:
                 return f"sed -E -n '{LINE_NUM}s/.*{pre_str}{pre_spc}(.+){post_spc}{str(final_post)}.*/\\1/p'"
     
     elif len(postb.split())==0: #if len is zero for postb
         if pyre==True:
-            res = f"re.search(\"^([^ ]+){post_spc}{quantifier}$.*\",TXT)"
+            res = f"re.findall(\"^([^ ]+){post_spc}{quantifier}$.*\",TXT)"
             return res
         elif pyre==False:
             return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}.*$.*/\\1/p'".format(LINE_NUM)    
@@ -49,7 +49,7 @@ def patt6_static_brd(pyre,GreedyStatus,LINE_NUM,preb,postb,pre_spc,post_spc,lhs_
         final_post = glolbal_decision_6(postb.split()[0])
         
         if pyre==True:
-            res =  f"re.search(\"^([^ ]+){post_spc}{quantifier}{str(final_post)}.*\",TXT)"
+            res =  f"re.findall(\"^([^ ]+){post_spc}{quantifier}{str(final_post)}.*\",TXT)"
             return res
         elif pyre==False:
             return f"sed -E -n '{LINE_NUM}s/^([^ ]+){post_spc}.*"+str(final_post)+".*/\\1/p'"

@@ -169,9 +169,9 @@ def stratg():
    # not using +str(line_num)+ AS OF NOW!!
    if len_for_pre_boundary!=0:
       prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
-      python_prefetch = f"re.search(\"."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
+      python_prefetch = f"re.findall(\"."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
    else:
-      python_prefetch = f"re.search(\"\\s*("
+      python_prefetch = f"re.findall(\"\\s*("
       prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/\\s*("
 
    i=0
@@ -341,7 +341,7 @@ def stratg():
          grp="1"
       
       if pyre==True:
-         res = f"re.search(\"{preb}({patt_2_res}){post_spc}{postb}\",TXT)"
+         res = f"re.findall(\"{preb}({patt_2_res}){post_spc}{postb}\",TXT)"
          pyre_2_result = res
          return res
       elif pyre==False:
@@ -566,7 +566,7 @@ def stratg():
             closest_pre_boundary = gld(lhs_static_str[-1])
          
          if pyre==True:
-            res =  f"re.search(\"{quantifier}{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*\",TXT)"
+            res =  f"re.findall(\"{quantifier}{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*\",TXT)"
             pyre_4_result = res
             return res
          elif pyre==False:
@@ -601,7 +601,7 @@ def stratg():
          return "long_result_ignored"
       else:
          if pyre==True:
-            res  = f"re.search(\"{quantifier}{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*\",TXT)"
+            res  = f"re.findall(\"{quantifier}{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*\",TXT)"
             pyre_4_result = res
             return res
          elif pyre==False:
