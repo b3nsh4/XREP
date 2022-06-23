@@ -35,7 +35,7 @@ def getstarted():
 @app.route("/entry", methods=["POST","GET"])
 def stratg():
    req = request.get_json() #getting text and line from frontend
-   global string_selected,pre_spc,post_spc
+   global string_selected,pre_spc,post_spc,final_return
    string_selected=req['TEXTSELECTED']
    global full_line,PYTHON_RE,NonGreedyStatus
    whole=req['WHOLE_STUFF']
@@ -685,10 +685,9 @@ def run_with_sed():
    req = request.get_json()
    return run_shell(req)
 
-@app.route('/run_pyre',methods=["POST","GET"])
+@app.route('/run_pyre',methods=["GET"])
 def run_python_re():
-   req = request.get_json()
-   return run_pyre_shell(req)
+   return run_pyre_shell(final_return,full_line)
 
 @app.route('/donate')
 def donate_xrep():

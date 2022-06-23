@@ -1,16 +1,14 @@
 from echo_escape import echo_escaper
-
 import re
 
-def run_pyre_shell(req):
-	patt1 = req['patt1']
-	patt2 = req['patt2']
-	patt3 = req['patt3']
-	patt4 = req['patt4']
-	patt5 = req['patt5']
-	patt6 = req['patt6']
-	full_line = req['full_line'][0]
-	TXT=echo_escaper(full_line)
+def run_pyre_shell(req,fullline):
+	patt1 = req['pattern_1_result']
+	patt2 = req['pattern_2_result']
+	patt3 = req['pattern_3_result']
+	patt4 = req['pattern_4_result']
+	patt5 = req['pattern_5_result']
+	patt6 = req['pattern_6_result']
+	TXT=echo_escaper(fullline)
 
 	try:
 		patt1_shell_op=str(eval(patt1))

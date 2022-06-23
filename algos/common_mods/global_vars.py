@@ -2,7 +2,7 @@
 string_selected=""
 sub_with_spec_nums=""
 
-
+full_line=""
 pattern_4_result=""
 pattern_2_result =""
 pattern_3_result=""
