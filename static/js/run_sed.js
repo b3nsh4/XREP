@@ -1,20 +1,10 @@
 function run_sed_live() {
     document.getElementById('run_test_live').style.display = "inline";
-    total_patterns = {
-        patt1: patt1_run_res,
-        patt2: patt2_run_res,
-        patt3: patt3_run_res,
-        patt4: patt4_run_res,
-        patt5: patt5_run_res,
-        patt6: patt6_run_res,
-        full_line: line_to_run
-    }
         
         void async function() {
         const response = await fetch(`${window.origin}/run_sed`, {
-            method: "POST",
+            method: "GET",
             credentials: "include",
-            body: JSON.stringify(total_patterns),
             cache: "no-cache",
             headers: new Headers({
                 "content-type": "application/json"

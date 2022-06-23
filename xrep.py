@@ -680,10 +680,9 @@ def bug_report():
    report_status=init_report(collect_report_vars)
    return report_status
 
-@app.route('/run_sed',methods=["POST","GET"])
+@app.route('/run_sed',methods=["GET"])
 def run_with_sed():
-   req = request.get_json()
-   return run_shell(req)
+   return run_shell(final_return,full_line)
 
 @app.route('/run_pyre',methods=["GET"])
 def run_python_re():

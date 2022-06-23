@@ -1,13 +1,12 @@
 from echo_escape import echo_escaper
 import subprocess
-def run_shell(req):
-   patt1 = req['patt1']
-   patt2 = req['patt2']
-   patt3 = req['patt3']
-   patt4 = req['patt4']
-   patt5 = req['patt5']
-   patt6 = req['patt6']
-   full_line = req['full_line'][0]
+def run_shell(req,full_line):
+   patt1 = req['pattern_1_result']
+   patt2 = req['pattern_2_result']
+   patt3 = req['pattern_3_result']
+   patt4 = req['pattern_4_result']
+   patt5 = req['pattern_5_result']
+   patt6 = req['pattern_6_result']
    fresh_echo=echo_escaper(full_line)
    print("->",fresh_echo)
    patt1_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
