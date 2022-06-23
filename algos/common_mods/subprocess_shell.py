@@ -9,22 +9,22 @@ def run_shell(req,full_line):
    patt6 = req['pattern_6_result']
    fresh_echo=echo_escaper(full_line)
    print("->",fresh_echo)
-   patt1_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt1,shell=True).decode()
+   patt1_op = subprocess.check_output(f"echo -e {fresh_echo} | {patt1}",shell=True).decode()
    if patt2!="non_useful_pattern":
-      patt2_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt2,shell=True).decode()
+      patt2_op = subprocess.check_output(f"echo -e {fresh_echo} | {patt2}",shell=True).decode()
    else:
       patt2_op = "non_useful_pattern"
-   patt3_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt3,shell=True).decode()
+   patt3_op = subprocess.check_output(f"echo -e {fresh_echo} | {patt3}",shell=True).decode()
    if patt4!="long_result_ignored":
-      patt4_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt4,shell=True).decode()
+      patt4_op = subprocess.check_output(f"echo -e {fresh_echo} | {patt4}",shell=True).decode()
    else:
       patt4_op = "long_result_ignored"
    if patt5!="Works_better_with_complex_patterns":
-      patt5_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt5,shell=True).decode()
+      patt5_op = subprocess.check_output(f"echo -e {fresh_echo} | {patt5}",shell=True).decode()
    else:
       patt5_op="Exit reason: ignored patt5"
    if patt6!="non_useful_pattern":
-      patt6_op = subprocess.check_output('echo -e "'+fresh_echo+'" |'+patt6,shell=True).decode()
+      patt6_op = subprocess.check_output(f"echo -e {fresh_echo} | {patt6}",shell=True).decode()
    else:
       patt6_op = "non_useful_pattern"
    final_res = {
