@@ -8,7 +8,7 @@ def run_shell(req,full_line):
    patt5 = req['pattern_5_result']
    patt6 = req['pattern_6_result']
    fresh_echo=echo_escaper(full_line)
-   print("->",fresh_echo)
+
    patt1_op = subprocess.check_output(f"echo -e {fresh_echo} | {patt1}",shell=True).decode()
    if patt2!="non_useful_pattern":
       patt2_op = subprocess.check_output(f"echo -e {fresh_echo} | {patt2}",shell=True).decode()
@@ -27,6 +27,7 @@ def run_shell(req,full_line):
       patt6_op = subprocess.check_output(f"echo -e {fresh_echo} | {patt6}",shell=True).decode()
    else:
       patt6_op = "non_useful_pattern"
+   
    final_res = {
       "patt1_shell_op":patt1_op,
       "patt2_shell_op":patt2_op,

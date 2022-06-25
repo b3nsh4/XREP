@@ -305,10 +305,6 @@ def stratg():
       else:
          repeating_stuff(di_3) #if len is >4 , then
    
-   ###########################################
-   ################# PATTERN_2 ##############
-   ##########################################
-
    def pattern_2():
       di_shortner()  
       global pyre_2_result
@@ -347,9 +343,6 @@ def stratg():
       elif pyre==False:
          return f"sed -E -n '{LINE_NUM}s/{quantifier}{preb}({patt_2_res}){post_spc}{postb}/\\{grp}/p'"
    
-   ###########################################
-   ################# PATTERN_5 ##############
-   ##########################################
    
    def pattern_5(): #mostly have \\w+ than [[:class:]]
       global pyre_5_result
@@ -436,11 +429,7 @@ def stratg():
       for i in list:
          temp.append(escape_me(i))
       return temp
-
-   ###########################################
-   ################# PATTERN_1 ##############
-   ##########################################
-   
+  
    def pattern_1():
       global pyre_1_result
       pyre=PYTHON_RE
@@ -453,10 +442,6 @@ def stratg():
       if pyre:
          pyre_1_result = patt1_res
       return patt1_res
-
-   ###########################################
-   ################# PATTERN_3 ##############
-   ##########################################
 
    def pattern_3(): #using boundaries in pattern_2 for
       #settlement for pre_boundary
@@ -543,9 +528,6 @@ def stratg():
       return sub_it+final_cooked_string+"/XXX/'"
 
 
-   ###########################################
-   ################# PATTERN_4 ##############
-   ##########################################
    def pattern_4(basic_duplicate_list): #make numbers of repats (smtg){N}
       global pyre_4_result
       if NonGreedyStatus:
@@ -607,9 +589,6 @@ def stratg():
          elif pyre==False:
             return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*/\\1/p'"
 
-   ###########################################
-   ################# PATTERN_6 ##############
-   ##########################################
    def pattern_6():
       pyre = PYTHON_RE
       if len(lhs_static_str)!=0: #static-str invoking
