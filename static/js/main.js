@@ -1,4 +1,4 @@
-let wrapper="";
+let wrapper=false;
 let lrhs = "";
 let custom_brd_list = []; // dict to store the index , selText
 let target = ""; //current target
@@ -44,9 +44,8 @@ let isLHSchecked = false;
 let isgreedychecked = false;
 // add more vars if needed to above
 
-function SorG(x) {
-    wrapper = x.value;
-    alert("THIS FEATURE IS UNDER DEVELOPMENT!!");
+function SorG() {
+    wrapper = document.getElementById("grep").checked;
 }
 
 function LineChkFn() {

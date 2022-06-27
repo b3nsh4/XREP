@@ -1,4 +1,9 @@
 function run_sed_live() {
+    console.log(wrapper);
+    if (wrapper===true) {
+        alert("sorry, not ready for grep");
+        return ""
+    }
     document.getElementById('run_test_live').style.display = "inline";
         
         void async function() {

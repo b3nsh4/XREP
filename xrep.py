@@ -18,7 +18,7 @@ from simple_cooker import simple_chef,final_cooker
 from reports import init_report
 from static_arrang import static_res
 from improved_len_decision import glolbal_len_decision as gld
-from wrapper import wrappit
+from wrapper import *
 
 #run in subprocess
 from pyre_shell import run_pyre_shell
@@ -36,7 +36,7 @@ def getstarted():
 @app.route("/entry", methods=["POST","GET"])
 def stratg():
    req = request.get_json() #getting text and line from frontend
-   global string_selected,pre_spc,post_spc,final_return
+   global string_selected,pre_spc,post_spc,final_return,grep
    string_selected=req['TEXTSELECTED']
    global full_line,PYTHON_RE,NonGreedyStatus
    whole=req['WHOLE_STUFF']
@@ -49,6 +49,7 @@ def stratg():
    end_index=req['end_index']
    delta_check = req['delta_check']
    end_point = req['URLpath']
+   grep = req['grep']
    NonGreedyStatus = req['NonGreedy']
    
    if end_point=="/pythonre":
@@ -169,8 +170,8 @@ def stratg():
    prefetch = "sed -E "+'"'+str(LINE_NUM)+"{}s/(".format(LINE_NUM)
    # not using +str(line_num)+ AS OF NOW!!
    if len_for_pre_boundary!=0:
-      prefetch_for_pat5 = f"sed -E -n '{str(LINE_NUM)}s/{lhs_1}{{{str(len_for_pre_boundary)}}}{lhs_2}{wild}({prd}"
-      python_prefetch = f"re.findall(\"{lhs_1}{{{str(len_for_pre_boundary)}}}{lhs_2+wild}({prd}"
+      prefetch_for_pat5 = f"sed -E -n '{str(LINE_NUM)}s/.{lhs_1}{{{str(len_for_pre_boundary)}}}{lhs_2}{wild}({prd}"
+      python_prefetch = f"re.findall(\".{lhs_1}{{{str(len_for_pre_boundary)}}}{lhs_2+wild}({prd}"
    else:
       python_prefetch = f"re.findall(\"\\s*("
       prefetch_for_pat5 = f"sed -E -n {str(LINE_NUM)}s/\\s*("
@@ -341,15 +342,17 @@ def stratg():
          res = f"re.findall(\"{preb}({patt_2_res}){post_spc}{postb}\",TXT)"
          pyre_2_result = res
          return res
-      elif pyre==False:
+      elif grep==True:
+         return f"{GREP_PRE}{patt_2_res}{GREP_POST}"
+      else:
          return f"sed -E -n '{LINE_NUM}s/{quantifier}{preb}({patt_2_res}){post_spc}{postb}/\\{grp}/p'"
-   
+
    
    def pattern_5(): #mostly have \\w+ than [[:class:]]
       global pyre_5_result
       pyre = PYTHON_RE
       if delta_check==True:
-         final = prefetch_for_pat5+"[^ ]+"+f'){post_spc}/\\1/p"'
+         final = prefetch_for_pat5+"[^ ]+"+f"){post_spc}/\\1/p'"
          
          if pyre==True:
             final = python_prefetch+"[^ ]+"+f'){post_spc}",TXT)'
@@ -365,25 +368,29 @@ def stratg():
          di_4 = [i[0] for i in groupby(di_4)]
 
          res = repeating_stuff(di_4)
-         final = prefetch_for_pat5+res+f'){post_spc}/\\1/p"'
+         final = prefetch_for_pat5+res+f"){post_spc}/\\1/p'"
          if pre==True:
             return
          if pyre==True:
             final = python_prefetch+res+f'){post_spc}",TXT)'
             pyre_5_result = final
             return final
-         elif pyre==False:
+         elif grep:
+            return f"{GREP_PRE}{res}{post_spc}{GREP_POST}"
+         else:
             return final
       
       else:
          if len(di_3)!=0:
             res = repeating_stuff(di_3)
-            final = prefetch_for_pat5+res+f'){post_spc}.*/\\1/p"'
+            final = prefetch_for_pat5+res+f"){post_spc}/\\1/p'"
             if pyre==True:
                final = python_prefetch+res+f'){post_spc}",TXT)'
                pyre_5_result = final
                return final
-            elif pyre==False:
+            elif grep:
+               return f"{GREP_PRE}{res}{post_spc}{GREP_POST}"
+            else:
                return final
          else:
             return "Works_better_with_complex_patterns"
@@ -439,7 +446,7 @@ def stratg():
          if pyre:
             pyre_1_result = patt1_res
          return patt1_res
-      patt1_res = pat_1_ready(pyre,NonGreedyStatus,lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_spc,post_spc)
+      patt1_res = pat_1_ready(grep,pyre,NonGreedyStatus,lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_spc,post_spc)
       if pyre:
          pyre_1_result = patt1_res
       return patt1_res
@@ -552,7 +559,9 @@ def stratg():
             res =  f"re.findall(\"{quantifier}{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*\",TXT)"
             pyre_4_result = res
             return res
-         elif pyre==False:
+         elif grep==True:
+            return f"{GREP_PRE}{closest_pre_boundary}{pre_spc}[^ ]+{GREP_POST}"
+         else:
             return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}([^ ]+){post_spc}.*/\\1/p'"
       
       nonlocal cooked_pre_boundary
@@ -587,7 +596,9 @@ def stratg():
             res  = f"re.findall(\"{quantifier}{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*\",TXT)"
             pyre_4_result = res
             return res
-         elif pyre==False:
+         elif grep:
+            return f"{GREP_PRE}{closest_pre_boundary}{pre_spc}{final_cooked_string}{GREP_POST}"
+         else:
             return  f"sed -E -n '{LINE_NUM}s/.*{lhs_1+closest_pre_boundary+lhs_2}{pre_spc}({final_cooked_string}){post_spc}.*/\\1/p'"
 
    def pattern_6():
@@ -596,7 +607,7 @@ def stratg():
          from patt6_static_brd import patt6_static_brd
          res=patt6_static_brd(pyre,NonGreedyStatus,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc,lhs_static_str)
       else:
-         res = pattern_6_beta(pyre,NonGreedyStatus,lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
+         res = pattern_6_beta(grep,pyre,NonGreedyStatus,lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
       if pyre:
          pyre6_result = res
       return res

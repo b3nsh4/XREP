@@ -1,5 +1,5 @@
 # .*pre-2(.+).{N}
-
+from wrapper import *
 # if pre-2 doesnot exist, use pre-1 
 from escape_me import *
 
@@ -14,7 +14,7 @@ def glolbal_decision_6(string):
     else:
         return escape_me(string)
 
-def pattern_6_beta(pyre,GreedyStatus,lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
+def pattern_6_beta(grep,pyre,GreedyStatus,lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
     if GreedyStatus:
         quantifier = ".*?"
     else:
@@ -45,14 +45,17 @@ def pattern_6_beta(pyre,GreedyStatus,lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_sp
             if pyre:
                 res = f"re.findall(\"{quantifier}{lhs_1}{pre_res}{lhs_2}{pre_spc}([^ ]+)$\",TXT)"
                 return res
-            elif pyre==False:
+            elif grep:
+                res = f"{GREP_PRE}{pre_spc}[^ ]+${GREP_POST}"
+                return res
+            else:
                 res = f"sed -E -n '{LINE_NUM}s/.*{lhs_1}{pre_res}{lhs_2}{pre_spc}([^ ]+)$/\\1/p'"
                 return res
         if len(final_post)!=0:
             if pyre==True:
                 res = f"re.findall(\"{quantifier}{lhs_1}{pre_res}{lhs_2}{pre_spc}([^ ]+){post_spc}{rhs_1}{str(final_post)}{rhs_2}.*\",TXT)"
                 return res
-            elif pyre==False:
+            else:
                 return f"sed -E -n '{LINE_NUM}s/.*{lhs_1}{pre_res}{lhs_2}{pre_spc}(.+){post_spc}{rhs_1}{str(final_post)}{rhs_2}.*/\\1/p'"
     
     elif len(postb.split())==0: #if len is zero for postb

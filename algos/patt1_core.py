@@ -1,3 +1,4 @@
+from wrapper import *
 ## pre1.*pre2(target)post1.*post2 #A.K.A PATTERN-01
 ## pre1 is splitted[0] and pre2 is splitted[-1] post1, post2 accordingly
 from escape_me import *
@@ -45,7 +46,7 @@ def cute_cut(h1,h2,splitted_stuff):
   elif len(splitted_stuff)==0: #string is empty
     return ""
 
-def pat_1_ready(pyre,GreedyStatus,lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy,pre_spc,post_spc):
+def pat_1_ready(grep,pyre,GreedyStatus,lhss,rhss,LINE_NUM,splitted_pre,splitted_post,prebd,postbd,cooked_string_copy,pre_spc,post_spc):
   global NonGreedyStatus
   NonGreedyStatus = GreedyStatus
   h1 = "["
@@ -69,7 +70,9 @@ def pat_1_ready(pyre,GreedyStatus,lhss,rhss,LINE_NUM,splitted_pre,splitted_post,
   if pyre==True:
     res = f"re.findall(\"{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}.*\",TXT)"
     return res
-  elif pyre==False:
+  elif grep==True:
+    return f"{GREP_PRE}{cooked_string_copy}{GREP_POST}"
+  else:
     return (f"sed -E -n '{LINE_NUM}s/{bd1}{pre_spc}({cooked_string_copy}){post_spc}{bd2}.*/\\1/p'")
 
 

@@ -52,6 +52,7 @@
 <button type="submit" onclick="run_sed_live()" id="run_test_button" style="display:none" class="btn btn-success btn-sm">Run Test <i class="text-warning">alpha</i></button>
         <br> <br> 
   <p class="text-primary">
+    GNU Grep: <input class="form-check-input" onclick="SorG()" type="checkbox" id="grep">&nbsp; &nbsp; &nbsp;&nbsp;
     
     LineNumber: <input class="form-check-input" autocomplete="off" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; 
 
@@ -63,13 +64,8 @@
 
    Δ-Target: <input type="checkbox" class="form-check-input" autocomplete="off" id="deltacheck"> 
  
-  </p> 
-    <input class="form-check-input" onclick="SorG(this);" type="radio" name="sg" value="sed">
-      <label class="form-check-label text-secondary" style="font-family:monospace">GNU Sed</label>&nbsp;&nbsp;&nbsp;
-      
-    <input class="form-check-input" onclick="SorG(this);" type="radio" name="sg" value="grep">
-      <label class="form-check-label text-secondary" >GNU Grep</label>&nbsp;&nbsp;&nbsp;
-  </center>
+  </p>    
+ </center>
 
 <div id="display_static_brd" style="display:none">
     <span class="badge rounded-pill bg-secondary" id="100"></span>
