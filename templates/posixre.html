@@ -8,10 +8,11 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bs.min.css') }}">
-
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dark-mode.css') }}">
+  
   <script src="{{ url_for('static', filename='bs.bundle.min.js') }}"></script>
   <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='textbox.css') }}"> -->
-
+<body>
 <br>
 
   <ul class="nav justify-content-center">
@@ -43,7 +44,7 @@
 <img src="{{ url_for('static', filename='images/posix.svg') }}" width="25" height="25" alt="posix-shell"></a>𝙓𝙍𝙀𝙋 <i>0.1.10-beta</i></center>
 <br>
     {% include 'text_box.html' %}
-    
+
  <center>
 <span id="target_text"></span>
 <br>

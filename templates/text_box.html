@@ -9,7 +9,14 @@
 
   <script src="{{ url_for('static', filename='bs.bundle.min.js') }}"></script>
 
-       <textarea class="form-control" placeholder="Paste your text here 👇  
-          This TextArea is resizeable 👉" style="resize: both;font-family:monospace" type="color" value="#563d7c" onselect="handle_select()" rows="6" placeholder="place non-wrap text here" id="area"></textarea>
+       <textarea class="form-control" 
+        style="resize: none;font-family:monospace;box-shadow: none;"
+        onselect="handle_select()" rows="6" id="area"></textarea>
 
+<script type="text/javascript">
+    let textarea_text = "// YOUR TEXT GOES HERE //\n"+
+    "- SELECT THE TEXT THAT YOU WANT TO GENERATE PATTERN FOR\n"+
+    "- USE 'GENERATE' AND IF NEEDED 'RUN-TEST' TO RUN RESULTS\n";
+    document.getElementById("area").placeholder=textarea_text;
+</script>
  </head></html>

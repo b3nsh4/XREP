@@ -46,7 +46,7 @@ let isgreedychecked = false;
 
 function SorG(x) {
     wrapper = x.value;
-    console.log(wrapper,":THIS FEATURE IS UNDER DEVELOPMENT!!");
+    alert("THIS FEATURE IS UNDER DEVELOPMENT!!");
 }
 
 function LineChkFn() {
