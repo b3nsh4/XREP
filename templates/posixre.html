@@ -1,3 +1,4 @@
+    {% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,16 +42,17 @@
 <a class="navbar-brand" href="/">
 <img src="{{ url_for('static', filename='images/posix.svg') }}" width="25" height="25" alt="posix-shell"></a>𝙓𝙍𝙀𝙋 <i>0.1.10-beta</i></center>
 <br>
-     <textarea class="form-control" placeholder="Paste your text here 👇  
-          This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/images/ints.png) top -12px left / auto no-repeat, 
-    linear-gradient(#ffff 50%, #ffff  50%) top left / 100% 32px; padding: 0 0 0 30px;" type="color" value="#563d7c" onselect="handle_select()" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
+    {% include 'text_box.html' %}
+    
  <center>
 <span id="target_text"></span>
 <br>
 <button type="submit" onclick="generator()" id="gen_button" class="btn btn-success btn-sm">Generate</button> 
 <button type="submit" onclick="run_sed_live()" id="run_test_button" style="display:none" class="btn btn-success btn-sm">Run Test <i class="text-warning">alpha</i></button>
-        <br> 
-  <p class="text-primary">LineNumber: <input class="form-check-input" autocomplete="off" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; 
+        <br> <br> 
+  <p class="text-primary">
+    
+    LineNumber: <input class="form-check-input" autocomplete="off" type="checkbox" id="LineChecker" onchange="LineChkFn()">&nbsp; &nbsp; &nbsp;&nbsp; 
 
     LHS Vary: <input class="form-check-input" type="checkbox" autocomplete="off" id="LHSChecker" onchange="LHSChkFn()" >&nbsp;&nbsp;&nbsp;&nbsp;   
 
@@ -61,6 +63,11 @@
    Δ-Target: <input type="checkbox" class="form-check-input" autocomplete="off" id="deltacheck"> 
  
   </p> 
+    <input class="form-check-input" onclick="SorG(this);" type="radio" name="sg" value="sed">
+      <label class="form-check-label text-secondary" style="font-family:monospace">GNU Sed</label>&nbsp;&nbsp;&nbsp;
+      
+    <input class="form-check-input" onclick="SorG(this);" type="radio" name="sg" value="grep">
+      <label class="form-check-label text-secondary" >GNU Grep</label>&nbsp;&nbsp;&nbsp;
   </center>
 
 <div id="display_static_brd" style="display:none">
@@ -187,3 +194,4 @@
         });
 </script>
 </html>
+    {% endblock %}

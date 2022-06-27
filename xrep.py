@@ -18,6 +18,7 @@ from simple_cooker import simple_chef,final_cooker
 from reports import init_report
 from static_arrang import static_res
 from improved_len_decision import glolbal_len_decision as gld
+from wrapper import wrappit
 
 #run in subprocess
 from pyre_shell import run_pyre_shell
@@ -168,11 +169,11 @@ def stratg():
    prefetch = "sed -E "+'"'+str(LINE_NUM)+"{}s/(".format(LINE_NUM)
    # not using +str(line_num)+ AS OF NOW!!
    if len_for_pre_boundary!=0:
-      prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
-      python_prefetch = f"re.findall(\"."+lhs_1+"{"+str(len_for_pre_boundary)+"}"+lhs_2+wild+"("+prd
+      prefetch_for_pat5 = f"sed -E -n '{str(LINE_NUM)}s/{lhs_1}{{{str(len_for_pre_boundary)}}}{lhs_2}{wild}({prd}"
+      python_prefetch = f"re.findall(\"{lhs_1}{{{str(len_for_pre_boundary)}}}{lhs_2+wild}({prd}"
    else:
       python_prefetch = f"re.findall(\"\\s*("
-      prefetch_for_pat5 = f"sed -E -n "+'"'+str(LINE_NUM)+"s/\\s*("
+      prefetch_for_pat5 = f"sed -E -n {str(LINE_NUM)}s/\\s*("
 
    i=0
 

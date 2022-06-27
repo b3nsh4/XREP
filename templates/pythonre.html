@@ -1,3 +1,4 @@
+    {% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,15 +40,13 @@
     <img src="{{ url_for('static', filename='images/py.svg') }}" width="25" height="25" alt=""></a>
   𝙓𝙍𝙀𝙋 <i>0.1.10-beta</i></center>
   <br>
-     <textarea class="form-control" placeholder="Paste your text here 👇  
-          This TextArea is resizeable 👉" style="resize: both;font-family:revert;background: url(../static/images/ints.png) top -12px left / auto no-repeat, 
-    linear-gradient(#ffff 50%, #ffff  50%) top left / 100% 32px; padding: 0 0 0 30px;" type="color" value="#563d7c" onselect="handle_select()" rows="10" placeholder="place non-wrap text here" id="area"></textarea>
+    {% include 'text_box.html' %}
  <center>
 <span id="target_text"></span>
 <br>
 <button type="submit" onclick="generator()" id="gen_button" class="btn btn-success btn-sm">Generate</button> 
 <button type="submit" onclick="run_pyre_live()" id="run_test_button" style="display:none" class="btn btn-success btn-sm">Run Test <i class="text-warning">alpha</i></button>
-        <br> 
+        <br>  <br> 
   <p class="text-primary">
     Non-greedy: <input class="form-check-input" type="checkbox" autocomplete="off" id="greedyChecker" onchange="nongreedy()" >&nbsp;&nbsp;&nbsp;&nbsp; 
 
@@ -186,3 +185,4 @@
         });
 </script>
 </html>
+    {% endblock %}

@@ -1,4 +1,4 @@
-#### pre1.*pre2(target)post1.*post2 #A.K.A PATTERN-01
+## pre1.*pre2(target)post1.*post2 #A.K.A PATTERN-01
 ## pre1 is splitted[0] and pre2 is splitted[-1] post1, post2 accordingly
 from escape_me import *
 NonGreedyStatus=False
