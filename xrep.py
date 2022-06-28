@@ -174,7 +174,7 @@ def stratg():
       python_prefetch = f"re.findall(\".{lhs_1}{{{str(len_for_pre_boundary)}}}{lhs_2+wild}({prd}"
    else:
       python_prefetch = f"re.findall(\"\\s*("
-      prefetch_for_pat5 = f"sed -E -n {str(LINE_NUM)}s/\\s*("
+      prefetch_for_pat5 = f"sed -E -n '{str(LINE_NUM)}s/\\s*("
 
    i=0
 
