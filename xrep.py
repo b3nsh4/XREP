@@ -26,7 +26,6 @@ from subprocess_shell import run_shell
 
 #modules for static string
 from patt1_static_brd import patt1_static_str
-from global_vars import *
 
 app = Flask(__name__)
 @app.route('/')
@@ -39,12 +38,11 @@ def stratg():
    global string_selected,pre_spc,post_spc,final_return,grep
    string_selected=req['TEXTSELECTED']
    global full_line,PYTHON_RE,NonGreedyStatus
-   whole=req['WHOLE_STUFF']
    static_strings = req['STATIC_STRINGS']
    pre_char_space = req['pre_char_space']
    post_char_space = req['post_char_space']
    line_num = req['LINENUMBER']
-   full_line = req['full_line']
+   full_line = req['full_line'][0]
    start_index=req['start_index']
    end_index=req['end_index']
    delta_check = req['delta_check']
@@ -116,7 +114,7 @@ def stratg():
    elif LSTATUS == False:
       LINE_NUM = ""
 
-   this_full_text = whole[line_num-1] #gets the entire text in selected line for strcit_mode
+   this_full_text = full_line[line_num-1] #gets the entire text in selected line for strcit_mode
    #getting index number of selected word
 
    if string_selected == '':

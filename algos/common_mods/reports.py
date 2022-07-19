@@ -1,6 +1,6 @@
 from github import Github
 import uuid,os,sys
-g = Github('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')
+g = Github('')
 
 def init_report(vars):
    entire_line=vars[0]

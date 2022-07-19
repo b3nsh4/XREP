@@ -38,7 +38,6 @@ function generator() {
         post_char_space: post_space,
         LINENUMBER: lineNo,
         TEXTSELECTED: selText,
-        WHOLE_STUFF: entire_line,
         start_index: start_target_at,
         end_index: end_target_at,
         TheLineNumStat: islinechecked,
