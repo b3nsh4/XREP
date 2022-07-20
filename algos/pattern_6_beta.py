@@ -14,7 +14,17 @@ def glolbal_decision_6(string):
     else:
         return escape_me(string)
 
-def pattern_6_beta(grep,pyre,GreedyStatus,lhs,rhs,LINE_NUM,preb,postb,pre_spc,post_spc):
+def pattern_6_beta(grep,
+        pyre,
+        GreedyStatus,
+        lhs,
+        rhs,
+        LINE_NUM,
+        preb,
+        postb,
+        pre_spc,
+        post_spc
+):
     if GreedyStatus:
         quantifier = ".*?"
     else:

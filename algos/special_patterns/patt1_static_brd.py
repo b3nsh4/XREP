@@ -25,7 +25,15 @@ def rhs_static_str(rhs):
 			post2=""
 			return [post1,post2]
 
-def patt1_static_str(pyre,GreedyStatus,lhs,rhs,cooked_string,LINE_NUM,pre_has_space):
+def patt1_static_str(
+        pyre,
+        GreedyStatus,
+        lhs,
+        rhs,
+        cooked_string,
+        LINE_NUM,
+        pre_has_space,
+):
 	global pyre_1_result,NonGreedyStatus
 	NonGreedyStatus = GreedyStatus
 

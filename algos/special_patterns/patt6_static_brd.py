@@ -13,7 +13,16 @@ def glolbal_decision_6(string):
         return escape_me(string)
 
 
-def patt6_static_brd(pyre,GreedyStatus,LINE_NUM,preb,postb,pre_spc,post_spc,lhs_static_str):
+def patt6_static_brd(
+        pyre,
+        GreedyStatus,
+        LINE_NUM,
+        preb,
+        postb,
+        pre_spc,
+        post_spc,
+        lhs_static_str
+):
     NonGreedyStatus = GreedyStatus
     if NonGreedyStatus:
         quantifier = ".*?"

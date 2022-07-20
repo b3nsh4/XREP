@@ -440,11 +440,33 @@ def stratg():
       global pyre_1_result
       pyre=PYTHON_RE
       if len(lhs_static_str)!=0 or len(rhs_static_str)!=0: #static string invoking
-         patt1_res = patt1_static_str(pyre,NonGreedyStatus,lhs_static_str,rhs_static_str,cooked_string_copy,LINE_NUM,pre_char_space)
+         patt1_res = patt1_static_str(
+                 pyre,
+                 NonGreedyStatus,
+                 lhs_static_str,
+                 rhs_static_str,
+                 cooked_string_copy,
+                 LINE_NUM,
+                 pre_char_space
+                 )
          if pyre:
             pyre_1_result = patt1_res
          return patt1_res
-      patt1_res = pat_1_ready(grep,pyre,NonGreedyStatus,lhs,rhs,LINE_NUM,splitted_pre,splitted_post,pre_boundary,post_boundary,cooked_string_copy,pre_spc,post_spc)
+      patt1_res = pat_1_ready(
+              grep,
+              pyre,
+              NonGreedyStatus,
+              lhs,
+              rhs,
+              LINE_NUM,
+              splitted_pre,
+              splitted_post,
+              pre_boundary,
+              post_boundary,
+              cooked_string_copy,
+              pre_spc,
+              post_spc
+              )
       if pyre:
          pyre_1_result = patt1_res
       return patt1_res
@@ -603,9 +625,29 @@ def stratg():
       pyre = PYTHON_RE
       if len(lhs_static_str)!=0: #static-str invoking
          from patt6_static_brd import patt6_static_brd
-         res=patt6_static_brd(pyre,NonGreedyStatus,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc,lhs_static_str)
+         res=patt6_static_brd(
+                 pyre,
+                 NonGreedyStatus,
+                 LINE_NUM,
+                 pre_boundary,
+                 post_boundary,
+                 pre_spc,
+                 post_spc,
+                 lhs_static_str
+                 )
       else:
-         res = pattern_6_beta(grep,pyre,NonGreedyStatus,lhs,rhs,LINE_NUM,pre_boundary,post_boundary,pre_spc,post_spc)
+         res = pattern_6_beta(
+                 grep,
+                 pyre,
+                 NonGreedyStatus,
+                 lhs,
+                 rhs,
+                 LINE_NUM,
+                 pre_boundary,
+                 post_boundary,
+                 pre_spc,
+                 post_spc
+                 )
       if pyre:
          pyre6_result = res
       return res
@@ -698,4 +740,3 @@ def pyre():
 if __name__ == '__main__':
    app.run(debug=True)
 
-#BEFORE DEPLOY, BEBUG, GIT_REPO UNCOMMENT (LINE-8)
