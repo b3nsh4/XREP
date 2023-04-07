@@ -34,7 +34,7 @@ def getstarted():
 
 @app.route("/entry", methods=["POST","GET"])
 def stratg():
-   req = request.get_json() #getting text and line from frontend
+   req = request.get_json() #getting text and line from textarea
    global string_selected,pre_spc,post_spc,final_return,grep
    string_selected=req['TEXTSELECTED']
    global full_line,PYTHON_RE,NonGreedyStatus
@@ -58,7 +58,15 @@ def stratg():
    rhs_static_str = []
    lhs_static_str = []
    
-   #check if having space!!
+   """
+   LHS: Left hand side of the *selected text* (to generate pattern)
+   RHS: Right hand side of the *selected text* (to generate pattern)
+   ------------
+   Check if having space before start of text in Textarea. This is checked by generator_fn.js
+   The idea is, if there is *a space*,  it is sure that \\s+ is applicable since it means 
+   *one or more* spaces. If not, *zero or more* spaces. It does no harm. 
+   """
+   
    if pre_char_space==True:
       pre_spc = "\\s+"
    else:
@@ -67,7 +75,7 @@ def stratg():
       post_spc= "\\s+"
    else:
       post_spc = "\\s*"
-   #above var can now be used if having space!!
+
    
    #introductory to [LR]HS can be found at docs.xrep.in/boundaries
    # CHECKING IF LHS AND RHS HAS CHECKED
@@ -123,8 +131,10 @@ def stratg():
 
    len_str = len(string_selected)
 
+   #Any text before selected target
    pre_boundary = this_full_text[:start_index]
 
+   #Any text after selected target
    post_boundary = this_full_text[end_index+1:] 
    # refer commit 0288294 comments 
 
@@ -132,6 +142,7 @@ def stratg():
 
    len_for_post_boundary = len(this_full_text[end_index:])
 
+   # splitting pre and post 
    splitted_pre = pre_boundary.split()
 
    splitted_post = post_boundary.split()
@@ -153,11 +164,11 @@ def stratg():
    
    if len(string_selected) > 50:
       return  {
-      "pattern_4_result":"Non-useful pattern!",
-      "pattern_3_result":"Non-useful pattern!",
       "pattern_1_result":"Non-useful pattern!",
+      "pattern_2_result":"Non-useful pattern!",
+      "pattern_3_result":"Non-useful pattern!",
+      "pattern_4_result":"Non-useful pattern!",
       "pattern_5_result":"Non-useful pattern!",
-      "pattern_2_result":"Non-useful pattern!"
        }
 
    #global variables for this function#
