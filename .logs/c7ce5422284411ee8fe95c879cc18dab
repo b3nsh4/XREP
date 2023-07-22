@@ -1,0 +1,8 @@
+b	 <--entire_line
+as	  <--selected_text
+sed -E -n 's/.*-\s*([a-z]+).*/\1/p'	 <--pattern_1
+sed -E -n 's/.*-\s*([a-z]+)\s*.*/\1/p'	 <--pattern_2
+sed -E 's/(.+)?(b)\s*([a-z]+)$/\1 \2 XXX/'	 <--pattern_3
+sed -E -n 's/.*-\s*(([a-z]){2})\s*.*/\1/p'	 <--pattern_4
+Works_better_with_complex_patterns	 <--pattern_5
+sed -E -n 's/.*-([^ ]+)$/\1/p'	 <--pattern_6

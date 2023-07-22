@@ -22,7 +22,6 @@ from wrapper import *
 
 #run in subprocess
 from pyre_shell import run_pyre_shell
-from subprocess_shell import run_shell
 
 #modules for static string
 from patt1_static_brd import patt1_static_str
@@ -681,14 +680,8 @@ def stratg():
       pattern_3_result = pattern_3()
       pattern_1_result = pattern_1()
 
-      final_return = {
-      "pattern_1_result":pattern_1_result,
-      "pattern_2_result":pattern_2_result,
-      "pattern_4_result":pattern_4_result,
-      "pattern_3_result":pattern_3_result,
-      "pattern_5_result":pattern_5_result,
-      "pattern_6_result":patt6_result
-      }
+      patterns = [pattern_1_result, pattern_2_result, pattern_3_result, pattern_4_result, pattern_5_result, patt6_result]
+      final_return = {f"pattern_{i+1}_result": result for i, result in enumerate(patterns)}
       return final_return
 
    else:
@@ -696,15 +689,8 @@ def stratg():
       pattern_3_result = pattern_3()
       pattern_1_result = pattern_1()
       pattern_5_result = pattern_5()
-      final_return = {
-      # "sub_with_spec_nums":sub_with_spec_nums,
-      "pattern_1_result":pattern_1_result,
-      "pattern_2_result":pattern_2_result,
-      "pattern_3_result":pattern_3_result,
-      "pattern_4_result":pattern_4_result,
-      "pattern_5_result":pattern_5_result,
-      "pattern_6_result":patt6_result
-      }
+      patterns = [pattern_1_result, pattern_2_result, pattern_3_result, pattern_4_result, pattern_5_result, patt6_result]
+      final_return = {f"pattern_{i+1}_result": result for i, result in enumerate(patterns)}
       return final_return
 
 @app.route('/bug')
