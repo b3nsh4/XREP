@@ -1,3 +1,8 @@
+"""
+This script runs and tests the generated pattern and returns the executed result in a shell.
+Since it runs in a shell, it must be carefully done and hence put in an alpha version as of: Jul 23 - 23
+"""
+
 from echo_escape import echo_escaper
 import re
 

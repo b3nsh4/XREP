@@ -49,7 +49,7 @@
 <span id="target_text"></span>
 <br>
 <button type="submit" onclick="generator()" id="gen_button" class="btn btn-success btn-sm">Generate</button> 
-<button type="submit" onclick="run_sed_live()" id="run_test_button" style="display:none" class="btn btn-success btn-sm">Run Test <i class="text-warning">alpha</i></button>
+<button type="submit" onclick="featdisabledAlert()" id="run_test_button" style="display:none" class="btn btn-success btn-sm">Run Test <i class="text-warning">alpha</i></button>
         <br> <br> 
   <p class="text-primary">
     GNU Grep: <input class="form-check-input" onclick="SorG()" type="checkbox" id="grep">&nbsp; &nbsp; &nbsp;&nbsp;
@@ -167,6 +167,22 @@
   </div>
 </div>
 
+<div class="modal fade" id="runtest-warning-modal" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+
+      <div class="modal-body">
+        <h5>This feature is currently disabled. For trying, find version <a href="https://github.com/b3nsh4/XREP/releases/tag/v.1.0.0-beta">b3nsh4/XREP/releases/tag/v.1.0.0-beta</a></h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    
+  </div>
+</div>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 <!-- main js file  -->
@@ -190,5 +206,13 @@
           });
         });
 </script>
+
+<script>
+  function featdisabledAlert() {
+      alert('This feature is currently disabled. For trying, find version https://github.com/b3nsh4/XREP/releases/tag/v.1.0.0-beta'); // Display an alert when the button is clicked
+  }
+</script>
+
+
 </html>
     {% endblock %}

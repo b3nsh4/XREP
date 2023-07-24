@@ -20,8 +20,6 @@ from static_arrang import static_res
 from improved_len_decision import glolbal_len_decision as gld
 from wrapper import *
 
-#run in subprocess
-from pyre_shell import run_pyre_shell
 
 #modules for static string
 from patt1_static_brd import patt1_static_str
@@ -662,15 +660,7 @@ def stratg():
          pyre6_result = res
       return res
    
-   #some global vars
-   global sub_with_spec_nums
-   global pattern_4_result
-   global pattern_2_result 
-   global pattern_3_result
-   global pattern_1_result
-   global pattern_5_result 
-   global patt6_result 
-   #global var ends
+
    sub_with_spec_nums = sub_with_specific_numbering(di)
    pattern_4_result = pattern_4(di)
    pattern_2_result = pattern_2()
@@ -707,14 +697,6 @@ def bug_report():
    
    report_status=init_report(collect_report_vars)
    return report_status
-
-@app.route('/run_sed',methods=["GET"])
-def run_with_sed():
-   return run_shell(final_return,full_line)
-
-@app.route('/run_pyre',methods=["GET"])
-def run_python_re():
-   return run_pyre_shell(final_return,full_line)
 
 @app.route('/donate')
 def donate_xrep():
